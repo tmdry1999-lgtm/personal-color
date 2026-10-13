@@ -2,6 +2,7 @@
 import { listCameras } from './camera.js';
 import { rectFromDrag, displayRectToRaw } from './settings.js';
 import { formatLog } from './measure-log.js';
+import { parseTypedValue } from './camera-settings.js';
 
 const $ = (id) => document.getElementById(id);
 const CONTROL_NAMES = { saturation: '채도', colorTemperature: '색온도 (K)', exposureTime: '노출 시간' };
@@ -96,12 +97,27 @@ export function setupOperator({ overlay, getSettings, setSettings, onCameraChang
       if (!c) {
         row.append('지원 안 함');
       } else {
+        // 슬라이더(대략 조정)와 숫자 칸(정밀 입력)이 서로 따라간다. 숫자 칸은 Enter나 칸을 벗어날 때 적용
         const start = c.value ?? (c.min + c.max) / 2;
-        const input = Object.assign(document.createElement('input'), { type: 'range', min: c.min, max: c.max, step: c.step, value: start });
-        const shown = Object.assign(document.createElement('span'), { textContent: c.value === null ? ' (현재 값 모름 — 움직이면 저장)' : ` ${c.value}` });
-        input.addEventListener('input', () => { shown.textContent = ` ${input.value}`; });
-        input.addEventListener('change', () => onChange(key, Number(input.value)));
-        row.append(input, shown);
+        const slider = Object.assign(document.createElement('input'), { type: 'range', min: c.min, max: c.max, step: c.step, value: start });
+        const number = Object.assign(document.createElement('input'), {
+          type: 'number', min: c.min, max: c.max, step: c.step, value: c.value ?? '', placeholder: '모름', style: 'width: 6em',
+        });
+        const note = Object.assign(document.createElement('span'), { textContent: c.value === null ? ' 현재 값 모름 — 바꾸면 저장' : '' });
+        const apply = (v) => {
+          slider.value = v;
+          number.value = v;
+          note.textContent = '';
+          onChange(key, v);
+        };
+        slider.addEventListener('input', () => { number.value = slider.value; });
+        slider.addEventListener('change', () => apply(Number(slider.value)));
+        number.addEventListener('change', () => {
+          const v = parseTypedValue(number.value, c);
+          if (v === null) { number.value = slider.value; return; }
+          apply(v);
+        });
+        row.append(slider, ' ', number, note);
       }
       box.append(row);
     }

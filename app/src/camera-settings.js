@@ -42,3 +42,13 @@ export function buildConstraintSteps(values, caps) {
   if ('saturation' in v) steps.push({ saturation: v.saturation });
   return steps;
 }
+
+// 운영자가 숫자로 직접 친 값: 범위·단계에 맞춘다. 숫자가 아니면 null (적용하지 않음)
+export function parseTypedValue(text, control) {
+  const s = String(text).trim();
+  if (s === '' || !Number.isFinite(Number(s))) return null;
+  const { min, max } = control;
+  const step = control.step || 1;
+  const snapped = min + Math.round((Number(s) - min) / step) * step;
+  return Math.min(max, Math.max(min, snapped));
+}

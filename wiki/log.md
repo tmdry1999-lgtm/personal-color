@@ -20,3 +20,4 @@
 | 2026-10-13 | decisions/phase3-backlog.md | 2단계 최종 리뷰에서 미룬 코드 정리 6건 추가 |
 | 2026-10-13 | measurement/webcam-limits.md | 3단계-A: 웹캠 설정값 저장·재적용, 측정 기록 모드 추가 |
 | 2026-10-13 | raw/measurements/2026-10-13-p1-locked-settings.md | 웹캠 설정 고정 후 P1 2회: 겨울 딥 2/2, 경계형 아님 |
+| 2026-10-13 | raw/measurements/2026-10-13-participants.md | 참가자 목록: 지금까지 측정 1~5회 모두 P1 |

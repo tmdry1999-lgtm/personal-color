@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { describeControls, clampToCaps, buildConstraintSteps, knownValues } from '../app/src/camera-settings.js';
+import { describeControls, clampToCaps, buildConstraintSteps, knownValues, parseTypedValue } from '../app/src/camera-settings.js';
 
 // 개발 PC 웹캠 실측 형식 (raw/measurements/2026-10-13-camera-capabilities.md) + 채도·노출 시간
 const caps = {
@@ -47,4 +47,15 @@ test('buildConstraintSteps: 저장된 값이 없으면 수동 모드만 (현재 
 test('knownValues: 현재 값을 아는 항목만 저장 대상', () => {
   const c = describeControls(caps, { saturation: 128 });
   assert.deepEqual(knownValues(c), { saturation: 128 });
+});
+
+test('parseTypedValue: 타자로 친 값을 범위·단계에 맞추고, 숫자가 아니면 null', () => {
+  const c = { min: 1, max: 10000, step: 1, value: 156 };
+  assert.equal(parseTypedValue('120', c), 120);
+  assert.equal(parseTypedValue(' 120.4 ', c), 120);
+  assert.equal(parseTypedValue('99999', c), 10000);
+  assert.equal(parseTypedValue('-5', c), 1);
+  assert.equal(parseTypedValue('', c), null);
+  assert.equal(parseTypedValue('abc', c), null);
+  assert.equal(parseTypedValue('4601', { min: 2800, max: 6500, step: 10, value: null }), 4600);
 });
