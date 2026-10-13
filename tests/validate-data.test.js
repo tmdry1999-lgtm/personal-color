@@ -30,7 +30,10 @@ function validSeasons() {
     thresholds: {
       borderlineGapPct: 10, minFaceWidthRatio: 0.25, maxYawDeg: 15, holdSeconds: 3, framesPerCapture: 10,
       trimPct: 10, minSkinL: 25, scleraMaxChroma: 12, hairDyeMinChroma: 18, lipProductMinChroma: 45, idleResetSeconds: 60,
+      cardMaxSaturatedRatio: 0.05, cardMaxRelStd: 0.15, minRegionPixels: 20,
+      eyeOpenMinRatio: 0.12, glareMinL: 85, glareMaxRatio: 0.2,
     },
+    calibration: { card: 'white', targets: { white: [0.8, 0.8, 0.8], gray18: [0.18, 0.18, 0.18] } },
   };
 }
 
@@ -158,6 +161,21 @@ test('CLI: 인자가 없으면 사용법을 출력하고 종료 코드 1', async
   const r = spawnSync(process.execPath, [fileURLToPath(new URL('../tools/validate-data.js', import.meta.url))], { encoding: 'utf8' });
   assert.equal(r.status, 1);
   assert.ok(r.stderr.includes('사용법'));
+});
+
+test('validateSeasons: 새 임계값이 없으면 오류', () => {
+  const s = validSeasons();
+  delete s.thresholds.glareMaxRatio;
+  assert.ok(validateSeasons(s).some((e) => e.includes('glareMaxRatio')));
+});
+
+test('validateSeasons: calibration 카드 종류와 목표값 검사', () => {
+  const s = validSeasons();
+  s.calibration.card = 'blue';
+  s.calibration.targets.gray18 = [0.18, 0.18, 1.5];
+  const errors = validateSeasons(s);
+  assert.ok(errors.some((e) => e.includes('calibration.card')));
+  assert.ok(errors.some((e) => e.includes('gray18')));
 });
 
 test('hexToHueDeg: 알려진 값 (sRGB 빨강 ≈ 40°, 파랑 ≈ 306°)', () => {

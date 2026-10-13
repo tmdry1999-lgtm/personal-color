@@ -46,6 +46,16 @@
     "scleraMaxChroma": 12,
     "hairDyeMinChroma": 18,
     "lipProductMinChroma": 45,
-    "idleResetSeconds": 60
+    "idleResetSeconds": 60,
+    "cardMaxSaturatedRatio": 0.05,
+    "cardMaxRelStd": 0.15,
+    "minRegionPixels": 20,
+    "eyeOpenMinRatio": 0.12,
+    "glareMinL": 85,
+    "glareMaxRatio": 0.2
+  },
+  "calibration": {
+    "card": "white",
+    "targets": { "white": [0.8, 0.8, 0.8], "gray18": [0.18, 0.18, 0.18] }
   }
 }

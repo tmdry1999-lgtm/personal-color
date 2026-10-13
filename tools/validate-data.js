@@ -7,6 +7,7 @@ export { SEASONS, AXES, TONES };
 const THRESHOLD_KEYS = [
   'borderlineGapPct', 'minFaceWidthRatio', 'maxYawDeg', 'holdSeconds', 'framesPerCapture',
   'trimPct', 'minSkinL', 'scleraMaxChroma', 'hairDyeMinChroma', 'lipProductMinChroma', 'idleResetSeconds',
+  'cardMaxSaturatedRatio', 'cardMaxRelStd', 'minRegionPixels', 'eyeOpenMinRatio', 'glareMinL', 'glareMaxRatio',
 ];
 const HEX = /^#[0-9A-F]{6}$/;
 const isNum = (v) => typeof v === 'number' && Number.isFinite(v);
@@ -52,6 +53,14 @@ export function validateSeasons(s) {
   for (const key of THRESHOLD_KEYS) {
     if (!isNum(s.thresholds?.[key])) errors.push(`thresholds.${key}: 숫자 없음`);
   }
+  const targets = s.calibration?.targets ?? {};
+  for (const card of ['white', 'gray18']) {
+    const t = targets[card];
+    if (!Array.isArray(t) || t.length !== 3 || !t.every((v) => isNum(v) && v > 0 && v <= 1)) {
+      errors.push(`calibration.targets.${card}: 0보다 크고 1 이하인 숫자 3개`);
+    }
+  }
+  if (!(s.calibration?.card in targets)) errors.push('calibration.card: targets에 있는 카드 종류여야 함');
   return errors;
 }
 
