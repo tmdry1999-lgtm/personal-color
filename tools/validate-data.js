@@ -1,14 +1,9 @@
 import { readFileSync } from 'node:fs';
 import { pathToFileURL } from 'node:url';
+import { SEASONS, AXES, TONES } from '../app/src/constants.js';
+import { rgbToLch, hexToRgb } from '../app/src/color.js';
 
-export const SEASONS = ['spring', 'summer', 'autumn', 'winter'];
-export const AXES = ['warmth', 'value', 'chroma', 'contrast'];
-export const TONES = [
-  'spring-light', 'spring-bright', 'spring-true',
-  'summer-light', 'summer-soft', 'summer-true',
-  'autumn-soft', 'autumn-deep', 'autumn-true',
-  'winter-bright', 'winter-deep', 'winter-true',
-];
+export { SEASONS, AXES, TONES };
 const THRESHOLD_KEYS = [
   'borderlineGapPct', 'minFaceWidthRatio', 'maxYawDeg', 'holdSeconds', 'framesPerCapture',
   'trimPct', 'minSkinL', 'scleraMaxChroma', 'hairDyeMinChroma', 'lipProductMinChroma', 'idleResetSeconds',
@@ -118,17 +113,7 @@ function checkNameHexConsistency(p) {
 }
 
 export function hexToHueDeg(hex) {
-  const lin = (v) => { v /= 255; return v <= 0.04045 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4; };
-  const [r, g, b] = [1, 3, 5].map((i) => lin(parseInt(hex.slice(i, i + 2), 16)));
-  const x = (0.4124564 * r + 0.3575761 * g + 0.1804375 * b) / 0.95047;
-  const y = 0.2126729 * r + 0.7151522 * g + 0.0721750 * b;
-  const z = (0.0193339 * r + 0.1191920 * g + 0.9503041 * b) / 1.08883;
-  const f = (t) => (t > 216 / 24389 ? Math.cbrt(t) : (24389 / 27 * t + 16) / 116);
-  const a = 500 * (f(x) - f(y));
-  const bb = 200 * (f(y) - f(z));
-  // 무채색은 색상각이 정의되지 않는다 (부동소수점 잡음만 남음)
-  if (Math.hypot(a, bb) < 1) return NaN;
-  return (Math.atan2(bb, a) * 180 / Math.PI + 360) % 360;
+  return rgbToLch(hexToRgb(hex)).h;
 }
 
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {

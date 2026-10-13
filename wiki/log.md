@@ -10,3 +10,4 @@
 | 2026-10-13 | scoring/ | 리뷰 반영: 12톤 규칙을 대표값 기준으로 수정(스펙 6.5), 동점 처리 추가, 알려진 위험 기록 |
 | 2026-10-13 | palettes/ + app/data/palettes.json | 리뷰 반영: 같은 hex·이름 충돌 15건 정리, 팔레트 표를 생성 스크립트로 전환 |
 | 2026-10-13 | scoring/, measurement/, palettes/ | 리뷰 반영: 대비를 부위별 가중 평균으로(눈썹 0.1), 무채색 규칙·특허 설명·기준 카드 상태 정정 |
+| 2026-10-13 | measurement/color-conversion.md | culori lab65 사용 명시 |
