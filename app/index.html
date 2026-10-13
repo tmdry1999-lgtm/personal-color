@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI 퍼스널컬러 진단</title>
+<link rel="stylesheet" href="style.css">
+<script type="importmap">{ "imports": { "culori": "https://cdn.jsdelivr.net/npm/culori@4.0.2/bundled/culori.min.mjs" } }</script>
+</head>
+<body>
+<main>
+  <div id="stage" class="stage">
+    <video id="video" playsinline muted></video>
+    <canvas id="overlay"></canvas>
+  </div>
+
+  <section id="screen-idle">
+    <h1>AI 퍼스널컬러 진단</h1>
+    <button id="btn-start" class="big">시작</button>
+  </section>
+
+  <section id="screen-start" hidden>
+    <h2>시작하기 전에</h2>
+    <div class="row">
+      <button class="big gender" data-gender="f">여성</button>
+      <button class="big gender" data-gender="m">남성</button>
+    </div>
+    <label><input type="checkbox" id="flag-dyed"> 염색했어요</label>
+    <label><input type="checkbox" id="flag-lip"> 립 제품을 발랐어요</label>
+    <p class="notice">사진은 저장되지 않으며, 진단 후 즉시 삭제됩니다</p>
+    <button id="btn-begin" class="big" disabled>진단 시작</button>
+  </section>
+
+  <section id="screen-capture" hidden>
+    <p id="capture-msg" class="msg">얼굴을 화면 가운데에 맞춰 주세요</p>
+    <p id="countdown" class="countdown"></p>
+  </section>
+
+  <section id="screen-analyzing" hidden>
+    <p class="msg">피부 · 눈동자 · 머리카락 분석 중…</p>
+  </section>
+
+  <section id="screen-result" hidden>
+    <div id="result-body"></div>
+    <div id="qr"></div>
+    <p class="notice">사진 등의 개인정보는 저장되지 않습니다</p>
+    <p class="notice">참고용 결과예요</p>
+    <button id="btn-home" class="big">처음으로</button>
+  </section>
+
+  <p id="error" class="error" hidden></p>
+</main>
+
+<dialog id="operator">
+  <h2>운영자 설정</h2>
+  <label>웹캠 <select id="op-camera"></select></label>
+  <label>기준 카드
+    <select id="op-card">
+      <option value="white">흰색 A4</option>
+      <option value="gray18">18% 회색 카드</option>
+    </select>
+  </label>
+  <button id="op-card-rect">A4 영역 지정 (화면에서 드래그)</button>
+  <h3>카메라 제어 지원 (화이트밸런스·노출 고정)</h3>
+  <pre id="op-caps">확인 중…</pre>
+  <h3>마지막 측정값 (숫자만, 저장 안 됨)</h3>
+  <pre id="op-last">없음</pre>
+  <button id="op-close">닫기</button>
+</dialog>
+
+<script type="module" src="src/app.js"></script>
+</body>
+</html>
