@@ -24,3 +24,4 @@
 | 2026-10-13 | measurement/lighting.md, raw/web/diagnosis-environment.md | 전문 진단 환경 조사 반영: CRI 95·R9, 정면 확산광, 다른 빛 차단, A4 위치, 클리핑 원리 |
 | 2026-10-13 | decisions/phase3-backlog.md | 데이터 수집 메모: 현 환경 유지, 회색 카드 도착 후 A4 환산 세션 |
 | 2026-10-13 | raw/measurements/2026-10-13-p1-p3-session.md, measurement/participants.md | P1~P3 세션 8회 기록, 참가자 목록 위키 페이지 |
+| 2026-10-13 | measurement/participants.md, raw/measurements/2026-10-13-participant-notes.md | P2 전문가 진단 가을 웜(앱 겨울, 불일치), P2 화장·P3 안경 기록 |
