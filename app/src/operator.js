@@ -67,6 +67,9 @@ export function setupOperator({ overlay, getSettings, setSettings, onCameraChang
     onCameraChange(e.target.value);
   });
   $('op-card').addEventListener('change', (e) => setSettings({ ...getSettings(), cardType: e.target.value }));
+  // 환경 메모: 반사판 등 측정 환경을 기록에 남긴다 (되돌릴 때는 지우면 됨)
+  $('op-env').value = getSettings().envNote ?? '';
+  $('op-env').addEventListener('change', (e) => setSettings({ ...getSettings(), envNote: e.target.value.trim() }));
 
   // 화면 좌표(0~1, 거울 모드) → 원본 프레임 좌표로 저장
   const pos = (e) => {

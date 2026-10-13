@@ -2,7 +2,7 @@
 const yesNo = (v) => (v ? '예' : '아니오');
 const GENDER = { f: '여', m: '남' };
 
-export function makeLogEntry({ participant, gender, flags, camera, cardType, out, now }) {
+export function makeLogEntry({ participant, gender, flags, camera, cardType, envNote, out, now }) {
   const entry = {
     participant: participant?.trim() || 'P?',
     gender,
@@ -12,6 +12,7 @@ export function makeLogEntry({ participant, gender, flags, camera, cardType, out
     time: now.toISOString(),
     camera: camera ?? null,
     cardType: cardType ?? null,
+    envNote: envNote?.trim() ?? '',
   };
   if (!out.ok) return { ...entry, error: out.error };
   const { result, measurements, features, warnings, excluded } = out;

@@ -1,7 +1,7 @@
 // 흐름: 스펙 6장. 프레임 → A4 보정 → 부위 측정 → 프레임 중앙값 → 특징 → 4축 → 판정
 import { sampleRect, extractRegions } from './regions.js';
 import { cardStats, checkCard, computeGains } from './calibrate.js';
-import { measureRegion, combineFrames, hasGlare } from './measure.js';
+import { measureRegion, measureLitRegion, combineFrames, hasGlare } from './measure.js';
 import { buildFeatures, computeAxes } from './axes.js';
 import { classify } from './classify.js';
 
@@ -16,17 +16,20 @@ function mostCommon(codes) {
 
 // 턱을 든 목 사진에서 목만 측정한다. 실패해도 얼굴 결과는 그대로 낸다.
 function measureLiftedNeck(neckFrames, settings, target, t) {
-  if (!neckFrames || neckFrames.length === 0) return { neck: null, warning: null };
+  if (!neckFrames || neckFrames.length === 0) return { neck: null, lit: null, warning: null };
   const measures = [];
+  const litMeasures = [];
   let cardFails = 0;
   for (const f of neckFrames) {
     const stats = cardStats(sampleRect(f.image, settings.cardRect));
-    if (checkCard(stats, t)) { cardFails += 1; measures.push(null); continue; }
+    if (checkCard(stats, t)) { cardFails += 1; measures.push(null); litMeasures.push(null); continue; }
     const px = extractRegions(f.image, f.landmarks, f.hairMask, t);
-    measures.push(measureRegion(px.neck, computeGains(stats.mean, target), t.trimPct, t.minRegionPixels));
+    const gains = computeGains(stats.mean, target);
+    measures.push(measureRegion(px.neck, gains, t.trimPct, t.minRegionPixels));
+    litMeasures.push(measureLitRegion(px.neck, gains, t.minRegionPixels));
   }
   const neck = combineFrames(measures);
-  return { neck, warning: neck ? null : `neck_failed:${cardFails > 0 ? 'card' : 'no_neck'}` };
+  return { neck, lit: combineFrames(litMeasures), warning: neck ? null : `neck_failed:${cardFails > 0 ? 'card' : 'no_neck'}` };
 }
 
 export function analyze({ frames, neckFrames = [], settings, flags, config }) {
@@ -45,6 +48,7 @@ export function analyze({ frames, neckFrames = [], settings, flags, config }) {
     if (hasGlare(px.iris, t.glareMinL, t.glareMaxRatio)) px.iris = [];
     const measured = { rawSkin: measureRegion(px.skin, NO_GAIN, t.trimPct, t.minRegionPixels) };
     for (const r of REGIONS) measured[r] = measureRegion(px[r], gains, t.trimPct, t.minRegionPixels);
+    measured.neckLit = measureLitRegion(px.neck, gains, t.minRegionPixels);
     perFrame.push(measured);
   }
   if (perFrame.length * 2 < frames.length) return { ok: false, error: mostCommon(cardErrors) };
@@ -55,7 +59,9 @@ export function analyze({ frames, neckFrames = [], settings, flags, config }) {
   if (rawSkin.L < t.minSkinL) return { ok: false, error: 'too_dark' };
 
   const lifted = measureLiftedNeck(neckFrames, settings, target, t);
+  m.neckLit = combineFrames(perFrame.map((p) => p.neckLit));
   m.liftedNeck = lifted.neck;
+  m.liftedNeckLit = lifted.lit;
 
   const warnings = [];
   if (lifted.warning) warnings.push(lifted.warning);

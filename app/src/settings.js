@@ -1,6 +1,6 @@
 // 운영자 설정만 저장한다 (사진·측정값은 저장하지 않음)
 const KEY = 'pc-booth-settings';
-export const DEFAULT_SETTINGS = { deviceId: null, cardRect: null, cardType: 'white', camera: null };
+export const DEFAULT_SETTINGS = { deviceId: null, cardRect: null, cardType: 'white', camera: null, envNote: '' };
 
 export function browserStorage(kind = 'localStorage') {
   try {

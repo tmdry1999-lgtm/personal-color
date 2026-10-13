@@ -32,3 +32,4 @@
 | 2026-10-13 | scoring/thresholds.md | 턱 들기 인식 임계값 2개 (neckLiftMinDeg 12°, neckTimeoutSeconds 10) |
 | 2026-10-13 | raw/measurements/2026-10-13-neck-session.md, measurement/participants.md | 목 측정 세션: P1 5회, P7(여름/가을 뮤트) 2회, 미확인 남성 2회. 목 색상각이 얼굴보다 5~8° 높음, 그림자가 색상각을 낮춤 |
 | 2026-10-13 | raw/measurements/2026-10-13-neck-session-correction.md | 미확인 남성 2회 = P1, 턱 각도 부호 정상(최대 약 55°), 턱 들어도 목 그림자 남음 |
+| 2026-10-13 | measurement/regions.md, measurement/lighting.md | 목 빛 받은 부분만 측정(추가 기록), 반사판·환경 메모. 복구 지점: git tag before-neck-lit |

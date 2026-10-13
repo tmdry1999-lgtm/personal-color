@@ -63,6 +63,12 @@ test('makeLogEntry: 어떤 기준 카드로 쟀는지 남긴다 (A4 → 회색 �
   assert.equal(g.cardType, null);
 });
 
+test('환경 메모(예: 반사판)를 기록에 남긴다', () => {
+  const e = makeLogEntry({ participant: 'P1', gender: 'm', flags: {}, camera, cardType: 'white', envNote: ' 반사판 ', out: okOut, now });
+  assert.equal(e.envNote, '반사판');
+  assert.equal(makeLogEntry({ participant: 'P1', gender: 'm', flags: {}, camera, out: okOut, now }).envNote, '');
+});
+
 test('베이스 화장 여부를 기록하고 양식에 보여준다', () => {
   const e = makeLogEntry({ participant: 'P7', gender: 'f', flags: { baseMakeup: true }, camera, cardType: 'white', out: okOut, now });
   assert.equal(e.baseMakeup, true);

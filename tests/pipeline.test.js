@@ -122,3 +122,11 @@ test('목 사진이 없으면 liftedNeck은 null, 목 사진의 A4가 실패해�
   assert.equal(out.measurements.liftedNeck, null);
   assert.ok(out.warnings.some((w) => w.startsWith('neck_failed')));
 });
+
+test('목은 밝은 부분만 측정한 값도 함께 남긴다 (기존 값은 그대로)', () => {
+  const out = analyze({ frames: scene([1, 1, 1]), neckFrames: liftedNeckFrames(), settings: { cardRect: CARD, cardType: 'white' }, flags: FLAGS, config });
+  assert.ok(out.measurements.liftedNeck);
+  assert.ok(out.measurements.liftedNeckLit);
+  assert.equal(typeof out.features.liftedNeckLitHueDeg, 'number');
+  assert.ok('neckLitHueDeg' in out.features);
+});

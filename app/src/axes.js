@@ -23,6 +23,8 @@ export function buildFeatures(m, flags, t) {
   if (iris && !Number.isNaN(iris.h) && iris.h > t.irisMaxHueDeg) { excluded.push('iris:auto'); iris = null; }
   const neck = m.neck ?? null;
   const liftedNeck = m.liftedNeck ?? null;
+  const neckLit = m.neckLit ?? null;
+  const liftedNeckLit = m.liftedNeckLit ?? null;
   const brow = m.brow ?? null;
   return {
     excluded,
@@ -45,6 +47,13 @@ export function buildFeatures(m, flags, t) {
       liftedNeckHueDeg: usable(liftedNeck),
       liftedNeckB: liftedNeck ? liftedNeck.b : null,
       liftedNeckC: liftedNeck ? liftedNeck.C : null,
+      // 목의 빛 받은 부분만 (그림자 제외) — 위 값과 비교용
+      neckLitHueDeg: usable(neckLit),
+      neckLitB: neckLit ? neckLit.b : null,
+      neckLitC: neckLit ? neckLit.C : null,
+      liftedNeckLitHueDeg: usable(liftedNeckLit),
+      liftedNeckLitB: liftedNeckLit ? liftedNeckLit.b : null,
+      liftedNeckLitC: liftedNeckLit ? liftedNeckLit.C : null,
     },
   };
 }
