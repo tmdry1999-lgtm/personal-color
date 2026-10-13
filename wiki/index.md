@@ -24,6 +24,9 @@
 - [임계값](scoring/thresholds.md) — 촬영·제외·경계형 기준 11개
 
 ## 팔레트
+- [팔레트 규칙](palettes/palette-rules.md) — PCCS × 계절 색상 방향, 워스트 규칙, 자동 검사
+- [12톤 팔레트](palettes/tone-palettes.md) — 톤별 베스트 6, 워스트 4
+- [계절 추가 항목](palettes/season-extras.md) — 메이크업, 상의, 안경테, 금속, 헤어, 키워드
 
 ## 기록
 - [변경 기록](log.md)
