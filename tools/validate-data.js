@@ -27,6 +27,9 @@ export function validateSeasons(s) {
         errors.push(`${axis}.${key}: 범위는 [min, max]이고 min < max여야 함`);
       }
     }
+    for (const key of Object.keys(mapping)) {
+      if (!(key in weights)) errors.push(`${axis}.${key}: 가중치 없는 매핑 키`);
+    }
     let sum = 0;
     for (const [key, w] of Object.entries(weights)) {
       if (!(key in mapping)) errors.push(`${axis}.${key}: axisMapping에 없는 가중치 키`);
@@ -68,6 +71,8 @@ function checkColors(list, label, errors, exactCount) {
 
 export function validatePalettes(p) {
   const errors = [];
+  for (const tone of Object.keys(p.tones ?? {})) if (!TONES.includes(tone)) errors.push(`${tone}: 알 수 없는 톤`);
+  for (const season of Object.keys(p.seasons ?? {})) if (!SEASONS.includes(season)) errors.push(`${season}: 알 수 없는 계절`);
   for (const tone of TONES) {
     const t = p.tones?.[tone];
     if (!t) { errors.push(`${tone}: 팔레트 없음`); continue; }
@@ -83,10 +88,33 @@ export function validatePalettes(p) {
     if (!s) { errors.push(`${season}: 계절 추가 항목 없음`); continue; }
     for (const part of ['lip', 'blush', 'shadow']) checkColors(s.makeup?.[part], `${season}.makeup.${part}`, errors);
     for (const part of ['tops', 'glasses', 'hair']) checkColors(s[part], `${season}.${part}`, errors);
-    if (!Array.isArray(s.metals) || s.metals.length === 0) errors.push(`${season}.metals: 비어 있음`);
+    if (!Array.isArray(s.metals) || s.metals.length === 0 || !s.metals.every((m) => typeof m === 'string' && m !== '')) {
+      errors.push(`${season}.metals: 빈 문자열이 아닌 문자열 목록이어야 함`);
+    }
     if (!Array.isArray(s.keywords) || s.keywords.length !== 3) errors.push(`${season}.keywords: 정확히 3개여야 함`);
   }
+  errors.push(...checkNameHexConsistency(p));
   return errors;
+}
+
+// 같은 hex에 다른 이름, 같은 이름에 다른 hex가 붙으면 화면 라벨이 헷갈린다.
+// 안경테는 이름이 제품 설명(예: 블랙 뿔테)이라 제외한다.
+function checkNameHexConsistency(p) {
+  const all = [];
+  for (const t of Object.values(p.tones ?? {})) all.push(...(t.best ?? []), ...(t.worst ?? []));
+  for (const s of Object.values(p.seasons ?? {})) {
+    all.push(...Object.values(s.makeup ?? {}).flat(), ...(s.tops ?? []), ...(s.hair ?? []));
+  }
+  const nameByHex = new Map();
+  const hexByName = new Map();
+  const errors = new Set();
+  for (const { name, hex } of all) {
+    if (nameByHex.has(hex) && nameByHex.get(hex) !== name) errors.add(`${hex}: 이름이 여러 개 (${nameByHex.get(hex)}, ${name})`);
+    if (hexByName.has(name) && hexByName.get(name) !== hex) errors.add(`${name}: hex가 여러 개 (${hexByName.get(name)}, ${hex})`);
+    if (!nameByHex.has(hex)) nameByHex.set(hex, name);
+    if (!hexByName.has(name)) hexByName.set(name, hex);
+  }
+  return [...errors];
 }
 
 export function hexToHueDeg(hex) {
@@ -98,11 +126,17 @@ export function hexToHueDeg(hex) {
   const f = (t) => (t > 216 / 24389 ? Math.cbrt(t) : (24389 / 27 * t + 16) / 116);
   const a = 500 * (f(x) - f(y));
   const bb = 200 * (f(y) - f(z));
+  // 무채색은 색상각이 정의되지 않는다 (부동소수점 잡음만 남음)
+  if (Math.hypot(a, bb) < 1) return NaN;
   return (Math.atan2(bb, a) * 180 / Math.PI + 360) % 360;
 }
 
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) {
   const [seasonsPath, palettesPath] = process.argv.slice(2);
+  if (!seasonsPath || !palettesPath) {
+    console.error('사용법: node tools/validate-data.js <seasons.json> <palettes.json>');
+    process.exit(1);
+  }
   const errors = [
     ...validateSeasons(JSON.parse(readFileSync(seasonsPath, 'utf8'))).map((e) => `seasons: ${e}`),
     ...validatePalettes(JSON.parse(readFileSync(palettesPath, 'utf8'))).map((e) => `palettes: ${e}`),

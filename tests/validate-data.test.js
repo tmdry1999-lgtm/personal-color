@@ -4,7 +4,7 @@ import {
   SEASONS, AXES, TONES, validateSeasons, validatePalettes, hexToHueDeg,
 } from '../tools/validate-data.js';
 
-const c = (hex) => ({ name: '색', hex });
+const c = (hex) => ({ name: `색 ${hex}`, hex });
 
 function validSeasons() {
   return {
@@ -113,6 +113,51 @@ test('validatePalettes: 계절 키워드는 정확히 3개', () => {
   const p = validPalettes();
   p.seasons.autumn.keywords.push('하나 더');
   assert.ok(validatePalettes(p).some((e) => e.includes('autumn') && e.includes('keywords')));
+});
+
+test('validateSeasons: 가중치 없는 매핑 키는 오류', () => {
+  const s = validSeasons();
+  s.axisMapping.chroma.extraC = [1, 2];
+  assert.ok(validateSeasons(s).some((e) => e.includes('extraC') && e.includes('가중치')));
+});
+
+test('validatePalettes: metals는 빈 문자열이 아닌 문자열 목록', () => {
+  const p = validPalettes();
+  p.seasons.winter.metals = ['실버', 3];
+  assert.ok(validatePalettes(p).some((e) => e.includes('winter.metals')));
+});
+
+test('validatePalettes: 알 수 없는 톤·계절은 오류', () => {
+  const p = validPalettes();
+  p.tones['spring-soft'] = structuredClone(p.tones['spring-light']);
+  p.seasons.monsoon = structuredClone(p.seasons.spring);
+  const errors = validatePalettes(p);
+  assert.ok(errors.some((e) => e.includes('spring-soft')));
+  assert.ok(errors.some((e) => e.includes('monsoon')));
+});
+
+test('validatePalettes: 같은 hex는 같은 이름, 같은 이름은 같은 hex', () => {
+  const p = validPalettes();
+  p.tones['spring-light'].best[0] = { name: '트루 레드', hex: '#C8102E' };
+  p.tones['autumn-true'].worst[0] = { name: '블루 레드', hex: '#C8102E' };
+  p.seasons.spring.tops = [{ name: '코랄', hex: '#F88379' }];
+  p.tones['winter-deep'].worst[0] = { name: '코랄', hex: '#FF7F50' };
+  const errors = validatePalettes(p);
+  assert.ok(errors.some((e) => e.includes('#C8102E')));
+  assert.ok(errors.some((e) => e.includes('코랄')));
+});
+
+test('hexToHueDeg: 무채색은 NaN', () => {
+  assert.ok(Number.isNaN(hexToHueDeg('#FFFFFF')));
+  assert.ok(Number.isNaN(hexToHueDeg('#808080')));
+});
+
+test('CLI: 인자가 없으면 사용법을 출력하고 종료 코드 1', async () => {
+  const { spawnSync } = await import('node:child_process');
+  const { fileURLToPath } = await import('node:url');
+  const r = spawnSync(process.execPath, [fileURLToPath(new URL('../tools/validate-data.js', import.meta.url))], { encoding: 'utf8' });
+  assert.equal(r.status, 1);
+  assert.ok(r.stderr.includes('사용법'));
 });
 
 test('hexToHueDeg: 알려진 값 (sRGB 빨강 ≈ 40°, 파랑 ≈ 306°)', () => {

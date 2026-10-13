@@ -20,9 +20,9 @@
 - 숫자 기준값은 `가설`로 표시하고 근거를 적는다.
 
 ## 위키 ↔ 앱 데이터
-- `wiki/scoring/` → `app/data/seasons.json`
-- `wiki/palettes/` → `app/data/palettes.json`
-- 위키가 원본이다. 위키를 고치면 JSON도 같이 고친다.
+- `wiki/scoring/` → `app/data/seasons.json`: 위키가 원본이다. 위키를 고치면 JSON도 같이 고친다.
+- 팔레트는 방향이 반대다. **색 값의 원본은 `app/data/palettes.json`**이고, `wiki/palettes/tone-palettes.md`, `season-extras.md`는 `npm run gen:palettes`로 생성한다(직접 고치지 않는다). 색을 고르는 규칙과 근거는 `wiki/palettes/palette-rules.md`에 쓴다.
+- `npm test`가 생성 페이지와 JSON이 어긋나면 실패한다.
 
 ## 개인정보
 - 사진·얼굴 데이터를 디스크·서버·로그에 저장하는 코드를 만들지 않는다.

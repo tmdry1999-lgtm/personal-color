@@ -4,198 +4,899 @@
   "source": "wiki/palettes/tone-palettes.md",
   "tones": {
     "spring-light": {
-      "name": "봄 라이트", "pccsTones": ["p", "lt"],
+      "name": "봄 라이트",
+      "pccsTones": [
+        "p",
+        "lt"
+      ],
       "best": [
-        { "name": "피치", "hex": "#FFCBA4" }, { "name": "라이트 코랄", "hex": "#F8A39B" },
-        { "name": "버터 옐로", "hex": "#FFE9A0" }, { "name": "라이트 카멜", "hex": "#D9B48F" },
-        { "name": "애플 민트", "hex": "#C5E3A5" }, { "name": "웜 아이보리", "hex": "#FAF0DC" }
+        {
+          "name": "피치",
+          "hex": "#FFCBA4"
+        },
+        {
+          "name": "라이트 코랄",
+          "hex": "#F8A39B"
+        },
+        {
+          "name": "버터 옐로",
+          "hex": "#FFE9A0"
+        },
+        {
+          "name": "라이트 카멜",
+          "hex": "#D9B48F"
+        },
+        {
+          "name": "애플 민트",
+          "hex": "#C5E3A5"
+        },
+        {
+          "name": "웜 아이보리",
+          "hex": "#FAF0DC"
+        }
       ],
       "worst": [
-        { "name": "블랙", "hex": "#1A1A1A" }, { "name": "버건디", "hex": "#6D1A36" },
-        { "name": "차콜", "hex": "#3C3C3C" }, { "name": "쿨 퓨셔", "hex": "#C0157A" }
+        {
+          "name": "블랙",
+          "hex": "#111111"
+        },
+        {
+          "name": "버건디",
+          "hex": "#6D1A36"
+        },
+        {
+          "name": "차콜",
+          "hex": "#36393F"
+        },
+        {
+          "name": "쿨 퓨셔",
+          "hex": "#C0157A"
+        }
       ]
     },
     "spring-bright": {
-      "name": "봄 브라이트", "pccsTones": ["v", "b"],
+      "name": "봄 브라이트",
+      "pccsTones": [
+        "v",
+        "b"
+      ],
       "best": [
-        { "name": "코랄 레드", "hex": "#FF5A4E" }, { "name": "브라이트 오렌지", "hex": "#FF8C42" },
-        { "name": "선샤인 옐로", "hex": "#FFD23F" }, { "name": "그래스 그린", "hex": "#7DC242" },
-        { "name": "웜 터콰이즈", "hex": "#00B8A9" }, { "name": "아이보리", "hex": "#FFF8E7" }
+        {
+          "name": "코랄 레드",
+          "hex": "#FF5A4E"
+        },
+        {
+          "name": "브라이트 오렌지",
+          "hex": "#FF8C42"
+        },
+        {
+          "name": "선샤인 옐로",
+          "hex": "#FFD23F"
+        },
+        {
+          "name": "그래스 그린",
+          "hex": "#7DC242"
+        },
+        {
+          "name": "웜 터콰이즈",
+          "hex": "#00B8A9"
+        },
+        {
+          "name": "아이보리",
+          "hex": "#FFF8E7"
+        }
       ],
       "worst": [
-        { "name": "더스티 로즈", "hex": "#C9A3A7" }, { "name": "그레이시 블루", "hex": "#8C9DB0" },
-        { "name": "카키", "hex": "#8B8455" }, { "name": "버건디", "hex": "#6D1A36" }
+        {
+          "name": "더스티 로즈",
+          "hex": "#C48A97"
+        },
+        {
+          "name": "그레이시 블루",
+          "hex": "#8FA3B8"
+        },
+        {
+          "name": "카키",
+          "hex": "#8B8455"
+        },
+        {
+          "name": "버건디",
+          "hex": "#6D1A36"
+        }
       ]
     },
     "spring-true": {
-      "name": "봄 트루", "pccsTones": ["b", "s"],
+      "name": "봄 트루",
+      "pccsTones": [
+        "b",
+        "s"
+      ],
       "best": [
-        { "name": "살몬", "hex": "#FA8072" }, { "name": "골든 옐로", "hex": "#F6C445" },
-        { "name": "애플 그린", "hex": "#8DC63F" }, { "name": "카멜", "hex": "#C19A6B" },
-        { "name": "탠저린", "hex": "#F28500" }, { "name": "웜 아이보리", "hex": "#FAF0DC" }
+        {
+          "name": "살몬",
+          "hex": "#FA8072"
+        },
+        {
+          "name": "골든 옐로",
+          "hex": "#F6C445"
+        },
+        {
+          "name": "애플 그린",
+          "hex": "#8DC63F"
+        },
+        {
+          "name": "카멜",
+          "hex": "#C19A6B"
+        },
+        {
+          "name": "탠저린",
+          "hex": "#F28500"
+        },
+        {
+          "name": "웜 아이보리",
+          "hex": "#FAF0DC"
+        }
       ],
       "worst": [
-        { "name": "블랙", "hex": "#1A1A1A" }, { "name": "아이시 핑크", "hex": "#F4D9E6" },
-        { "name": "네이비", "hex": "#1F2A44" }, { "name": "쿨 그레이", "hex": "#9AA0A8" }
+        {
+          "name": "블랙",
+          "hex": "#111111"
+        },
+        {
+          "name": "아이시 핑크",
+          "hex": "#F4D9E6"
+        },
+        {
+          "name": "네이비",
+          "hex": "#1F2A44"
+        },
+        {
+          "name": "쿨 그레이",
+          "hex": "#9AA0A8"
+        }
       ]
     },
     "summer-light": {
-      "name": "여름 라이트", "pccsTones": ["p", "lt"],
+      "name": "여름 라이트",
+      "pccsTones": [
+        "p",
+        "lt"
+      ],
       "best": [
-        { "name": "파우더 핑크", "hex": "#F4C2D7" }, { "name": "라벤더", "hex": "#C8B6E2" },
-        { "name": "스카이 블루", "hex": "#A7C7E7" }, { "name": "쿨 민트", "hex": "#B5E0E0" },
-        { "name": "라이트 로즈", "hex": "#E8A0B4" }, { "name": "소프트 화이트", "hex": "#F5F5F2" }
+        {
+          "name": "파우더 핑크",
+          "hex": "#F4C2D7"
+        },
+        {
+          "name": "라벤더",
+          "hex": "#C8B6E2"
+        },
+        {
+          "name": "스카이 블루",
+          "hex": "#A7C7E7"
+        },
+        {
+          "name": "쿨 민트",
+          "hex": "#B5E0E0"
+        },
+        {
+          "name": "라이트 로즈",
+          "hex": "#E8A0B4"
+        },
+        {
+          "name": "소프트 화이트",
+          "hex": "#F5F5F2"
+        }
       ],
       "worst": [
-        { "name": "오렌지", "hex": "#FF8C00" }, { "name": "머스터드", "hex": "#C9A227" },
-        { "name": "블랙", "hex": "#1A1A1A" }, { "name": "브라운", "hex": "#6B4226" }
+        {
+          "name": "오렌지",
+          "hex": "#FF8C00"
+        },
+        {
+          "name": "머스터드",
+          "hex": "#C9A227"
+        },
+        {
+          "name": "블랙",
+          "hex": "#111111"
+        },
+        {
+          "name": "브라운",
+          "hex": "#7B4B2A"
+        }
       ]
     },
     "summer-soft": {
-      "name": "여름 소프트", "pccsTones": ["ltg", "sf", "g"],
+      "name": "여름 소프트",
+      "pccsTones": [
+        "ltg",
+        "sf",
+        "g"
+      ],
       "best": [
-        { "name": "더스티 로즈", "hex": "#C48A97" }, { "name": "모브", "hex": "#A78BA3" },
-        { "name": "그레이시 블루", "hex": "#8FA3B8" }, { "name": "블루 세이지", "hex": "#9FB4B0" },
-        { "name": "로즈 그레이", "hex": "#B8A4A8" }, { "name": "소프트 네이비", "hex": "#4A5670" }
+        {
+          "name": "더스티 로즈",
+          "hex": "#C48A97"
+        },
+        {
+          "name": "모브",
+          "hex": "#A78BA3"
+        },
+        {
+          "name": "그레이시 블루",
+          "hex": "#8FA3B8"
+        },
+        {
+          "name": "블루 세이지",
+          "hex": "#9FB4B0"
+        },
+        {
+          "name": "로즈 그레이",
+          "hex": "#B8A4A8"
+        },
+        {
+          "name": "소프트 네이비",
+          "hex": "#4A5670"
+        }
       ],
       "worst": [
-        { "name": "비비드 오렌지", "hex": "#FF6F00" }, { "name": "레몬 옐로", "hex": "#FFF44F" },
-        { "name": "블랙", "hex": "#1A1A1A" }, { "name": "카멜", "hex": "#C19A6B" }
+        {
+          "name": "비비드 오렌지",
+          "hex": "#FF6F00"
+        },
+        {
+          "name": "레몬 옐로",
+          "hex": "#FFF44F"
+        },
+        {
+          "name": "블랙",
+          "hex": "#111111"
+        },
+        {
+          "name": "카멜",
+          "hex": "#C19A6B"
+        }
       ]
     },
     "summer-true": {
-      "name": "여름 트루", "pccsTones": ["lt", "sf"],
+      "name": "여름 트루",
+      "pccsTones": [
+        "lt",
+        "sf"
+      ],
       "best": [
-        { "name": "로즈 핑크", "hex": "#E37C9A" }, { "name": "라즈베리", "hex": "#B3446C" },
-        { "name": "쿨 블루", "hex": "#6A8EC8" }, { "name": "라벤더", "hex": "#A68BC9" },
-        { "name": "블루 그레이", "hex": "#7D8FA3" }, { "name": "쿨 화이트", "hex": "#F2F3F5" }
+        {
+          "name": "로즈 핑크",
+          "hex": "#E37C9A"
+        },
+        {
+          "name": "라즈베리",
+          "hex": "#B3446C"
+        },
+        {
+          "name": "쿨 블루",
+          "hex": "#6A8EC8"
+        },
+        {
+          "name": "미디엄 라벤더",
+          "hex": "#A68BC9"
+        },
+        {
+          "name": "블루 그레이",
+          "hex": "#7D8FA3"
+        },
+        {
+          "name": "쿨 화이트",
+          "hex": "#F2F3F5"
+        }
       ],
       "worst": [
-        { "name": "오렌지", "hex": "#FF8C00" }, { "name": "골드 옐로", "hex": "#E6B422" },
-        { "name": "올리브", "hex": "#708238" }, { "name": "테라코타", "hex": "#C0603C" }
+        {
+          "name": "오렌지",
+          "hex": "#FF8C00"
+        },
+        {
+          "name": "골드 옐로",
+          "hex": "#E6B422"
+        },
+        {
+          "name": "올리브",
+          "hex": "#708238"
+        },
+        {
+          "name": "테라코타",
+          "hex": "#C0603C"
+        }
       ]
     },
     "autumn-soft": {
-      "name": "가을 소프트", "pccsTones": ["sf", "d", "ltg"],
+      "name": "가을 소프트",
+      "pccsTones": [
+        "sf",
+        "d",
+        "ltg"
+      ],
       "best": [
-        { "name": "카멜", "hex": "#C19A6B" }, { "name": "세이지", "hex": "#9CAF88" },
-        { "name": "더스티 코랄", "hex": "#D9937C" }, { "name": "웜 토프", "hex": "#A08C7A" },
-        { "name": "소프트 올리브", "hex": "#8F8F5E" }, { "name": "머스터드 베이지", "hex": "#D4B26A" }
+        {
+          "name": "카멜",
+          "hex": "#C19A6B"
+        },
+        {
+          "name": "세이지",
+          "hex": "#9CAF88"
+        },
+        {
+          "name": "더스티 코랄",
+          "hex": "#D9937C"
+        },
+        {
+          "name": "웜 토프",
+          "hex": "#A08C7A"
+        },
+        {
+          "name": "소프트 올리브",
+          "hex": "#8F8F5E"
+        },
+        {
+          "name": "머스터드 베이지",
+          "hex": "#D4B26A"
+        }
       ],
       "worst": [
-        { "name": "블랙", "hex": "#1A1A1A" }, { "name": "퓨어 화이트", "hex": "#FFFFFF" },
-        { "name": "핫 핑크", "hex": "#FF1493" }, { "name": "코발트", "hex": "#0047AB" }
+        {
+          "name": "블랙",
+          "hex": "#111111"
+        },
+        {
+          "name": "퓨어 화이트",
+          "hex": "#FFFFFF"
+        },
+        {
+          "name": "핫 핑크",
+          "hex": "#FF1493"
+        },
+        {
+          "name": "코발트",
+          "hex": "#0047AB"
+        }
       ]
     },
     "autumn-deep": {
-      "name": "가을 딥", "pccsTones": ["dp", "dk"],
+      "name": "가을 딥",
+      "pccsTones": [
+        "dp",
+        "dk"
+      ],
       "best": [
-        { "name": "초콜릿 브라운", "hex": "#5C3A21" }, { "name": "다크 올리브", "hex": "#4B5320" },
-        { "name": "웜 버건디", "hex": "#7B2D26" }, { "name": "테라코타", "hex": "#B5543A" },
-        { "name": "머스터드", "hex": "#C9A227" }, { "name": "딥 카키", "hex": "#6B5E2E" }
+        {
+          "name": "초콜릿 브라운",
+          "hex": "#5C3A21"
+        },
+        {
+          "name": "다크 올리브",
+          "hex": "#4B5320"
+        },
+        {
+          "name": "웜 버건디",
+          "hex": "#7B2D26"
+        },
+        {
+          "name": "딥 테라코타",
+          "hex": "#B5543A"
+        },
+        {
+          "name": "머스터드",
+          "hex": "#C9A227"
+        },
+        {
+          "name": "딥 카키",
+          "hex": "#6B5E2E"
+        }
       ],
       "worst": [
-        { "name": "파스텔 핑크", "hex": "#F8C8DC" }, { "name": "아이시 블루", "hex": "#D6ECF3" },
-        { "name": "라벤더", "hex": "#C8B6E2" }, { "name": "실버 그레이", "hex": "#C0C0C0" }
+        {
+          "name": "파스텔 핑크",
+          "hex": "#F8C8DC"
+        },
+        {
+          "name": "아이시 블루",
+          "hex": "#D6ECF3"
+        },
+        {
+          "name": "라벤더",
+          "hex": "#C8B6E2"
+        },
+        {
+          "name": "실버 그레이",
+          "hex": "#C0C0C0"
+        }
       ]
     },
     "autumn-true": {
-      "name": "가을 트루", "pccsTones": ["s", "d", "dp"],
+      "name": "가을 트루",
+      "pccsTones": [
+        "s",
+        "d",
+        "dp"
+      ],
       "best": [
-        { "name": "테라코타", "hex": "#C0603C" }, { "name": "펌킨", "hex": "#D2691E" },
-        { "name": "올리브", "hex": "#708238" }, { "name": "머스터드", "hex": "#C9A227" },
-        { "name": "카키", "hex": "#8B8455" }, { "name": "브라운", "hex": "#7B4B2A" }
+        {
+          "name": "테라코타",
+          "hex": "#C0603C"
+        },
+        {
+          "name": "펌킨",
+          "hex": "#D2691E"
+        },
+        {
+          "name": "올리브",
+          "hex": "#708238"
+        },
+        {
+          "name": "머스터드",
+          "hex": "#C9A227"
+        },
+        {
+          "name": "카키",
+          "hex": "#8B8455"
+        },
+        {
+          "name": "브라운",
+          "hex": "#7B4B2A"
+        }
       ],
       "worst": [
-        { "name": "퓨셔", "hex": "#C0157A" }, { "name": "아이시 핑크", "hex": "#F4D9E6" },
-        { "name": "블루 레드", "hex": "#C8102E" }, { "name": "쿨 그레이", "hex": "#9AA0A8" }
+        {
+          "name": "쿨 퓨셔",
+          "hex": "#C0157A"
+        },
+        {
+          "name": "아이시 핑크",
+          "hex": "#F4D9E6"
+        },
+        {
+          "name": "트루 레드",
+          "hex": "#C8102E"
+        },
+        {
+          "name": "쿨 그레이",
+          "hex": "#9AA0A8"
+        }
       ]
     },
     "winter-bright": {
-      "name": "겨울 브라이트", "pccsTones": ["v", "b"],
+      "name": "겨울 브라이트",
+      "pccsTones": [
+        "v",
+        "b"
+      ],
       "best": [
-        { "name": "퓨어 화이트", "hex": "#FFFFFF" }, { "name": "블랙", "hex": "#111111" },
-        { "name": "비비드 퓨셔", "hex": "#E0218A" }, { "name": "로열 블루", "hex": "#2B4BCC" },
-        { "name": "에메랄드", "hex": "#009B77" }, { "name": "트루 레드", "hex": "#D0021B" }
+        {
+          "name": "퓨어 화이트",
+          "hex": "#FFFFFF"
+        },
+        {
+          "name": "블랙",
+          "hex": "#111111"
+        },
+        {
+          "name": "비비드 퓨셔",
+          "hex": "#E0218A"
+        },
+        {
+          "name": "로열 블루",
+          "hex": "#2B4BCC"
+        },
+        {
+          "name": "에메랄드",
+          "hex": "#009B77"
+        },
+        {
+          "name": "트루 레드",
+          "hex": "#C8102E"
+        }
       ],
       "worst": [
-        { "name": "베이지", "hex": "#D8C3A5" }, { "name": "카멜", "hex": "#C19A6B" },
-        { "name": "더스티 핑크", "hex": "#D4A5A5" }, { "name": "올리브", "hex": "#708238" }
+        {
+          "name": "웜 베이지",
+          "hex": "#D8C3A5"
+        },
+        {
+          "name": "카멜",
+          "hex": "#C19A6B"
+        },
+        {
+          "name": "더스티 핑크",
+          "hex": "#D4A5A5"
+        },
+        {
+          "name": "올리브",
+          "hex": "#708238"
+        }
       ]
     },
     "winter-deep": {
-      "name": "겨울 딥", "pccsTones": ["dk", "dkg", "dp"],
+      "name": "겨울 딥",
+      "pccsTones": [
+        "dk",
+        "dkg",
+        "dp"
+      ],
       "best": [
-        { "name": "블랙", "hex": "#111111" }, { "name": "딥 버건디", "hex": "#5B0E2D" },
-        { "name": "딥 네이비", "hex": "#1B1F3B" }, { "name": "포레스트 그린", "hex": "#1F4D3A" },
-        { "name": "딥 퍼플", "hex": "#4B2A6B" }, { "name": "차콜", "hex": "#36393F" }
+        {
+          "name": "블랙",
+          "hex": "#111111"
+        },
+        {
+          "name": "딥 버건디",
+          "hex": "#5B0E2D"
+        },
+        {
+          "name": "딥 네이비",
+          "hex": "#1B1F3B"
+        },
+        {
+          "name": "포레스트 그린",
+          "hex": "#1F4D3A"
+        },
+        {
+          "name": "딥 퍼플",
+          "hex": "#4B2A6B"
+        },
+        {
+          "name": "차콜",
+          "hex": "#36393F"
+        }
       ],
       "worst": [
-        { "name": "파스텔 옐로", "hex": "#FFF5BA" }, { "name": "피치", "hex": "#FFCBA4" },
-        { "name": "라이트 카멜", "hex": "#D9B48F" }, { "name": "코랄", "hex": "#FF7F50" }
+        {
+          "name": "파스텔 옐로",
+          "hex": "#FFF5BA"
+        },
+        {
+          "name": "피치",
+          "hex": "#FFCBA4"
+        },
+        {
+          "name": "라이트 카멜",
+          "hex": "#D9B48F"
+        },
+        {
+          "name": "비비드 코랄",
+          "hex": "#FF7F50"
+        }
       ]
     },
     "winter-true": {
-      "name": "겨울 트루", "pccsTones": ["v", "dp", "p"],
+      "name": "겨울 트루",
+      "pccsTones": [
+        "v",
+        "dp",
+        "p"
+      ],
       "best": [
-        { "name": "퓨어 화이트", "hex": "#FFFFFF" }, { "name": "블랙", "hex": "#111111" },
-        { "name": "트루 레드", "hex": "#C8102E" }, { "name": "코발트", "hex": "#0047AB" },
-        { "name": "아이시 핑크", "hex": "#F4D9E6" }, { "name": "마젠타", "hex": "#C2185B" }
+        {
+          "name": "퓨어 화이트",
+          "hex": "#FFFFFF"
+        },
+        {
+          "name": "블랙",
+          "hex": "#111111"
+        },
+        {
+          "name": "트루 레드",
+          "hex": "#C8102E"
+        },
+        {
+          "name": "코발트",
+          "hex": "#0047AB"
+        },
+        {
+          "name": "아이시 핑크",
+          "hex": "#F4D9E6"
+        },
+        {
+          "name": "마젠타",
+          "hex": "#C2185B"
+        }
       ],
       "worst": [
-        { "name": "오렌지", "hex": "#FF8C00" }, { "name": "카멜", "hex": "#C19A6B" },
-        { "name": "머스터드", "hex": "#C9A227" }, { "name": "웜 베이지", "hex": "#D8C3A5" }
+        {
+          "name": "오렌지",
+          "hex": "#FF8C00"
+        },
+        {
+          "name": "카멜",
+          "hex": "#C19A6B"
+        },
+        {
+          "name": "머스터드",
+          "hex": "#C9A227"
+        },
+        {
+          "name": "웜 베이지",
+          "hex": "#D8C3A5"
+        }
       ]
     }
   },
   "seasons": {
     "spring": {
       "makeup": {
-        "lip": [{ "name": "코랄", "hex": "#F37A6B" }, { "name": "피치", "hex": "#F9A98B" }],
-        "blush": [{ "name": "피치", "hex": "#F7B59A" }],
-        "shadow": [{ "name": "골드 브라운", "hex": "#C89B6D" }]
+        "lip": [
+          {
+            "name": "코랄",
+            "hex": "#F37A6B"
+          },
+          {
+            "name": "피치 코랄",
+            "hex": "#F9A98B"
+          }
+        ],
+        "blush": [
+          {
+            "name": "피치 핑크",
+            "hex": "#F7B59A"
+          }
+        ],
+        "shadow": [
+          {
+            "name": "골드 브라운",
+            "hex": "#C89B6D"
+          }
+        ]
       },
-      "tops": [{ "name": "아이보리", "hex": "#FFF8E7" }, { "name": "코랄", "hex": "#F88379" }, { "name": "라이트 카멜", "hex": "#D9B48F" }],
-      "glasses": [{ "name": "라이트 브라운 뿔테", "hex": "#A0703C" }, { "name": "골드 메탈", "hex": "#D4AF37" }],
-      "metals": ["옐로 골드", "로즈 골드"],
-      "hair": [{ "name": "라이트 브라운", "hex": "#9B6B43" }, { "name": "오렌지 브라운", "hex": "#A0522D" }],
-      "keywords": ["화사한", "생기있는", "밝은"]
+      "tops": [
+        {
+          "name": "아이보리",
+          "hex": "#FFF8E7"
+        },
+        {
+          "name": "소프트 코랄",
+          "hex": "#F88379"
+        },
+        {
+          "name": "라이트 카멜",
+          "hex": "#D9B48F"
+        }
+      ],
+      "glasses": [
+        {
+          "name": "라이트 브라운 뿔테",
+          "hex": "#A0703C"
+        },
+        {
+          "name": "골드 메탈",
+          "hex": "#D4AF37"
+        }
+      ],
+      "metals": [
+        "옐로 골드",
+        "로즈 골드"
+      ],
+      "hair": [
+        {
+          "name": "라이트 브라운",
+          "hex": "#9B6B43"
+        },
+        {
+          "name": "오렌지 브라운",
+          "hex": "#A0522D"
+        }
+      ],
+      "keywords": [
+        "화사한",
+        "생기있는",
+        "밝은"
+      ]
     },
     "summer": {
       "makeup": {
-        "lip": [{ "name": "로즈", "hex": "#D46A8C" }, { "name": "모브 핑크", "hex": "#C98BA0" }],
-        "blush": [{ "name": "쿨 핑크", "hex": "#F0A6B8" }],
-        "shadow": [{ "name": "모브", "hex": "#A78BA3" }]
+        "lip": [
+          {
+            "name": "로즈",
+            "hex": "#D46A8C"
+          },
+          {
+            "name": "모브 핑크",
+            "hex": "#C98BA0"
+          }
+        ],
+        "blush": [
+          {
+            "name": "쿨 핑크",
+            "hex": "#F0A6B8"
+          }
+        ],
+        "shadow": [
+          {
+            "name": "모브",
+            "hex": "#A78BA3"
+          }
+        ]
       },
-      "tops": [{ "name": "라벤더", "hex": "#C8B6E2" }, { "name": "스카이 블루", "hex": "#A7C7E7" }, { "name": "소프트 화이트", "hex": "#F5F5F2" }],
-      "glasses": [{ "name": "실버 메탈", "hex": "#C0C0C0" }, { "name": "클리어 로즈", "hex": "#E6C3CC" }],
-      "metals": ["실버", "화이트 골드"],
-      "hair": [{ "name": "애쉬 브라운", "hex": "#6E5E54" }, { "name": "쿨 브라운", "hex": "#5A4A42" }],
-      "keywords": ["부드러운", "청량한", "우아한"]
+      "tops": [
+        {
+          "name": "라벤더",
+          "hex": "#C8B6E2"
+        },
+        {
+          "name": "스카이 블루",
+          "hex": "#A7C7E7"
+        },
+        {
+          "name": "소프트 화이트",
+          "hex": "#F5F5F2"
+        }
+      ],
+      "glasses": [
+        {
+          "name": "실버 메탈",
+          "hex": "#C0C0C0"
+        },
+        {
+          "name": "클리어 로즈",
+          "hex": "#E6C3CC"
+        }
+      ],
+      "metals": [
+        "실버",
+        "화이트 골드"
+      ],
+      "hair": [
+        {
+          "name": "애쉬 브라운",
+          "hex": "#6E5E54"
+        },
+        {
+          "name": "쿨 브라운",
+          "hex": "#5A4A42"
+        }
+      ],
+      "keywords": [
+        "부드러운",
+        "청량한",
+        "우아한"
+      ]
     },
     "autumn": {
       "makeup": {
-        "lip": [{ "name": "브릭", "hex": "#A8442E" }, { "name": "테라코타", "hex": "#C0603C" }],
-        "blush": [{ "name": "애프리콧", "hex": "#E39A72" }],
-        "shadow": [{ "name": "브론즈", "hex": "#8C5A3C" }]
+        "lip": [
+          {
+            "name": "브릭",
+            "hex": "#A8442E"
+          },
+          {
+            "name": "테라코타",
+            "hex": "#C0603C"
+          }
+        ],
+        "blush": [
+          {
+            "name": "애프리콧",
+            "hex": "#E39A72"
+          }
+        ],
+        "shadow": [
+          {
+            "name": "브론즈",
+            "hex": "#8C5A3C"
+          }
+        ]
       },
-      "tops": [{ "name": "카멜", "hex": "#C19A6B" }, { "name": "올리브", "hex": "#708238" }, { "name": "머스터드", "hex": "#C9A227" }],
-      "glasses": [{ "name": "브라운 뿔테", "hex": "#6B4226" }, { "name": "골드 메탈", "hex": "#D4AF37" }],
-      "metals": ["골드", "브론즈"],
-      "hair": [{ "name": "다크 초콜릿", "hex": "#4A2C1D" }, { "name": "코퍼 브라운", "hex": "#8B4513" }],
-      "keywords": ["차분한", "깊은", "자연스러운"]
+      "tops": [
+        {
+          "name": "카멜",
+          "hex": "#C19A6B"
+        },
+        {
+          "name": "올리브",
+          "hex": "#708238"
+        },
+        {
+          "name": "머스터드",
+          "hex": "#C9A227"
+        }
+      ],
+      "glasses": [
+        {
+          "name": "브라운 뿔테",
+          "hex": "#6B4226"
+        },
+        {
+          "name": "골드 메탈",
+          "hex": "#D4AF37"
+        }
+      ],
+      "metals": [
+        "골드",
+        "브론즈"
+      ],
+      "hair": [
+        {
+          "name": "다크 초콜릿",
+          "hex": "#4A2C1D"
+        },
+        {
+          "name": "코퍼 브라운",
+          "hex": "#8B4513"
+        }
+      ],
+      "keywords": [
+        "차분한",
+        "깊은",
+        "자연스러운"
+      ]
     },
     "winter": {
       "makeup": {
-        "lip": [{ "name": "트루 레드", "hex": "#C8102E" }, { "name": "베리", "hex": "#8E1F4B" }],
-        "blush": [{ "name": "쿨 로즈", "hex": "#D9819B" }],
-        "shadow": [{ "name": "플럼", "hex": "#5E3A5A" }]
+        "lip": [
+          {
+            "name": "트루 레드",
+            "hex": "#C8102E"
+          },
+          {
+            "name": "베리",
+            "hex": "#8E1F4B"
+          }
+        ],
+        "blush": [
+          {
+            "name": "쿨 로즈",
+            "hex": "#D9819B"
+          }
+        ],
+        "shadow": [
+          {
+            "name": "플럼",
+            "hex": "#5E3A5A"
+          }
+        ]
       },
-      "tops": [{ "name": "퓨어 화이트", "hex": "#FFFFFF" }, { "name": "블랙", "hex": "#111111" }, { "name": "코발트", "hex": "#0047AB" }],
-      "glasses": [{ "name": "블랙 뿔테", "hex": "#111111" }, { "name": "실버 메탈", "hex": "#C0C0C0" }],
-      "metals": ["실버", "플래티넘"],
-      "hair": [{ "name": "블랙", "hex": "#1A1A1A" }, { "name": "블루 블랙", "hex": "#1C1F2B" }],
-      "keywords": ["선명한", "도시적인", "시크한"]
+      "tops": [
+        {
+          "name": "퓨어 화이트",
+          "hex": "#FFFFFF"
+        },
+        {
+          "name": "블랙",
+          "hex": "#111111"
+        },
+        {
+          "name": "코발트",
+          "hex": "#0047AB"
+        }
+      ],
+      "glasses": [
+        {
+          "name": "블랙 뿔테",
+          "hex": "#111111"
+        },
+        {
+          "name": "실버 메탈",
+          "hex": "#C0C0C0"
+        }
+      ],
+      "metals": [
+        "실버",
+        "플래티넘"
+      ],
+      "hair": [
+        {
+          "name": "블랙",
+          "hex": "#111111"
+        },
+        {
+          "name": "블루 블랙",
+          "hex": "#1C1F2B"
+        }
+      ],
+      "keywords": [
+        "선명한",
+        "도시적인",
+        "시크한"
+      ]
     }
   }
 }
