@@ -12,6 +12,8 @@ export const MESSAGES = {
   not_enough_frames: '움직임이 많았어요. 다시 찍을게요.',
   camera_denied: '카메라를 사용할 수 없어요. 운영자를 불러 주세요.',
   model_failed: 'AI 모델을 불러오지 못했어요. 인터넷 연결을 확인해 주세요.',
+  capture_failed: '문제가 생겨서 다시 찍을게요.',
+  load_failed: '설정 파일을 불러오지 못했어요. 인터넷 연결을 확인하고 새로고침해 주세요.',
 };
 
 export function messageFor(code) {

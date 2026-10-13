@@ -9,6 +9,7 @@ import { messageFor } from './messages.js';
 import { renderResultHtml } from './result-view.js';
 import { browserStorage, loadSettings, saveSettings, displayRectToRaw } from './settings.js';
 import { setupOperator } from './operator.js';
+import { IDLE_RESET_SCREENS, canStart, guardCapture } from './flow.js';
 
 const $ = (id) => document.getElementById(id);
 const SCREENS = ['idle', 'start', 'capture', 'analyzing', 'result'];
@@ -34,7 +35,7 @@ function show(screen) {
   for (const s of SCREENS) $(`screen-${s}`).hidden = s !== screen;
   $('stage').hidden = !(screen === 'idle' || screen === 'capture');
   clearTimeout(state.idleTimer);
-  if (screen === 'result') armIdleReset();
+  if (IDLE_RESET_SCREENS.includes(screen)) armIdleReset();
 }
 
 // sticky: 카메라·모델 오류처럼 운영자가 봐야 하는 것은 사라지지 않게 둔다
@@ -140,37 +141,40 @@ function tick() {
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
 async function captureAndAnalyze() {
-  state.busy = true;
   const t = state.config.thresholds;
   let frames = [];
-  for (let i = 0; i < t.framesPerCapture; i++) {
-    const canvas = document.createElement('canvas');
-    const image = grabFrame(video, canvas);
-    const faces = state.detectors.detectFaces(canvas);
-    if (faces.length === 1) frames.push({ image, landmarks: faces[0], hairMask: state.detectors.segmentHair(canvas) });
-    await sleep(1000 / t.framesPerCapture);
-  }
-  show('analyzing');
-  await sleep(50); // "분석 중" 화면이 그려질 시간을 준다
+  await guardCapture(state, async () => {
+    for (let i = 0; i < t.framesPerCapture; i++) {
+      const canvas = document.createElement('canvas');
+      const image = grabFrame(video, canvas);
+      const faces = state.detectors.detectFaces(canvas);
+      if (faces.length === 1) frames.push({ image, landmarks: faces[0], hairMask: state.detectors.segmentHair(canvas) });
+      await sleep(1000 / t.framesPerCapture);
+    }
+    show('analyzing');
+    await sleep(50); // "분석 중" 화면이 그려질 시간을 준다
 
-  const flags = { dyed: $('flag-dyed').checked, lipProduct: $('flag-lip').checked };
-  const out = frames.length * 2 < t.framesPerCapture
-    ? { ok: false, error: 'not_enough_frames' }
-    : analyze({ frames, settings: state.settings, flags, config: state.config });
-  frames = null; // 사진 참조를 버린다 (개인정보)
+    const flags = { dyed: $('flag-dyed').checked, lipProduct: $('flag-lip').checked };
+    const out = frames.length * 2 < t.framesPerCapture
+      ? { ok: false, error: 'not_enough_frames' }
+      : analyze({ frames, settings: state.settings, flags, config: state.config });
+    frames = null; // 사진 참조를 버린다 (개인정보)
 
-  operator.setLast(out.ok
-    ? { result: out.result, measurements: out.measurements, features: out.features, warnings: out.warnings, excluded: out.excluded }
-    : out);
-  state.busy = false;
-  state.holdStart = null;
-
-  if (!out.ok) {
-    showError(out.error);
+    operator.setLast(out.ok
+      ? { result: out.result, measurements: out.measurements, features: out.features, warnings: out.warnings, excluded: out.excluded }
+      : out);
+    if (!out.ok) {
+      showError(out.error);
+      show('capture');
+      return;
+    }
+    showResult(out.result);
+  }, (e) => {
+    frames = null;
+    console.error('촬영·분석 오류:', e);
+    showError('capture_failed');
     show('capture');
-    return;
-  }
-  showResult(out.result);
+  });
 }
 
 function showResult(result) {
@@ -196,15 +200,21 @@ $('btn-begin').addEventListener('click', () => {
 });
 $('btn-home').addEventListener('click', goHome);
 for (const ev of ['pointermove', 'pointerdown', 'keydown']) {
-  document.addEventListener(ev, () => { if (state.screen === 'result') armIdleReset(); });
+  document.addEventListener(ev, () => { if (IDLE_RESET_SCREENS.includes(state.screen)) armIdleReset(); });
 }
 
 async function init() {
   show('idle');
-  [state.config, state.palettes] = await Promise.all([
-    fetch('data/seasons.json').then((r) => r.json()),
-    fetch('data/palettes.json').then((r) => r.json()),
-  ]);
+  try {
+    [state.config, state.palettes] = await Promise.all([
+      fetch('data/seasons.json').then((r) => r.json()),
+      fetch('data/palettes.json').then((r) => r.json()),
+    ]);
+  } catch (e) {
+    console.error(e);
+    showError('load_failed', true);
+    return;
+  }
   await startCamera(state.settings.deviceId);
   try {
     state.detectors = await createDetectors();
@@ -213,6 +223,8 @@ async function init() {
     showError('model_failed', true);
     return;
   }
+  // 카메라·모델이 모두 준비된 뒤에만 [시작]을 누를 수 있다 (멈춘 촬영 화면 방지)
+  $('btn-start').disabled = !canStart(state);
   requestAnimationFrame(tick);
 }
 
