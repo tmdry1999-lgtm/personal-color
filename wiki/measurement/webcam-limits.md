@@ -1,6 +1,7 @@
 ---
 status: 참고
 sources:
+  - raw/measurements/2026-10-13-camera-capabilities.md
   - raw/web/webcam-constraints.md
   - raw/web/tonemoa-personal-color.md
 ---
@@ -15,7 +16,7 @@ sources:
 ## 브라우저에서 고정할 수 있나
 - 표준에는 `whiteBalanceMode`, `exposureMode`, `colorTemperature` 속성이 있다.
 - 참고 글 기준으로 수동 제어는 Linux Chrome에서만 동작했고, Firefox는 지원하지 않는다.
-- **Windows Chrome + 부스 웹캠에서 되는지는 2단계에서 직접 확인한다.** 되면 고정하고, 안 되면 아래 대응에 의존한다.
+- **실측 결과 (2026-10-13, 개발 PC 웹캠):** Windows Chrome에서 화이트밸런스·노출 모두 수동 모드를 지원했고, 앱이 둘 다 고정하는 데 성공했다. 색온도는 2800~6500K 지정 가능. 부스 웹캠이 다른 모델이면 다시 확인한다. 원문: `raw/measurements/2026-10-13-camera-capabilities.md`
 
 ## 대응
 1. **A4 보정**: 매 촬영마다 카드 색으로 화이트밸런스와 노출을 되돌린다([기준 카드](reference-card.md)).
