@@ -13,3 +13,4 @@
 | 2026-10-13 | measurement/color-conversion.md | culori lab65 사용 명시 |
 | 2026-10-13 | scoring/thresholds.md, measurement/reference-card.md, seasons.json | 2단계: 임계값 6개와 보정 목표값 추가 |
 | 2026-10-13 | scoring/axis-formulas.md | 2단계: 빈 축 50, 입술 색상각 펼치기 규칙 추가 |
+| 2026-10-13 | raw/measurements/2026-10-13-first-capture.md | 첫 실측 1회 기록 (채도·b* 포화, 흰자 어두움 관찰) |
