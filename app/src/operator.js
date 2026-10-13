@@ -54,7 +54,7 @@ export function setupOperator({ overlay, getSettings, setSettings, onCameraChang
       .join('');
     $('op-camera').value = getSettings().deviceId ?? cams[0]?.deviceId ?? '';
     $('op-card').value = getSettings().cardType;
-    dialog.showModal();
+    dialog.show(); // 모달이 아니게: 미리보기를 보면서 조정
   }
 
   $('op-camera').addEventListener('change', (e) => {

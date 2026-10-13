@@ -16,3 +16,4 @@ label { display: block; font-size: 1.3rem; margin: 0.5em 0; }
 .swatch { width: 32px; height: 32px; border: 1px solid #ccc; display: inline-block; }
 #qr svg { width: 200px; height: 200px; }
 dialog pre { max-height: 240px; overflow: auto; background: #f0f0f0; padding: 8px; font-size: 12px; }
+#operator { position: fixed; top: 16px; right: 16px; left: auto; margin: 0; width: 380px; max-height: calc(100vh - 32px); overflow: auto; z-index: 10; }
