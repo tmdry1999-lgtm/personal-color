@@ -1,0 +1,11 @@
+{
+  "name": "personal-color-booth",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --test",
+    "lint:wiki": "node tools/wiki-lint.js wiki",
+    "check:data": "node tools/validate-data.js app/data/seasons.json app/data/palettes.json",
+    "check": "npm test && npm run lint:wiki && npm run check:data"
+  }
+}
