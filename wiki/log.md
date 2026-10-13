@@ -12,3 +12,4 @@
 | 2026-10-13 | scoring/, measurement/, palettes/ | 리뷰 반영: 대비를 부위별 가중 평균으로(눈썹 0.1), 무채색 규칙·특허 설명·기준 카드 상태 정정 |
 | 2026-10-13 | measurement/color-conversion.md | culori lab65 사용 명시 |
 | 2026-10-13 | scoring/thresholds.md, measurement/reference-card.md, seasons.json | 2단계: 임계값 6개와 보정 목표값 추가 |
+| 2026-10-13 | scoring/axis-formulas.md | 2단계: 빈 축 50, 입술 색상각 펼치기 규칙 추가 |
