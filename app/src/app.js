@@ -62,6 +62,7 @@ function goHome() {
   document.querySelectorAll('.gender').forEach((b) => b.setAttribute('aria-pressed', 'false'));
   $('flag-dyed').checked = false;
   $('flag-lip').checked = false;
+  $('flag-base').checked = false;
   $('btn-begin').disabled = true;
   $('result-body').innerHTML = '';
   $('qr').innerHTML = '';
@@ -120,7 +121,7 @@ function drawOverlay(faces) {
 }
 
 const CAPTURE_TEXT = {
-  no_face: '얼굴을 화면 가운데에 맞춰 주세요',
+  no_face: '안경은 벗고, 얼굴을 화면 가운데에 맞춰 주세요',
   multiple_faces: '한 명만 화면에 들어와 주세요',
   too_small: '조금 더 가까이 와 주세요',
   turned: '정면을 봐 주세요',
@@ -169,7 +170,7 @@ async function captureAndAnalyze() {
     show('analyzing');
     await sleep(50); // "분석 중" 화면이 그려질 시간을 준다
 
-    const flags = { dyed: $('flag-dyed').checked, lipProduct: $('flag-lip').checked };
+    const flags = { dyed: $('flag-dyed').checked, lipProduct: $('flag-lip').checked, baseMakeup: $('flag-base').checked };
     const out = frames.length * 2 < t.framesPerCapture
       ? { ok: false, error: 'not_enough_frames' }
       : analyze({ frames, settings: state.settings, flags, config: state.config });

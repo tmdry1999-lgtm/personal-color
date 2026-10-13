@@ -61,3 +61,21 @@ test('computeAxes: 모든 특징이 최댓값이면 100', () => {
   const f = { skinHueDeg: 90, skinB: 30, lipHueDeg: 50, irisHueDeg: 80, skinL: 90, hairL: 60, skinC: 40, deltaLHair: 80, deltaLIris: 80, deltaLBrow: 80 };
   for (const v of computeAxes(f, config)) assert.ok(Math.abs(v - 100) < 1e-9, `${v}`);
 });
+
+test('buildFeatures: 목 피부 색상각·b*·채도를 기록한다 (판정에는 아직 안 씀)', () => {
+  const m = { ...base(), neck: lch(55, 10, 20) };
+  const { features } = buildFeatures(m, NO_FLAGS, T);
+  assert.ok(Math.abs(features.neckHueDeg - Math.atan2(20, 10) * 180 / Math.PI) < 1e-9);
+  assert.equal(features.neckB, 20);
+  assert.ok(Math.abs(features.neckC - Math.hypot(10, 20)) < 1e-9);
+  assert.equal(buildFeatures(base(), NO_FLAGS, T).features.neckHueDeg, null);
+});
+
+test('buildFeatures: 눈동자 색상각이 비정상(안경 반사로 초록빛)이면 눈동자 제외', () => {
+  const m = base();
+  m.iris = lch(8, -4, 8); // h ≈ 116.6
+  const { features, excluded } = buildFeatures(m, NO_FLAGS, T);
+  assert.ok(excluded.includes('iris:auto'));
+  assert.equal(features.irisHueDeg, null);
+  assert.equal(features.deltaLIris, null);
+});

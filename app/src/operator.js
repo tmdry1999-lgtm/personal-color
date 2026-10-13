@@ -1,7 +1,7 @@
 // 운영자 대화상자 (Ctrl+Shift+S): 웹캠 선택, 카드 종류, A4 영역 드래그, 진단 정보
 import { listCameras } from './camera.js';
-import { rectFromDrag, displayRectToRaw } from './settings.js';
-import { formatLog } from './measure-log.js';
+import { rectFromDrag, displayRectToRaw, browserStorage } from './settings.js';
+import { formatLog, loadLog, saveLog } from './measure-log.js';
 import { parseTypedValue } from './camera-settings.js';
 
 const $ = (id) => document.getElementById(id);
@@ -10,11 +10,14 @@ const CONTROL_NAMES = { saturation: '채도', colorTemperature: '색온도 (K)',
 export function setupOperator({ overlay, getSettings, setSettings, onCameraChange }) {
   const dialog = $('operator');
   let drag = null;
-  const log = []; // 측정 기록: 숫자만, 메모리에만
+  // 측정 기록: 숫자만. 탭을 닫을 때까지 sessionStorage에 보관해 새로고침해도 남는다
+  const logStore = browserStorage('sessionStorage');
+  const log = loadLog(logStore);
 
   function renderLogCount() {
     $('op-log-count').textContent = `${log.length}건`;
   }
+  renderLogCount();
   $('op-log-copy').addEventListener('click', async () => {
     const text = formatLog(log);
     try {
@@ -35,6 +38,7 @@ export function setupOperator({ overlay, getSettings, setSettings, onCameraChang
   });
   $('op-log-clear').addEventListener('click', () => {
     log.length = 0;
+    saveLog(logStore, log);
     $('op-log-text').hidden = true;
     $('op-log-status').textContent = '';
     renderLogCount();
@@ -126,7 +130,7 @@ export function setupOperator({ overlay, getSettings, setSettings, onCameraChang
   return {
     setControls,
     participant: () => $('op-participant').value,
-    addLog: (entry) => { log.push(entry); renderLogCount(); },
+    addLog: (entry) => { log.push(entry); saveLog(logStore, log); renderLogCount(); },
     setCaps: (report) => {
       const { controls, ...rest } = report;
       $('op-caps').textContent = JSON.stringify(rest, null, 2);

@@ -8,6 +8,7 @@ export function makeLogEntry({ participant, gender, flags, camera, cardType, out
     gender,
     dyed: Boolean(flags?.dyed),
     lipProduct: Boolean(flags?.lipProduct),
+    baseMakeup: Boolean(flags?.baseMakeup),
     time: now.toISOString(),
     camera: camera ?? null,
     cardType: cardType ?? null,
@@ -32,6 +33,8 @@ export function formatLog(entries) {
       `성별: ${GENDER[first.gender] ?? first.gender}`,
       `염색: ${yesNo(first.dyed)}`,
       `립 제품: ${yesNo(first.lipProduct)}`,
+      `베이스 화장: ${yesNo(first.baseMakeup)}`,
+      '안경: ',
       '전문가 진단: ',
       ...list.map((e, i) => `${i + 1}회차: ${JSON.stringify(e)}`),
     ];
@@ -43,4 +46,25 @@ export function formatLog(entries) {
 // 성공한 측정만 기록한다. 조명·A4 문제로 실패한 측정은 범위 재설정 데이터에 쓸 수 없다.
 export function shouldLog(out) {
   return out.ok === true;
+}
+
+// 탭을 닫을 때까지만 보관 (sessionStorage). 숫자만 있고 사진은 없다. 새로고침으로 기록이 사라지는 것을 막는다.
+const LOG_KEY = 'pc-booth-log';
+
+export function loadLog(storage) {
+  try {
+    const v = JSON.parse(storage.getItem(LOG_KEY) ?? '[]');
+    return Array.isArray(v) ? v : [];
+  } catch {
+    return [];
+  }
+}
+
+export function saveLog(storage, entries) {
+  try {
+    storage.setItem(LOG_KEY, JSON.stringify(entries));
+    return true;
+  } catch {
+    return false;
+  }
 }

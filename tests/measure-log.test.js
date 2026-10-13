@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { makeLogEntry, formatLog, shouldLog } from '../app/src/measure-log.js';
+import { makeLogEntry, formatLog, shouldLog, loadLog, saveLog } from '../app/src/measure-log.js';
 
 const camera = { saturation: 100, colorTemperature: 5000, exposureTime: 300 };
 const okOut = {
@@ -61,4 +61,24 @@ test('makeLogEntry: 어떤 기준 카드로 쟀는지 남긴다 (A4 → 회색 �
   assert.equal(e.cardType, 'white');
   const g = makeLogEntry({ participant: 'P2', gender: 'f', flags: {}, camera, out: okOut, now });
   assert.equal(g.cardType, null);
+});
+
+test('베이스 화장 여부를 기록하고 양식에 보여준다', () => {
+  const e = makeLogEntry({ participant: 'P7', gender: 'f', flags: { baseMakeup: true }, camera, cardType: 'white', out: okOut, now });
+  assert.equal(e.baseMakeup, true);
+  assert.ok(formatLog([e]).includes('베이스 화장: 예'));
+});
+
+test('loadLog/saveLog: 새로고침해도 기록이 남고, 저장소가 막혀도 오류 없이 빈 기록', () => {
+  const m = new Map();
+  const store = { getItem: (k) => m.get(k) ?? null, setItem: (k, v) => m.set(k, v), removeItem: (k) => m.delete(k) };
+  const e = makeLogEntry({ participant: 'P7', gender: 'f', flags: {}, camera, out: okOut, now });
+  assert.deepEqual(loadLog(store), []);
+  assert.equal(saveLog(store, [e]), true);
+  assert.deepEqual(loadLog(store), [e]);
+  const broken = { getItem() { throw new Error('x'); }, setItem() { throw new Error('x'); } };
+  assert.deepEqual(loadLog(broken), []);
+  assert.equal(saveLog(broken, [e]), false);
+  m.set('pc-booth-log', '{bad');
+  assert.deepEqual(loadLog(store), []);
 });

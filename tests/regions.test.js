@@ -71,3 +71,14 @@ test('extractRegions: 눈을 감으면 눈동자·흰자 제외', () => {
   assert.equal(r.iris.length, 0);
   assert.equal(r.sclera.length, 0);
 });
+
+test('extractRegions: 목은 턱 아래, 얼굴 폭 안의 몸 피부(클래스 2)만', () => {
+  const img = makeImage(200, 200, [220, 180, 150]);
+  paintRect(img, { x: 0.3, y: 0.86, w: 0.4, h: 0.14 }, [200, 160, 130]);
+  const data = new Uint8Array(200 * 200);
+  for (let y = 172; y < 200; y++) data.fill(2, y * 200, y * 200 + 200); // 몸 피부가 화면 폭 전체에 걸침
+  const r = extractRegions(img, fakeLandmarks(), { data, width: 200, height: 200 }, T);
+  assert.ok(r.neck.length > 50, `${r.neck.length}`);
+  assert.ok(r.neck.every((p) => p[0] === 200), '얼굴 폭 밖의 몸 피부가 섞임');
+  assert.equal(extractRegions(img, fakeLandmarks(), null, T).neck.length, 0);
+});

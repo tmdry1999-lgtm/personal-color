@@ -78,3 +78,15 @@ test('결과에 픽셀 배열·이미지가 들어가지 않는다 (개인정보
   };
   walk(out, 'out');
 });
+
+test('몸 피부 마스크가 있으면 목을 측정해 특징으로 남긴다', () => {
+  const frames = scene([1, 1, 1]).map((f) => {
+    const data = new Uint8Array(200 * 200);
+    for (let y = 172; y < 200; y++) data.fill(2, y * 200, y * 200 + 200);
+    return { ...f, hairMask: { data, width: 200, height: 200 } };
+  });
+  const out = run(frames);
+  assert.equal(out.ok, true);
+  assert.ok(out.measurements.neck);
+  assert.equal(typeof out.features.neckHueDeg, 'number');
+});

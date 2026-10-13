@@ -52,7 +52,8 @@
     "minRegionPixels": 20,
     "eyeOpenMinRatio": 0.12,
     "glareMinL": 85,
-    "glareMaxRatio": 0.2
+    "glareMaxRatio": 0.2,
+    "irisMaxHueDeg": 90
   },
   "calibration": {
     "card": "white",

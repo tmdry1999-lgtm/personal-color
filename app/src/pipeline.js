@@ -5,7 +5,7 @@ import { measureRegion, combineFrames, hasGlare } from './measure.js';
 import { buildFeatures, computeAxes } from './axes.js';
 import { classify } from './classify.js';
 
-const REGIONS = ['skin', 'iris', 'sclera', 'lip', 'brow', 'hair'];
+const REGIONS = ['skin', 'iris', 'sclera', 'lip', 'brow', 'hair', 'neck'];
 const NO_GAIN = [1, 1, 1];
 
 function mostCommon(codes) {
