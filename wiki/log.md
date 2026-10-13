@@ -7,3 +7,4 @@
 | 2026-10-13 | measurement/ | 측정 문서 5개 작성 |
 | 2026-10-13 | scoring/ + app/data/seasons.json | 판정 문서 4개, seasons.json 초안 |
 | 2026-10-13 | palettes/ + app/data/palettes.json | 팔레트 문서 3개, palettes.json 초안 |
+| 2026-10-13 | scoring/ | 리뷰 반영: 12톤 규칙을 대표값 기준으로 수정(스펙 6.5), 동점 처리 추가, 알려진 위험 기록 |
