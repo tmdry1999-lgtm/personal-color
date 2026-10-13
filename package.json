@@ -7,7 +7,8 @@
     "gen:palettes": "node tools/gen-palette-pages.js",
     "lint:wiki": "node tools/wiki-lint.js wiki",
     "check:data": "node tools/validate-data.js app/data/seasons.json app/data/palettes.json",
-    "check": "npm test && npm run lint:wiki && npm run check:data"
+    "check": "npm test && npm run lint:wiki && npm run check:data",
+    "serve": "node tools/serve.js 8080"
   },
   "dependencies": {
     "culori": "4.0.2"
