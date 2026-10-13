@@ -6,13 +6,13 @@
     "warmth": { "skinHueDeg": [50, 75], "skinB": [12, 22], "lipHueDeg": [15, 40], "irisHueDeg": [40, 70] },
     "value": { "skinL": [55, 75], "hairL": [10, 45] },
     "chroma": { "skinC": [14, 28] },
-    "contrast": { "deltaL": [30, 65] }
+    "contrast": { "deltaLHair": [30, 65], "deltaLIris": [30, 65], "deltaLBrow": [30, 65] }
   },
   "featureWeights": {
     "warmth": { "skinHueDeg": 0.35, "skinB": 0.35, "lipHueDeg": 0.15, "irisHueDeg": 0.15 },
     "value": { "skinL": 0.8, "hairL": 0.2 },
     "chroma": { "skinC": 1.0 },
-    "contrast": { "deltaL": 1.0 }
+    "contrast": { "deltaLHair": 0.45, "deltaLIris": 0.45, "deltaLBrow": 0.1 }
   },
   "seasons": {
     "spring": { "prototype": [70, 70, 70, 45] },
