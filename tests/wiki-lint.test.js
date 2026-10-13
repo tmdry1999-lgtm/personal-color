@@ -64,6 +64,36 @@ test('lintWiki: 없는 raw 파일을 출처로 쓰면 오류', () => {
   assert.ok(lintWiki(wiki).some((e) => e.includes('raw/없음.md')));
 });
 
+test('parseFrontMatter: UTF-8 BOM이 있어도 읽는다', () => {
+  const fm = parseFrontMatter('﻿' + page(['raw/a.md']));
+  assert.deepEqual(fm.sources, ['raw/a.md']);
+});
+
+test('lintWiki: 대소문자가 다른 링크·출처는 오류 (Windows에서도)', () => {
+  const { wiki } = makeRepo({
+    'raw/a.md': '# 원본',
+    'wiki/index.md': '- [축](Theory/axes.md)\n- [로그](log.md)\n',
+    'wiki/log.md': '',
+    'wiki/theory/axes.md': page(['RAW/a.md']),
+  });
+  const errors = lintWiki(wiki);
+  assert.ok(errors.some((e) => e.includes('Theory/axes.md')));
+  assert.ok(errors.some((e) => e.includes('RAW/a.md')));
+});
+
+test('lintWiki: 출처는 raw/ 안의 파일이어야 한다', () => {
+  const { wiki } = makeRepo({
+    'raw/a.md': '# 원본',
+    'docs/x.md': '# 문서',
+    'wiki/index.md': '- [a](a.md)\n- [로그](log.md)\n',
+    'wiki/log.md': '',
+    'wiki/a.md': page(['raw', 'docs/x.md']),
+  });
+  const errors = lintWiki(wiki);
+  assert.ok(errors.some((e) => e.endsWith(' raw')));
+  assert.ok(errors.some((e) => e.includes('docs/x.md')));
+});
+
 test('lintWiki: 깨진 링크와 목차 누락을 잡는다', () => {
   const { wiki } = makeRepo({
     'wiki/index.md': '- [a](a.md)\n',

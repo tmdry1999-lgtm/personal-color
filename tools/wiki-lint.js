@@ -7,6 +7,24 @@ const SPECIAL = new Set(['index.md', 'log.md']);
 
 const toPosix = (p) => p.replaceAll('\\', '/');
 
+// Windows는 대소문자를 무시하지만 GitHub Pages는 구분한다. 경로의 각 조각이 정확히 같은 이름으로 있는지 확인한다.
+function existsExact(absPath, root) {
+  const rel = toPosix(relative(root, absPath));
+  if (rel.startsWith('..')) return existsSync(absPath);
+  let dir = root;
+  for (const part of rel.split('/')) {
+    if (!existsSync(dir) || !statSync(dir).isDirectory() || !readdirSync(dir).includes(part)) return false;
+    dir = join(dir, part);
+  }
+  return true;
+}
+
+function isRawFile(src, repoRoot) {
+  if (!src.startsWith('raw/')) return false;
+  const abs = resolve(repoRoot, src);
+  return existsExact(abs, repoRoot) && statSync(abs).isFile();
+}
+
 function listMarkdown(dir) {
   const out = [];
   for (const name of readdirSync(dir)) {
@@ -18,7 +36,7 @@ function listMarkdown(dir) {
 }
 
 export function parseFrontMatter(text) {
-  const match = text.match(/^---\r?\n([\s\S]*?)\r?\n---/);
+  const match = text.replace(/^﻿/, '').match(/^---\r?\n([\s\S]*?)\r?\n---/);
   if (!match) return null;
   const data = {};
   let key = null;
@@ -56,7 +74,7 @@ export function lintWiki(wikiDir) {
         } else {
           for (const src of fm.sources) {
             if (/^https?:\/\//.test(src)) continue;
-            if (!existsSync(resolve(repoRoot, src))) errors.push(`${rel}: 출처 파일 없음 ${src}`);
+            if (!isRawFile(src, repoRoot)) errors.push(`${rel}: 출처는 raw/ 안의 파일이어야 함 ${src}`);
           }
         }
         if (!STATUSES.has(fm.status)) errors.push(`${rel}: status는 가설/확정/참고 중 하나여야 함`);
@@ -67,7 +85,7 @@ export function lintWiki(wikiDir) {
       const target = m[1];
       if (/^https?:\/\//.test(target)) continue;
       const abs = resolve(dirname(file), target);
-      if (!existsSync(abs)) errors.push(`${rel}: 깨진 링크 ${target}`);
+      if (!existsExact(abs, repoRoot)) errors.push(`${rel}: 깨진 링크 ${target}`);
       else if (rel === 'index.md') linkedFromIndex.add(toPosix(relative(wikiDir, abs)));
     }
   }
