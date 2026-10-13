@@ -7,7 +7,7 @@ export { SEASONS, AXES, TONES };
 const THRESHOLD_KEYS = [
   'borderlineGapPct', 'minFaceWidthRatio', 'maxYawDeg', 'holdSeconds', 'framesPerCapture',
   'trimPct', 'minSkinL', 'scleraMaxChroma', 'hairDyeMinChroma', 'lipProductMinChroma', 'idleResetSeconds',
-  'cardMaxSaturatedRatio', 'cardMaxRelStd', 'minRegionPixels', 'eyeOpenMinRatio', 'glareMinL', 'glareMaxRatio', 'irisMaxHueDeg',
+  'cardMaxSaturatedRatio', 'cardMaxRelStd', 'minRegionPixels', 'eyeOpenMinRatio', 'glareMinL', 'glareMaxRatio', 'irisMaxHueDeg', 'neckLiftMinDeg', 'neckTimeoutSeconds',
 ];
 const HEX = /^#[0-9A-F]{6}$/;
 const isNum = (v) => typeof v === 'number' && Number.isFinite(v);

@@ -31,7 +31,7 @@ function validSeasons() {
       borderlineGapPct: 10, minFaceWidthRatio: 0.25, maxYawDeg: 15, holdSeconds: 3, framesPerCapture: 10,
       trimPct: 10, minSkinL: 25, scleraMaxChroma: 12, hairDyeMinChroma: 18, lipProductMinChroma: 45, idleResetSeconds: 60,
       cardMaxSaturatedRatio: 0.05, cardMaxRelStd: 0.15, minRegionPixels: 20,
-      eyeOpenMinRatio: 0.12, glareMinL: 85, glareMaxRatio: 0.2, irisMaxHueDeg: 90,
+      eyeOpenMinRatio: 0.12, glareMinL: 85, glareMaxRatio: 0.2, irisMaxHueDeg: 90, neckLiftMinDeg: 12, neckTimeoutSeconds: 10,
     },
     calibration: { card: 'white', targets: { white: [0.8, 0.8, 0.8], gray18: [0.18, 0.18, 0.18] } },
   };

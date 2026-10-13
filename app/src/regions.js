@@ -6,6 +6,7 @@ export const LM = {
   forehead: 9,
   chin: 199,
   chinBottom: 152,
+  foreheadTop: 10,
   eyes: [
     { iris: 468, irisEdge: 469, corners: [33, 133], lids: [159, 145] },
     { iris: 473, irisEdge: 474, corners: [362, 263], lids: [386, 374] },

@@ -3,7 +3,8 @@ import qrcode from 'https://cdn.jsdelivr.net/npm/qrcode-generator@2.0.4/dist/qrc
 import { openCamera, stopCamera, applyCameraSettings, grabFrame } from './camera.js';
 import { makeLogEntry, shouldLog } from './measure-log.js';
 import { createDetectors } from './face.js';
-import { faceCheck } from './face-check.js';
+import { faceCheck, headPitchDeg, chinLifted } from './face-check.js';
+import { median } from './measure.js';
 import { analyze } from './pipeline.js';
 import { encodeResult } from './result-code.js';
 import { messageFor } from './messages.js';
@@ -169,6 +170,36 @@ async function captureFrames(t) {
   return frames;
 }
 
+const nextFrame = () => new Promise((r) => requestAnimationFrame(r));
+
+// 얼굴 촬영 때 각도(baseline)보다 턱을 충분히 든 상태가 1초 유지되면 true. 제한 시간이 지나면 false
+async function waitForChinLift(t, baseline) {
+  show('neck');
+  const aspect = video.videoWidth / video.videoHeight;
+  const start = performance.now();
+  let okSince = null;
+  while (performance.now() - start < t.neckTimeoutSeconds * 1000) {
+    await nextFrame();
+    const faces = state.detectors.detectFaces(video);
+    if (faces.length !== 1) {
+      okSince = null;
+      $('neck-msg').textContent = '얼굴이 화면에 보이게, 턱만 살짝 들어 주세요';
+      continue;
+    }
+    const delta = headPitchDeg(faces[0], aspect) - baseline;
+    $('neck-angle').textContent = `턱 각도 ${Math.round(delta)}° / 목표 ${t.neckLiftMinDeg}°`;
+    if (chinLifted(delta + baseline, baseline, t)) {
+      okSince ??= performance.now();
+      $('neck-msg').textContent = '좋아요! 그대로 있어 주세요';
+      if (performance.now() - okSince >= 1000) return true;
+    } else {
+      okSince = null;
+      $('neck-msg').textContent = '턱을 조금 더 들어 주세요 (목 피부를 측정해요)';
+    }
+  }
+  return false;
+}
+
 async function captureAndAnalyze() {
   const t = state.config.thresholds;
   let frames = [];
@@ -178,14 +209,11 @@ async function captureAndAnalyze() {
     frames = await captureFrames(t);
 
     // 베이스 화장한 사람만: 턱을 든 목 사진을 한 번 더 (턱 그림자를 피해 목에 빛이 닿게)
+    let neckSkipped = false;
     if (needsNeckCapture(flags) && frames.length * 2 >= t.framesPerCapture) {
-      show('neck');
-      for (let s = t.holdSeconds; s > 0; s--) {
-        $('neck-countdown').textContent = String(s);
-        await sleep(1000);
-      }
-      $('neck-countdown').textContent = '';
-      neckFrames = await captureFrames(t);
+      const lifted = await waitForChinLift(t, median(frames.map((f) => headPitchDeg(f.landmarks, video.videoWidth / video.videoHeight))));
+      if (lifted) neckFrames = await captureFrames(t);
+      else neckSkipped = true;
     }
 
     show('analyzing');
@@ -196,6 +224,7 @@ async function captureAndAnalyze() {
       : analyze({ frames, neckFrames, settings: state.settings, flags, config: state.config });
     frames = null; // 사진 참조를 버린다 (개인정보)
     neckFrames = null;
+    if (out.ok && neckSkipped) out.warnings.push('neck_not_lifted');
 
     operator.setLast(out.ok
       ? { result: out.result, measurements: out.measurements, features: out.features, warnings: out.warnings, excluded: out.excluded }

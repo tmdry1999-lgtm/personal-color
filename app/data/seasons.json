@@ -53,7 +53,9 @@
     "eyeOpenMinRatio": 0.12,
     "glareMinL": 85,
     "glareMaxRatio": 0.2,
-    "irisMaxHueDeg": 90
+    "irisMaxHueDeg": 90,
+    "neckLiftMinDeg": 12,
+    "neckTimeoutSeconds": 10
   },
   "calibration": {
     "card": "white",
