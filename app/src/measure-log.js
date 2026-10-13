@@ -38,3 +38,8 @@ export function formatLog(entries) {
   }
   return blocks.join('\n\n');
 }
+
+// 성공한 측정만 기록한다. 조명·A4 문제로 실패한 측정은 범위 재설정 데이터에 쓸 수 없다.
+export function shouldLog(out) {
+  return out.ok === true;
+}

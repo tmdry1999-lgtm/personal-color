@@ -1,7 +1,7 @@
 // 부스 화면 흐름: 대기 → 시작 → 촬영 → 분석 중 → 결과 (스펙 7.1)
 import qrcode from 'https://cdn.jsdelivr.net/npm/qrcode-generator@2.0.4/dist/qrcode.mjs';
 import { openCamera, stopCamera, applyCameraSettings, grabFrame } from './camera.js';
-import { makeLogEntry } from './measure-log.js';
+import { makeLogEntry, shouldLog } from './measure-log.js';
 import { createDetectors } from './face.js';
 import { faceCheck } from './face-check.js';
 import { analyze } from './pipeline.js';
@@ -178,9 +178,11 @@ async function captureAndAnalyze() {
     operator.setLast(out.ok
       ? { result: out.result, measurements: out.measurements, features: out.features, warnings: out.warnings, excluded: out.excluded }
       : out);
-    operator.addLog(makeLogEntry({
-      participant: operator.participant(), gender: state.gender, flags, camera: state.settings.camera, out, now: new Date(),
-    }));
+    if (shouldLog(out)) {
+      operator.addLog(makeLogEntry({
+        participant: operator.participant(), gender: state.gender, flags, camera: state.settings.camera, out, now: new Date(),
+      }));
+    }
     if (!out.ok) {
       showError(out.error);
       show('capture');

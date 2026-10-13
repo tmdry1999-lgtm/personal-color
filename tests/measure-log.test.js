@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { makeLogEntry, formatLog } from '../app/src/measure-log.js';
+import { makeLogEntry, formatLog, shouldLog } from '../app/src/measure-log.js';
 
 const camera = { saturation: 100, colorTemperature: 5000, exposureTime: 300 };
 const okOut = {
@@ -47,4 +47,11 @@ test('formatLog: 참가자별로 묶고 회차 번호를 붙인다 (양식: 성�
   assert.ok(p1Block.includes('1회차: ') && p1Block.includes('2회차: '));
   assert.ok(p1Block.includes('"error":"turned"'));
   assert.equal(formatLog([]), '기록 없음');
+});
+
+test('shouldLog: 성공한 측정만 기록한다 (조명·A4 등으로 실패한 것은 제외)', () => {
+  assert.equal(shouldLog(okOut), true);
+  for (const error of ['card_saturated', 'card_occluded', 'card_missing', 'too_dark', 'no_skin', 'not_enough_frames']) {
+    assert.equal(shouldLog({ ok: false, error }), false, error);
+  }
 });
