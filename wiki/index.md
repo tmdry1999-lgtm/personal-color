@@ -4,6 +4,7 @@
 
 ## 결정
 - [결정 기록](decisions/decisions.md) — 확정 사항 17개, 쓰지 않는 자원, 열린 항목
+- [3단계 할 일 목록](decisions/phase3-backlog.md) — MVP 실측에서 나온 문제 7개와 해결 후보
 
 ## 이론
 - [4가지 축](theory/four-axes.md) — 웜/쿨·명도·채도·대비 정의, Lab 용어
