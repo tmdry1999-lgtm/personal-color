@@ -1,5 +1,5 @@
 // 웹캠 열기, 프레임 캡처, 화이트밸런스·노출·채도 고정 (wiki/measurement/webcam-limits.md)
-import { CAMERA_KEYS, describeControls, buildConstraintSteps } from './camera-settings.js';
+import { describeControls, buildConstraintSteps, knownValues } from './camera-settings.js';
 
 export async function openCamera(video, deviceId) {
   const request = (id) => navigator.mediaDevices.getUserMedia({
@@ -45,13 +45,12 @@ export async function applyCameraSettings(stream, values) {
     }
   }
   const controls = describeControls(caps, track.getSettings ? track.getSettings() : {});
-  const current = Object.fromEntries(CAMERA_KEYS.filter((k) => controls[k]).map((k) => [k, controls[k].value]));
   return {
     whiteBalanceMode: caps.whiteBalanceMode ?? '지원 안 함',
     exposureMode: caps.exposureMode ?? '지원 안 함',
     applied,
     errors,
-    values: current,
+    values: knownValues(controls),
     controls,
   };
 }

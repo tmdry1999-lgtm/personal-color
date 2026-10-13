@@ -7,8 +7,15 @@ export function describeControls(caps, current) {
   return Object.fromEntries(CAMERA_KEYS.map((key) => {
     const r = caps?.[key];
     if (!isRange(r)) return [key, null];
-    return [key, { min: r.min, max: r.max, step: r.step || 1, value: current?.[key] ?? r.min }];
+    // 현재 값을 모르면 null. 최솟값으로 채우면 노출 시간 1로 저장돼 화면이 검게 된다.
+    const value = typeof current?.[key] === 'number' ? current[key] : null;
+    return [key, { min: r.min, max: r.max, step: r.step || 1, value }];
   }));
+}
+
+// 저장해도 되는 값: 웹캠이 현재 값을 알려준 항목만
+export function knownValues(controls) {
+  return Object.fromEntries(Object.entries(controls).filter(([, c]) => c && c.value !== null).map(([k, c]) => [k, c.value]));
 }
 
 export function clampToCaps(values, caps) {

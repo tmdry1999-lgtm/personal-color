@@ -27,6 +27,11 @@ export function setupOperator({ overlay, getSettings, setSettings, onCameraChang
       $('op-log-status').textContent = 'Ctrl+C로 복사해 주세요';
     }
   });
+  // 잘못 저장된 웹캠 설정을 지우고, 새로고침 후 그 순간 값으로 다시 고정한다
+  $('op-camera-reset').addEventListener('click', () => {
+    setSettings({ ...getSettings(), camera: null });
+    location.reload();
+  });
   $('op-log-clear').addEventListener('click', () => {
     log.length = 0;
     $('op-log-text').hidden = true;
@@ -91,8 +96,9 @@ export function setupOperator({ overlay, getSettings, setSettings, onCameraChang
       if (!c) {
         row.append('지원 안 함');
       } else {
-        const input = Object.assign(document.createElement('input'), { type: 'range', min: c.min, max: c.max, step: c.step, value: c.value });
-        const shown = Object.assign(document.createElement('span'), { textContent: ` ${c.value}` });
+        const start = c.value ?? (c.min + c.max) / 2;
+        const input = Object.assign(document.createElement('input'), { type: 'range', min: c.min, max: c.max, step: c.step, value: start });
+        const shown = Object.assign(document.createElement('span'), { textContent: c.value === null ? ' (현재 값 모름 — 움직이면 저장)' : ` ${c.value}` });
         input.addEventListener('input', () => { shown.textContent = ` ${input.value}`; });
         input.addEventListener('change', () => onChange(key, Number(input.value)));
         row.append(input, shown);
