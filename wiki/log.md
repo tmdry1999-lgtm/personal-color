@@ -18,3 +18,4 @@
 | 2026-10-13 | raw/measurements/2026-10-13-repeat-runs.md, decisions/phase3-backlog.md | 반복 측정 2·3회차 기록, 3단계 할 일 목록 작성 |
 | 2026-10-13 | decisions/phase3-backlog.md | MVP 수동 점검 결과와 남은 점검 항목 추가, 반복성 2/3 기준 미달 기록 |
 | 2026-10-13 | decisions/phase3-backlog.md | 2단계 최종 리뷰에서 미룬 코드 정리 6건 추가 |
+| 2026-10-13 | measurement/webcam-limits.md | 3단계-A: 웹캠 설정값 저장·재적용, 측정 기록 모드 추가 |

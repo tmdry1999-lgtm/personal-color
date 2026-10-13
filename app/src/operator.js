@@ -1,12 +1,38 @@
 // 운영자 대화상자 (Ctrl+Shift+S): 웹캠 선택, 카드 종류, A4 영역 드래그, 진단 정보
 import { listCameras } from './camera.js';
 import { rectFromDrag, displayRectToRaw } from './settings.js';
+import { formatLog } from './measure-log.js';
 
 const $ = (id) => document.getElementById(id);
+const CONTROL_NAMES = { saturation: '채도', colorTemperature: '색온도 (K)', exposureTime: '노출 시간' };
 
 export function setupOperator({ overlay, getSettings, setSettings, onCameraChange }) {
   const dialog = $('operator');
   let drag = null;
+  const log = []; // 측정 기록: 숫자만, 메모리에만
+
+  function renderLogCount() {
+    $('op-log-count').textContent = `${log.length}건`;
+  }
+  $('op-log-copy').addEventListener('click', async () => {
+    const text = formatLog(log);
+    try {
+      await navigator.clipboard.writeText(text);
+      $('op-log-status').textContent = '복사됨';
+    } catch {
+      // 클립보드가 막히면 텍스트 상자에 띄워 직접 복사하게 한다
+      $('op-log-text').hidden = false;
+      $('op-log-text').value = text;
+      $('op-log-text').select();
+      $('op-log-status').textContent = 'Ctrl+C로 복사해 주세요';
+    }
+  });
+  $('op-log-clear').addEventListener('click', () => {
+    log.length = 0;
+    $('op-log-text').hidden = true;
+    $('op-log-status').textContent = '';
+    renderLogCount();
+  });
 
   document.addEventListener('keydown', (e) => {
     if (e.ctrlKey && e.shiftKey && e.code === 'KeyS') {
@@ -55,8 +81,34 @@ export function setupOperator({ overlay, getSettings, setSettings, onCameraChang
     open();
   });
 
+  // 슬라이더는 웹캠이 알려준 지원 범위로 만든다. 놓는 순간(change) 저장·적용한다.
+  function setControls(controls, onChange) {
+    const box = $('op-controls');
+    box.replaceChildren();
+    for (const [key, c] of Object.entries(controls)) {
+      const row = document.createElement('label');
+      row.append(`${CONTROL_NAMES[key]} `);
+      if (!c) {
+        row.append('지원 안 함');
+      } else {
+        const input = Object.assign(document.createElement('input'), { type: 'range', min: c.min, max: c.max, step: c.step, value: c.value });
+        const shown = Object.assign(document.createElement('span'), { textContent: ` ${c.value}` });
+        input.addEventListener('input', () => { shown.textContent = ` ${input.value}`; });
+        input.addEventListener('change', () => onChange(key, Number(input.value)));
+        row.append(input, shown);
+      }
+      box.append(row);
+    }
+  }
+
   return {
-    setCaps: (report) => { $('op-caps').textContent = JSON.stringify(report, null, 2); },
+    setControls,
+    participant: () => $('op-participant').value,
+    addLog: (entry) => { log.push(entry); renderLogCount(); },
+    setCaps: (report) => {
+      const { controls, ...rest } = report;
+      $('op-caps').textContent = JSON.stringify(rest, null, 2);
+    },
     setLast: (info) => { $('op-last').textContent = JSON.stringify(info, null, 2); },
     dragRect: () => (drag ? rectFromDrag(drag.a, drag.b) : null),
   };

@@ -14,10 +14,14 @@ test('loadSettings: 비어 있거나 깨졌거나 접근이 막혀도 기본값'
 
 test('saveSettings → loadSettings 왕복, 막히면 false', () => {
   const s = memory();
-  const v = { deviceId: 'cam1', cardRect: { x: 0.1, y: 0.2, w: 0.1, h: 0.2 }, cardType: 'gray18' };
+  const v = { deviceId: 'cam1', cardRect: { x: 0.1, y: 0.2, w: 0.1, h: 0.2 }, cardType: 'gray18', camera: { saturation: 100, colorTemperature: 5000, exposureTime: 300 } };
   assert.equal(saveSettings(s, v), true);
   assert.deepEqual(loadSettings(s), v);
   assert.equal(saveSettings(broken, v), false);
+});
+
+test('웹캠 설정값(camera)은 처음엔 비어 있다 (현재 값으로 고정 후 저장)', () => {
+  assert.equal(DEFAULT_SETTINGS.camera, null);
 });
 
 test('rectFromDrag: 어느 방향으로 끌어도 양수 크기, 0~1로 자름', () => {

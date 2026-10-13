@@ -1,6 +1,7 @@
 // 부스 화면 흐름: 대기 → 시작 → 촬영 → 분석 중 → 결과 (스펙 7.1)
 import qrcode from 'https://cdn.jsdelivr.net/npm/qrcode-generator@2.0.4/dist/qrcode.mjs';
-import { openCamera, stopCamera, tryLockCamera, grabFrame } from './camera.js';
+import { openCamera, stopCamera, applyCameraSettings, grabFrame } from './camera.js';
+import { makeLogEntry } from './measure-log.js';
 import { createDetectors } from './face.js';
 import { faceCheck } from './face-check.js';
 import { analyze } from './pipeline.js';
@@ -23,10 +24,15 @@ const state = {
   holdStart: null, lastFaceAt: Date.now(), busy: false, idleTimer: null,
 };
 
+function updateSettings(s) {
+  state.settings = s;
+  saveSettings(storage, s);
+}
+
 const operator = setupOperator({
   overlay,
   getSettings: () => state.settings,
-  setSettings: (s) => { state.settings = s; saveSettings(storage, s); },
+  setSettings: updateSettings,
   onCameraChange: (id) => startCamera(id),
 });
 
@@ -72,8 +78,17 @@ async function startCamera(deviceId) {
     showError('camera_denied', true);
     return;
   }
-  // 화면 밝기가 자리잡은 뒤(2초) 화이트밸런스·노출 고정을 시도한다
-  setTimeout(async () => operator.setCaps(await tryLockCamera(state.stream)), 2000);
+  // 화면 밝기가 자리잡은 뒤(2초) 저장된 웹캠 설정을 적용한다. 처음이면 지금 값으로 고정하고 그 값을 저장한다.
+  const stream = state.stream;
+  setTimeout(async () => {
+    const report = await applyCameraSettings(stream, state.settings.camera);
+    if (!state.settings.camera) updateSettings({ ...state.settings, camera: report.values });
+    operator.setCaps(report);
+    operator.setControls(report.controls, async (key, value) => {
+      updateSettings({ ...state.settings, camera: { ...state.settings.camera, [key]: value } });
+      operator.setCaps(await applyCameraSettings(stream, state.settings.camera));
+    });
+  }, 2000);
 }
 
 function drawOverlay(faces) {
@@ -163,6 +178,9 @@ async function captureAndAnalyze() {
     operator.setLast(out.ok
       ? { result: out.result, measurements: out.measurements, features: out.features, warnings: out.warnings, excluded: out.excluded }
       : out);
+    operator.addLog(makeLogEntry({
+      participant: operator.participant(), gender: state.gender, flags, camera: state.settings.camera, out, now: new Date(),
+    }));
     if (!out.ok) {
       showError(out.error);
       show('capture');

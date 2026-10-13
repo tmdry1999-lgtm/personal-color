@@ -1,4 +1,6 @@
-// 웹캠 열기, 프레임 캡처, 화이트밸런스·노출 고정 시도 (wiki/measurement/webcam-limits.md)
+// 웹캠 열기, 프레임 캡처, 화이트밸런스·노출·채도 고정 (wiki/measurement/webcam-limits.md)
+import { CAMERA_KEYS, describeControls, buildConstraintSteps } from './camera-settings.js';
+
 export async function openCamera(video, deviceId) {
   const request = (id) => navigator.mediaDevices.getUserMedia({
     audio: false,
@@ -26,27 +28,32 @@ export async function listCameras() {
   return devices.filter((d) => d.kind === 'videoinput');
 }
 
-// 지원되면 현재 값으로 고정한다. 무엇이 지원되는지 운영자 화면에 보여준다.
-export async function tryLockCamera(stream) {
+// 저장된 설정값(없으면 현재 값)으로 화이트밸런스·노출·채도를 고정한다.
+// values가 null이면 수동 모드만 켜서 지금 값으로 고정하고, 그 값을 돌려줘 저장하게 한다.
+export async function applyCameraSettings(stream, values) {
   const track = stream.getVideoTracks()[0];
   const caps = track.getCapabilities ? track.getCapabilities() : {};
-  const report = {
-    whiteBalanceMode: caps.whiteBalanceMode ?? '지원 안 함',
-    exposureMode: caps.exposureMode ?? '지원 안 함',
-    colorTemperature: caps.colorTemperature ?? '지원 안 함',
-    locked: [],
-  };
-  for (const key of ['whiteBalanceMode', 'exposureMode']) {
-    if (Array.isArray(caps[key]) && caps[key].includes('manual')) {
-      try {
-        await track.applyConstraints({ advanced: [{ [key]: 'manual' }] });
-        report.locked.push(key);
-      } catch (e) {
-        report[`${key}Error`] = String(e);
-      }
+  const applied = [];
+  const errors = [];
+  for (const step of buildConstraintSteps(values, caps)) {
+    const key = Object.keys(step)[0];
+    try {
+      await track.applyConstraints({ advanced: [step] });
+      applied.push(key);
+    } catch (e) {
+      errors.push(`${key}: ${e.message || e}`);
     }
   }
-  return report;
+  const controls = describeControls(caps, track.getSettings ? track.getSettings() : {});
+  const current = Object.fromEntries(CAMERA_KEYS.filter((k) => controls[k]).map((k) => [k, controls[k].value]));
+  return {
+    whiteBalanceMode: caps.whiteBalanceMode ?? '지원 안 함',
+    exposureMode: caps.exposureMode ?? '지원 안 함',
+    applied,
+    errors,
+    values: current,
+    controls,
+  };
 }
 
 export function grabFrame(video, canvas) {

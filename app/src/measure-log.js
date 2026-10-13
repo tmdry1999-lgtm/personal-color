@@ -1,0 +1,40 @@
+// 측정 기록 모드: 숫자만 메모리에 쌓고, 복사용 문자열을 만든다. 저장하지 않는다.
+const yesNo = (v) => (v ? '예' : '아니오');
+const GENDER = { f: '여', m: '남' };
+
+export function makeLogEntry({ participant, gender, flags, camera, out, now }) {
+  const entry = {
+    participant: participant?.trim() || 'P?',
+    gender,
+    dyed: Boolean(flags?.dyed),
+    lipProduct: Boolean(flags?.lipProduct),
+    time: now.toISOString(),
+    camera: camera ?? null,
+  };
+  if (!out.ok) return { ...entry, error: out.error };
+  const { result, measurements, features, warnings, excluded } = out;
+  return { ...entry, result, measurements, features, warnings, excluded };
+}
+
+export function formatLog(entries) {
+  if (entries.length === 0) return '기록 없음';
+  const groups = new Map();
+  for (const e of entries) {
+    if (!groups.has(e.participant)) groups.set(e.participant, []);
+    groups.get(e.participant).push(e);
+  }
+  const blocks = [];
+  for (const [participant, list] of groups) {
+    const first = list[0];
+    const lines = [
+      `참가자: ${participant}`,
+      `성별: ${GENDER[first.gender] ?? first.gender}`,
+      `염색: ${yesNo(first.dyed)}`,
+      `립 제품: ${yesNo(first.lipProduct)}`,
+      '전문가 진단: ',
+      ...list.map((e, i) => `${i + 1}회차: ${JSON.stringify(e)}`),
+    ];
+    blocks.push(lines.join('\n'));
+  }
+  return blocks.join('\n\n');
+}
