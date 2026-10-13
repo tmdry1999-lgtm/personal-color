@@ -6,6 +6,7 @@ sources:
   - raw/measurements/2026-10-13-participant-notes.md
   - raw/measurements/2026-10-13-p4-p6-session.md
   - raw/measurements/2026-10-13-neck-session.md
+  - raw/measurements/2026-10-13-neck-session-correction.md
 ---
 
 # 참가자와 측정 기록 목록
@@ -30,7 +31,7 @@ sources:
 | `raw/measurements/2026-10-13-repeat-runs.md` | P1 (2회) | 사무실 천장 | 흰색 A4 | 고정 전 |
 | `raw/measurements/2026-10-13-p1-locked-settings.md` | P1 (2회) | 사무실 천장 | 흰색 A4 | 채도 111, 색온도 4601, 노출 156.25 |
 | `raw/measurements/2026-10-13-p1-p3-session.md` | P1 3, P2 2, P3 3 | 사무실 천장 | 흰색 A4 | 채도 111, 색온도 4601, 노출 97.66 (P1 1회차만 112.3) |
-| `raw/measurements/2026-10-13-neck-session.md` | P1 5, P7 2, 미확인 남성 2 | 사무실 천장 | 흰색 A4 | 채도 111, 색온도 4601, 노출 97.66 (P1 1회차 122.07) |
+| `raw/measurements/2026-10-13-neck-session.md` | P1 7 (미확인 남성 2회는 P1로 확인), P7 2 | 사무실 천장 | 흰색 A4 | 채도 111, 색온도 4601, 노출 97.66 (P1 1회차 122.07) |
 | `raw/measurements/2026-10-13-p4-p6-session.md` | P4 (유실), P5 1, P6 2 | 사무실 천장 | 흰색 A4 | 채도 111, 색온도 4601, 노출 P5 97.66 · P6 122.07 |
 
 ## 전문가 진단과 비교 (2026-10-13 기준)
