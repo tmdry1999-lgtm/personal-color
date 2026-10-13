@@ -5,3 +5,4 @@
 | 2026-10-13 | 전체 | 1단계 위키 최초 작성 |
 | 2026-10-13 | theory/ | 이론 문서 3개 작성 |
 | 2026-10-13 | measurement/ | 측정 문서 5개 작성 |
+| 2026-10-13 | scoring/ + app/data/seasons.json | 판정 문서 4개, seasons.json 초안 |

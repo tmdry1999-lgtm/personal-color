@@ -1,0 +1,51 @@
+{
+  "version": 1,
+  "status": "가설",
+  "source": "wiki/scoring/season-prototypes.md",
+  "axisMapping": {
+    "warmth": { "skinHueDeg": [50, 75], "skinB": [12, 22], "lipHueDeg": [15, 40], "irisHueDeg": [40, 70] },
+    "value": { "skinL": [55, 75], "hairL": [10, 45] },
+    "chroma": { "skinC": [14, 28] },
+    "contrast": { "deltaL": [30, 65] }
+  },
+  "featureWeights": {
+    "warmth": { "skinHueDeg": 0.35, "skinB": 0.35, "lipHueDeg": 0.15, "irisHueDeg": 0.15 },
+    "value": { "skinL": 0.8, "hairL": 0.2 },
+    "chroma": { "skinC": 1.0 },
+    "contrast": { "deltaL": 1.0 }
+  },
+  "seasons": {
+    "spring": { "prototype": [70, 70, 70, 45] },
+    "summer": { "prototype": [30, 70, 35, 40] },
+    "autumn": { "prototype": [70, 35, 35, 55] },
+    "winter": { "prototype": [30, 35, 70, 75] }
+  },
+  "axisWeights": [1.5, 1.0, 1.0, 0.7],
+  "toneRules": {
+    "spring-light":  { "season": "spring", "axis": "value",   "direction": 1 },
+    "spring-bright": { "season": "spring", "axis": "chroma",  "direction": 1 },
+    "spring-true":   { "season": "spring", "axis": "warmth",  "direction": 1 },
+    "summer-light":  { "season": "summer", "axis": "value",   "direction": 1 },
+    "summer-soft":   { "season": "summer", "axis": "chroma",  "direction": -1 },
+    "summer-true":   { "season": "summer", "axis": "warmth",  "direction": -1 },
+    "autumn-soft":   { "season": "autumn", "axis": "chroma",  "direction": -1 },
+    "autumn-deep":   { "season": "autumn", "axis": "value",   "direction": -1 },
+    "autumn-true":   { "season": "autumn", "axis": "warmth",  "direction": 1 },
+    "winter-bright": { "season": "winter", "axis": "chroma",  "direction": 1 },
+    "winter-deep":   { "season": "winter", "axis": "value",   "direction": -1 },
+    "winter-true":   { "season": "winter", "axis": "warmth",  "direction": -1 }
+  },
+  "thresholds": {
+    "borderlineGapPct": 10,
+    "minFaceWidthRatio": 0.25,
+    "maxYawDeg": 15,
+    "holdSeconds": 3,
+    "framesPerCapture": 10,
+    "trimPct": 10,
+    "minSkinL": 25,
+    "scleraMaxChroma": 12,
+    "hairDyeMinChroma": 18,
+    "lipProductMinChroma": 45,
+    "idleResetSeconds": 60
+  }
+}

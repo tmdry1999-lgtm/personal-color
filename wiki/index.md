@@ -18,6 +18,10 @@
 - [웹캠 한계](measurement/webcam-limits.md) — 자동 보정 문제와 대응
 
 ## 판정
+- [축 계산식](scoring/axis-formulas.md) — 특징값 → 0~100 점수, 범위와 가중치 근거
+- [계절 대표값](scoring/season-prototypes.md) — 4계절 대표값, 거리, %, 경계형
+- [12톤 규칙](scoring/tone-rules.md) — 계절 안에서 톤 고르기
+- [임계값](scoring/thresholds.md) — 촬영·제외·경계형 기준 11개
 
 ## 팔레트
 
