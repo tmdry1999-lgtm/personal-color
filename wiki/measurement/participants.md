@@ -8,6 +8,7 @@ sources:
   - raw/measurements/2026-10-13-neck-session.md
   - raw/measurements/2026-10-13-neck-session-correction.md
   - raw/measurements/2026-10-13-reflector-session.md
+  - raw/measurements/2026-10-13-reflector-session-correction.md
 ---
 
 # 참가자와 측정 기록 목록
@@ -32,13 +33,15 @@ sources:
 | `raw/measurements/2026-10-13-repeat-runs.md` | P1 (2회) | 사무실 천장 | 흰색 A4 | 고정 전 |
 | `raw/measurements/2026-10-13-p1-locked-settings.md` | P1 (2회) | 사무실 천장 | 흰색 A4 | 채도 111, 색온도 4601, 노출 156.25 |
 | `raw/measurements/2026-10-13-p1-p3-session.md` | P1 3, P2 2, P3 3 | 사무실 천장 | 흰색 A4 | 채도 111, 색온도 4601, 노출 97.66 (P1 1회차만 112.3) |
-| `raw/measurements/2026-10-13-reflector-session.md` | P1 5 (반사판 3), 미확인 남성 1 | 사무실 천장 (+반사판) | 흰색 A4 | 채도 111, 색온도 4601, 노출 97.66 |
+| `raw/measurements/2026-10-13-reflector-session.md` | P1 6 (반사판 3; 07:31 "P2" 남성도 P1) | 사무실 천장 (+반사판) | 흰색 A4 | 채도 111, 색온도 4601, 노출 97.66 |
 | `raw/measurements/2026-10-13-neck-session.md` | P1 7 (미확인 남성 2회는 P1로 확인), P7 2 | 사무실 천장 | 흰색 A4 | 채도 111, 색온도 4601, 노출 97.66 (P1 1회차 122.07) |
 | `raw/measurements/2026-10-13-p4-p6-session.md` | P4 (유실), P5 1, P6 2 | 사무실 천장 | 흰색 A4 | 채도 111, 색온도 4601, 노출 P5 97.66 · P6 122.07 |
 
 ## 전문가 진단과 비교 (2026-10-13 기준)
 - 진단이 있는 3명(P2 가을, P5 가을/겨울, P6 봄) 모두 앱은 겨울. 계절 일치 0/2 (P5는 진단이 엇갈려 제외하면), 웜/쿨 일치 0/3.
 - 세 명 모두 베이스 화장을 했다. 화장한 얼굴의 색상각은 웜/쿨을 가르지 못했다(웜 진단자 48°·32°·57° vs 맨얼굴 남성 53°).
+
+**표시 주의:** 운영자 기록의 참가자 번호와 실제 사람이 다른 경우가 있었다. 남성 측정은 모두 P1(사용자 본인), 기록상 "P2" 여성은 P7(뮤트)이다. 파일별 정정 노트를 함께 본다.
 
 **환산 주의:** 모두 흰색 A4 기준이다. 18% 회색 카드로 바꾸면 환산 세션 1회가 필요하다([3단계 할 일 목록](../decisions/phase3-backlog.md)).
 
