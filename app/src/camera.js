@@ -1,9 +1,17 @@
 // 웹캠 열기, 프레임 캡처, 화이트밸런스·노출 고정 시도 (wiki/measurement/webcam-limits.md)
 export async function openCamera(video, deviceId) {
-  const stream = await navigator.mediaDevices.getUserMedia({
+  const request = (id) => navigator.mediaDevices.getUserMedia({
     audio: false,
-    video: { deviceId: deviceId ? { exact: deviceId } : undefined, width: { ideal: 1280 }, height: { ideal: 720 } },
+    video: { deviceId: id ? { exact: id } : undefined, width: { ideal: 1280 }, height: { ideal: 720 } },
   });
+  let stream;
+  try {
+    stream = await request(deviceId);
+  } catch (e) {
+    // 저장해 둔 웹캠이 빠졌거나 바뀌었으면 기본 웹캠으로 다시 시도한다
+    if (!deviceId || !['NotFoundError', 'OverconstrainedError'].includes(e.name)) throw e;
+    stream = await request(null);
+  }
   video.srcObject = stream;
   await video.play();
   return stream;

@@ -37,10 +37,11 @@ function show(screen) {
   if (screen === 'result') armIdleReset();
 }
 
-function showError(code) {
+// sticky: 카메라·모델 오류처럼 운영자가 봐야 하는 것은 사라지지 않게 둔다
+function showError(code, sticky = false) {
   $('error').textContent = messageFor(code);
   $('error').hidden = false;
-  setTimeout(() => { $('error').hidden = true; }, 3000);
+  if (!sticky) setTimeout(() => { $('error').hidden = true; }, 3000);
 }
 
 function armIdleReset() {
@@ -64,8 +65,10 @@ async function startCamera(deviceId) {
   stopCamera(state.stream);
   try {
     state.stream = await openCamera(video, deviceId);
-  } catch {
-    showError('camera_denied');
+    $('error').hidden = true;
+  } catch (e) {
+    console.error('카메라 열기 실패:', e.name, e.message);
+    showError('camera_denied', true);
     return;
   }
   // 화면 밝기가 자리잡은 뒤(2초) 화이트밸런스·노출 고정을 시도한다
@@ -207,7 +210,7 @@ async function init() {
     state.detectors = await createDetectors();
   } catch (e) {
     console.error(e);
-    showError('model_failed');
+    showError('model_failed', true);
     return;
   }
   requestAnimationFrame(tick);
