@@ -22,3 +22,8 @@ export async function guardCapture(state, work, onError) {
     state.lastFaceAt = Date.now();
   }
 }
+
+// 베이스 화장을 한 사람만 턱을 든 목 사진을 한 번 더 찍는다 (얼굴 피부는 화장 색이라 웜/쿨을 못 가림)
+export function needsNeckCapture(flags) {
+  return flags?.baseMakeup === true;
+}

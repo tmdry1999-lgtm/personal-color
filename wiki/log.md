@@ -28,3 +28,4 @@
 | 2026-10-13 | decisions/phase3-backlog.md | 화장·안경 대응 4항목 기록 (데이터 먼저 모은 뒤 구현) |
 | 2026-10-13 | raw/measurements/2026-10-13-p4-p6-session.md, measurement/participants.md | P4~P6 기록, 전문가 진단 대비 웜/쿨 0/3 |
 | 2026-10-13 | measurement/regions.md, scoring/thresholds.md, decisions/ | 목 피부 측정(기록만), 베이스 화장 체크, 안경 안내·눈동자 이상색 제외, 측정 기록 sessionStorage 보관 |
+| 2026-10-13 | measurement/regions.md | 베이스 화장 시 턱 든 목 사진 단계 추가 (그림자 회피, 기록만) |

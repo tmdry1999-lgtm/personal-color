@@ -90,3 +90,35 @@ test('몸 피부 마스크가 있으면 목을 측정해 특징으로 남긴다'
   assert.ok(out.measurements.neck);
   assert.equal(typeof out.features.neckHueDeg, 'number');
 });
+
+// 턱을 든 목 사진: 목 부분(아래쪽)을 다른 색으로 칠하고 몸 피부 마스크를 준다
+function liftedNeckFrames(tint = [1, 1, 1]) {
+  return scene(tint).map((f) => {
+    const image = { ...f.image, data: new Uint8ClampedArray(f.image.data) };
+    paintRect(image, { x: 0.3, y: 0.86, w: 0.4, h: 0.14 }, [205, 165, 120]);
+    const data = new Uint8Array(200 * 200);
+    for (let y = 172; y < 200; y++) data.fill(2, y * 200, y * 200 + 200);
+    return { image, landmarks: f.landmarks, hairMask: { data, width: 200, height: 200 } };
+  });
+}
+
+test('목 사진(턱 든 사진)이 있으면 그 사진에서 목을 따로 측정한다', () => {
+  const out = analyze({ frames: scene([1, 1, 1]), neckFrames: liftedNeckFrames(), settings: { cardRect: CARD, cardType: 'white' }, flags: FLAGS, config });
+  assert.equal(out.ok, true);
+  const e = rgbToLch([205, 165, 120]);
+  assert.ok(Math.abs(out.measurements.liftedNeck.h - e.h) < 0.5);
+  assert.ok(Math.abs(out.features.liftedNeckHueDeg - e.h) < 0.5);
+  assert.equal(typeof out.features.liftedNeckB, 'number');
+  assert.equal(typeof out.features.liftedNeckC, 'number');
+});
+
+test('목 사진이 없으면 liftedNeck은 null, 목 사진의 A4가 실패해도 얼굴 결과는 낸다', () => {
+  const none = run(scene([1, 1, 1]));
+  assert.equal(none.measurements.liftedNeck, null);
+  assert.equal(none.features.liftedNeckHueDeg, null);
+  const badCard = liftedNeckFrames().map((f) => ({ ...f, image: { ...f.image, data: new Uint8ClampedArray(f.image.data.length) } }));
+  const out = analyze({ frames: scene([1, 1, 1]), neckFrames: badCard, settings: { cardRect: CARD, cardType: 'white' }, flags: FLAGS, config });
+  assert.equal(out.ok, true);
+  assert.equal(out.measurements.liftedNeck, null);
+  assert.ok(out.warnings.some((w) => w.startsWith('neck_failed')));
+});

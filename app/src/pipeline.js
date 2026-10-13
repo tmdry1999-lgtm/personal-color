@@ -14,7 +14,22 @@ function mostCommon(codes) {
   return [...counts.entries()].sort((a, b) => b[1] - a[1])[0][0];
 }
 
-export function analyze({ frames, settings, flags, config }) {
+// 턱을 든 목 사진에서 목만 측정한다. 실패해도 얼굴 결과는 그대로 낸다.
+function measureLiftedNeck(neckFrames, settings, target, t) {
+  if (!neckFrames || neckFrames.length === 0) return { neck: null, warning: null };
+  const measures = [];
+  let cardFails = 0;
+  for (const f of neckFrames) {
+    const stats = cardStats(sampleRect(f.image, settings.cardRect));
+    if (checkCard(stats, t)) { cardFails += 1; measures.push(null); continue; }
+    const px = extractRegions(f.image, f.landmarks, f.hairMask, t);
+    measures.push(measureRegion(px.neck, computeGains(stats.mean, target), t.trimPct, t.minRegionPixels));
+  }
+  const neck = combineFrames(measures);
+  return { neck, warning: neck ? null : `neck_failed:${cardFails > 0 ? 'card' : 'no_neck'}` };
+}
+
+export function analyze({ frames, neckFrames = [], settings, flags, config }) {
   if (!frames || frames.length === 0) return { ok: false, error: 'not_enough_frames' };
   const t = config.thresholds;
   const target = config.calibration.targets[settings.cardType ?? config.calibration.card];
@@ -39,7 +54,11 @@ export function analyze({ frames, settings, flags, config }) {
   if (!m.skin || !rawSkin) return { ok: false, error: 'no_skin' };
   if (rawSkin.L < t.minSkinL) return { ok: false, error: 'too_dark' };
 
+  const lifted = measureLiftedNeck(neckFrames, settings, target, t);
+  m.liftedNeck = lifted.neck;
+
   const warnings = [];
+  if (lifted.warning) warnings.push(lifted.warning);
   if (m.sclera && m.sclera.C > t.scleraMaxChroma) warnings.push('sclera_chroma');
   if (cardErrors.length > 0) warnings.push(`card_frames_skipped:${cardErrors.length}`);
 

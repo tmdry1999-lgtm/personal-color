@@ -22,6 +22,7 @@ export function buildFeatures(m, flags, t) {
   // 안경 렌즈 반사 등으로 눈동자가 초록·파란빛으로 찍히면 쓰지 않는다
   if (iris && !Number.isNaN(iris.h) && iris.h > t.irisMaxHueDeg) { excluded.push('iris:auto'); iris = null; }
   const neck = m.neck ?? null;
+  const liftedNeck = m.liftedNeck ?? null;
   const brow = m.brow ?? null;
   return {
     excluded,
@@ -40,6 +41,10 @@ export function buildFeatures(m, flags, t) {
       neckHueDeg: usable(neck),
       neckB: neck ? neck.b : null,
       neckC: neck ? neck.C : null,
+      // 턱을 든 목 사진 (베이스 화장한 사람만)
+      liftedNeckHueDeg: usable(liftedNeck),
+      liftedNeckB: liftedNeck ? liftedNeck.b : null,
+      liftedNeckC: liftedNeck ? liftedNeck.C : null,
     },
   };
 }

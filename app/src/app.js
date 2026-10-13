@@ -10,10 +10,10 @@ import { messageFor } from './messages.js';
 import { renderResultHtml } from './result-view.js';
 import { browserStorage, loadSettings, saveSettings, displayRectToRaw } from './settings.js';
 import { setupOperator } from './operator.js';
-import { IDLE_RESET_SCREENS, canStart, guardCapture } from './flow.js';
+import { IDLE_RESET_SCREENS, canStart, guardCapture, needsNeckCapture } from './flow.js';
 
 const $ = (id) => document.getElementById(id);
-const SCREENS = ['idle', 'start', 'capture', 'analyzing', 'result'];
+const SCREENS = ['idle', 'start', 'capture', 'neck', 'analyzing', 'result'];
 const storage = browserStorage();
 const video = $('video');
 const overlay = $('overlay');
@@ -39,7 +39,7 @@ const operator = setupOperator({
 function show(screen) {
   state.screen = screen;
   for (const s of SCREENS) $(`screen-${s}`).hidden = s !== screen;
-  $('stage').hidden = !(screen === 'idle' || screen === 'capture');
+  $('stage').hidden = !['idle', 'capture', 'neck'].includes(screen);
   clearTimeout(state.idleTimer);
   if (IDLE_RESET_SCREENS.includes(screen)) armIdleReset();
 }
@@ -156,25 +156,46 @@ function tick() {
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
+// 1초 동안 framesPerCapture장을 찍는다. 얼굴이 정확히 하나인 프레임만 쓴다.
+async function captureFrames(t) {
+  const frames = [];
+  for (let i = 0; i < t.framesPerCapture; i++) {
+    const canvas = document.createElement('canvas');
+    const image = grabFrame(video, canvas);
+    const faces = state.detectors.detectFaces(canvas);
+    if (faces.length === 1) frames.push({ image, landmarks: faces[0], hairMask: state.detectors.segmentHair(canvas) });
+    await sleep(1000 / t.framesPerCapture);
+  }
+  return frames;
+}
+
 async function captureAndAnalyze() {
   const t = state.config.thresholds;
   let frames = [];
+  let neckFrames = [];
   await guardCapture(state, async () => {
-    for (let i = 0; i < t.framesPerCapture; i++) {
-      const canvas = document.createElement('canvas');
-      const image = grabFrame(video, canvas);
-      const faces = state.detectors.detectFaces(canvas);
-      if (faces.length === 1) frames.push({ image, landmarks: faces[0], hairMask: state.detectors.segmentHair(canvas) });
-      await sleep(1000 / t.framesPerCapture);
+    const flags = { dyed: $('flag-dyed').checked, lipProduct: $('flag-lip').checked, baseMakeup: $('flag-base').checked };
+    frames = await captureFrames(t);
+
+    // 베이스 화장한 사람만: 턱을 든 목 사진을 한 번 더 (턱 그림자를 피해 목에 빛이 닿게)
+    if (needsNeckCapture(flags) && frames.length * 2 >= t.framesPerCapture) {
+      show('neck');
+      for (let s = t.holdSeconds; s > 0; s--) {
+        $('neck-countdown').textContent = String(s);
+        await sleep(1000);
+      }
+      $('neck-countdown').textContent = '';
+      neckFrames = await captureFrames(t);
     }
+
     show('analyzing');
     await sleep(50); // "분석 중" 화면이 그려질 시간을 준다
 
-    const flags = { dyed: $('flag-dyed').checked, lipProduct: $('flag-lip').checked, baseMakeup: $('flag-base').checked };
     const out = frames.length * 2 < t.framesPerCapture
       ? { ok: false, error: 'not_enough_frames' }
-      : analyze({ frames, settings: state.settings, flags, config: state.config });
+      : analyze({ frames, neckFrames, settings: state.settings, flags, config: state.config });
     frames = null; // 사진 참조를 버린다 (개인정보)
+    neckFrames = null;
 
     operator.setLast(out.ok
       ? { result: out.result, measurements: out.measurements, features: out.features, warnings: out.warnings, excluded: out.excluded }
@@ -192,6 +213,7 @@ async function captureAndAnalyze() {
     showResult(out.result);
   }, (e) => {
     frames = null;
+    neckFrames = null;
     console.error('촬영·분석 오류:', e);
     showError('capture_failed');
     show('capture');
