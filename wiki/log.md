@@ -25,3 +25,4 @@
 | 2026-10-13 | decisions/phase3-backlog.md | 데이터 수집 메모: 현 환경 유지, 회색 카드 도착 후 A4 환산 세션 |
 | 2026-10-13 | raw/measurements/2026-10-13-p1-p3-session.md, measurement/participants.md | P1~P3 세션 8회 기록, 참가자 목록 위키 페이지 |
 | 2026-10-13 | measurement/participants.md, raw/measurements/2026-10-13-participant-notes.md | P2 전문가 진단 가을 웜(앱 겨울, 불일치), P2 화장·P3 안경 기록 |
+| 2026-10-13 | decisions/phase3-backlog.md | 화장·안경 대응 4항목 기록 (데이터 먼저 모은 뒤 구현) |
