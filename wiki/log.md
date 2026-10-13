@@ -23,3 +23,4 @@
 | 2026-10-13 | raw/measurements/2026-10-13-participants.md | 참가자 목록: 지금까지 측정 1~5회 모두 P1 |
 | 2026-10-13 | measurement/lighting.md, raw/web/diagnosis-environment.md | 전문 진단 환경 조사 반영: CRI 95·R9, 정면 확산광, 다른 빛 차단, A4 위치, 클리핑 원리 |
 | 2026-10-13 | decisions/phase3-backlog.md | 데이터 수집 메모: 현 환경 유지, 회색 카드 도착 후 A4 환산 세션 |
+| 2026-10-13 | raw/measurements/2026-10-13-p1-p3-session.md, measurement/participants.md | P1~P3 세션 8회 기록, 참가자 목록 위키 페이지 |
