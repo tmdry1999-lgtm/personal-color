@@ -55,3 +55,10 @@ test('shouldLog: 성공한 측정만 기록한다 (조명·A4 등으로 실패�
     assert.equal(shouldLog({ ok: false, error }), false, error);
   }
 });
+
+test('makeLogEntry: 어떤 기준 카드로 쟀는지 남긴다 (A4 → 회색 카드 환산용)', () => {
+  const e = makeLogEntry({ participant: 'P2', gender: 'f', flags: {}, camera, cardType: 'white', out: okOut, now });
+  assert.equal(e.cardType, 'white');
+  const g = makeLogEntry({ participant: 'P2', gender: 'f', flags: {}, camera, out: okOut, now });
+  assert.equal(g.cardType, null);
+});
