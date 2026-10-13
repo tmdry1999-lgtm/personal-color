@@ -43,7 +43,7 @@ sources:
 
 ## 열린 항목
 - GitHub 계정 확인 (배포 단계)
-- 18% 회색 카드 전환 여부 (사용자가 나중에 결정) — measurement/reference-card.md 참고
-- 부스 조명의 실제 색온도·연색성 확인 — measurement/lighting.md 참고
+- 18% 회색 카드 전환 여부 (사용자가 나중에 결정) — [기준 카드](../measurement/reference-card.md)
+- 부스 조명의 실제 색온도·연색성 확인 — [조명 조건](../measurement/lighting.md)
 
 [목차](../index.md)

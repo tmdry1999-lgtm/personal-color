@@ -11,6 +11,11 @@
 - [PCCS 톤 체계](theory/pccs-tones.md) — PCCS 12톤, 12톤과의 대응
 
 ## 측정
+- [조명 조건](measurement/lighting.md) — 5000~5500K, CRI 90+
+- [기준 카드](measurement/reference-card.md) — A4 보정 원리, 회색 카드 대안
+- [측정 부위](measurement/regions.md) — 5개 부위, 제외 조건, 촬영 조건
+- [색 변환](measurement/color-conversion.md) — sRGB→Lab 공식과 검증값
+- [웹캠 한계](measurement/webcam-limits.md) — 자동 보정 문제와 대응
 
 ## 판정
 
