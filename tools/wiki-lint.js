@@ -35,6 +35,8 @@ function listMarkdown(dir) {
   return out;
 }
 
+const unquote = (s) => s.trim().replace(/^(["'])(.*)\1$/, '$2');
+
 export function parseFrontMatter(text) {
   const match = text.replace(/^﻿/, '').match(/^---\r?\n([\s\S]*?)\r?\n---/);
   if (!match) return null;
@@ -44,11 +46,15 @@ export function parseFrontMatter(text) {
     const kv = line.match(/^(\w+):\s*(.*)$/);
     if (kv) {
       key = kv[1];
-      data[key] = kv[2].trim() === '' ? [] : kv[2].trim();
+      const value = kv[2].trim();
+      if (value === '') data[key] = [];
+      else if (value.startsWith('[') && value.endsWith(']')) {
+        data[key] = value.slice(1, -1).split(',').map(unquote).filter((v) => v !== '');
+      } else data[key] = unquote(value);
       continue;
     }
     const item = line.match(/^\s*-\s+(.+)$/);
-    if (item && key && Array.isArray(data[key])) data[key].push(item[1].trim());
+    if (item && key && Array.isArray(data[key])) data[key].push(unquote(item[1]));
   }
   return data;
 }
@@ -81,12 +87,13 @@ export function lintWiki(wikiDir) {
       }
     }
 
-    for (const m of text.matchAll(/\]\(([^)#\s]+\.md)(#[^)]*)?\)/g)) {
+    const withoutCode = text.replace(/^```[\s\S]*?^```/gm, '');
+    for (const m of withoutCode.matchAll(/\]\(([^)#\s]+)(#[^)]*)?\)/g)) {
       const target = m[1];
-      if (/^https?:\/\//.test(target)) continue;
+      if (/^[a-z][a-z0-9+.-]*:/i.test(target)) continue;
       const abs = resolve(dirname(file), target);
       if (!existsExact(abs, repoRoot)) errors.push(`${rel}: 깨진 링크 ${target}`);
-      else if (rel === 'index.md') linkedFromIndex.add(toPosix(relative(wikiDir, abs)));
+      else if (rel === 'index.md' && target.endsWith('.md')) linkedFromIndex.add(toPosix(relative(wikiDir, abs)));
     }
   }
 

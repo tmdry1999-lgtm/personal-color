@@ -94,6 +94,33 @@ test('lintWiki: 출처는 raw/ 안의 파일이어야 한다', () => {
   assert.ok(errors.some((e) => e.includes('docs/x.md')));
 });
 
+test('parseFrontMatter: 따옴표 값과 한 줄 목록도 읽는다', () => {
+  const fm = parseFrontMatter('---\nstatus: "가설"\nsources: [raw/a.md, "https://x.org"]\n---\n');
+  assert.equal(fm.status, '가설');
+  assert.deepEqual(fm.sources, ['raw/a.md', 'https://x.org']);
+});
+
+test('lintWiki: 코드 블록 안의 링크는 검사하지 않는다', () => {
+  const { wiki } = makeRepo({
+    'wiki/index.md': '- [a](a.md)\n- [로그](log.md)\n',
+    'wiki/log.md': '',
+    'wiki/a.md': page(['https://x.org']) + '```\n[예시](nope.md)\n```\n',
+  });
+  assert.deepEqual(lintWiki(wiki), []);
+});
+
+test('lintWiki: .md가 아닌 상대 링크도 검사한다', () => {
+  const { wiki } = makeRepo({
+    'app/data/seasons.json': '{}',
+    'wiki/index.md': '- [a](a.md)\n- [로그](log.md)\n',
+    'wiki/log.md': '',
+    'wiki/a.md': page(['https://x.org']) + '[데이터](../app/data/seasons.json)\n[없음](../app/data/none.json)\n',
+  });
+  const errors = lintWiki(wiki);
+  assert.equal(errors.length, 1);
+  assert.ok(errors[0].includes('none.json'));
+});
+
 test('lintWiki: 깨진 링크와 목차 누락을 잡는다', () => {
   const { wiki } = makeRepo({
     'wiki/index.md': '- [a](a.md)\n',
