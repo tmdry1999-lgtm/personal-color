@@ -10,7 +10,7 @@ test('cardStats: 균일한 A4', () => {
   const s = cardStats(fill(100, [200, 200, 200]));
   for (const m of s.mean) assert.ok(Math.abs(m - srgbToLinear(200)) < 1e-12);
   assert.equal(s.saturatedRatio, 0);
-  assert.equal(s.relStd, 0);
+  assert.ok(s.relStd < 1e-12, `${s.relStd}`); // 부동소수점 잡음만 허용
   assert.equal(checkCard(s, T), null);
 });
 
