@@ -27,7 +27,7 @@ PCCS(Practical Color Coordinate System)는 일본색채연구소의 색 체계�
 
 ## 12톤 ↔ PCCS 톤 대응 (가설)
 
-팔레트를 만들 때 쓴다. 규칙은 `palettes/palette-rules.md`(팔레트 규칙) 참고.
+팔레트를 만들 때 쓴다. 규칙은 [팔레트 규칙](../palettes/palette-rules.md) 참고.
 
 | 12톤 | PCCS 톤 |
 |---|---|
