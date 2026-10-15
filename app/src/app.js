@@ -229,7 +229,7 @@ async function captureAndAnalyze() {
     operator.setLast(out.ok
       ? { result: out.result, measurements: out.measurements, features: out.features, warnings: out.warnings, excluded: out.excluded }
       : out);
-    if (shouldLog(out)) {
+    if (shouldLog(out, operator.modes())) {
       operator.addLog(makeLogEntry({
         participant: operator.participant(), gender: state.gender, flags, camera: state.settings.camera, cardType: state.settings.cardType, envNote: state.settings.envNote, out, now: new Date(),
       }));

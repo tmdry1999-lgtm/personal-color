@@ -3,6 +3,7 @@ import { listCameras } from './camera.js';
 import { rectFromDrag, displayRectToRaw, browserStorage } from './settings.js';
 import { formatLog, loadLog, saveLog } from './measure-log.js';
 import { parseTypedValue } from './camera-settings.js';
+import { DEFAULT_MODES, modeBadgeText, leftoverLogNotice } from './modes.js';
 
 const $ = (id) => document.getElementById(id);
 const CONTROL_NAMES = { saturation: '채도', colorTemperature: '색온도 (K)', exposureTime: '노출 시간' };
@@ -14,8 +15,24 @@ export function setupOperator({ overlay, getSettings, setSettings, onCameraChang
   const logStore = browserStorage('sessionStorage');
   const log = loadLog(logStore);
 
+  // 운영자 모드: 메모리에만. 새로고침 때 Chrome이 체크 상태를 되살리지 않게 시작할 때 끈다
+  const modes = { ...DEFAULT_MODES };
+  $('op-mode-data').checked = false;
+
+  function renderModes() {
+    const text = modeBadgeText(modes, $('op-participant').value);
+    $('mode-badge').textContent = text ?? '';
+    $('mode-badge').hidden = text === null;
+    const left = leftoverLogNotice(modes, log.length);
+    $('op-log-left').textContent = left;
+    $('op-log-left').hidden = left === '';
+  }
+  $('op-mode-data').addEventListener('change', (e) => { modes.dataCollection = e.target.checked; renderModes(); });
+  $('op-participant').addEventListener('input', renderModes);
+
   function renderLogCount() {
     $('op-log-count').textContent = `${log.length}건`;
+    renderModes();
   }
   renderLogCount();
   $('op-log-copy').addEventListener('click', async () => {
@@ -133,6 +150,7 @@ export function setupOperator({ overlay, getSettings, setSettings, onCameraChang
   return {
     setControls,
     participant: () => $('op-participant').value,
+    modes: () => ({ ...modes }),
     addLog: (entry) => { log.push(entry); saveLog(logStore, log); renderLogCount(); },
     setCaps: (report) => {
       const { controls, ...rest } = report;

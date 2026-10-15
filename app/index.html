@@ -56,6 +56,7 @@
   </section>
 
   <p id="error" class="error" hidden></p>
+  <div id="mode-badge" class="mode-badge" hidden></div>
 </main>
 
 <dialog id="operator">
@@ -75,9 +76,11 @@
   <h3>카메라 제어 상태</h3>
   <pre id="op-caps">확인 중…</pre>
   <h3>측정 기록 (숫자만, 이 탭을 닫으면 사라져요)</h3>
+  <label><input type="checkbox" id="op-mode-data" autocomplete="off"> 데이터 수집 모드 (켜야 기록돼요, 새로고침하면 꺼짐)</label>
   <label>참가자 번호 <input id="op-participant" value="P1" size="6"></label>
   <label>환경 메모 (예: 반사판) <input id="op-env" size="16"></label>
   <p><span id="op-log-count">0건</span> <span id="op-log-status"></span></p>
+  <p id="op-log-left" class="notice" hidden></p>
   <button id="op-log-copy">모두 복사</button>
   <button id="op-log-clear">비우기</button>
   <textarea id="op-log-text" rows="6" hidden></textarea>

@@ -44,9 +44,10 @@ export function formatLog(entries) {
   return blocks.join('\n\n');
 }
 
-// 성공한 측정만 기록한다. 조명·A4 문제로 실패한 측정은 범위 재설정 데이터에 쓸 수 없다.
-export function shouldLog(out) {
-  return out.ok === true;
+// 데이터 수집 모드가 켜져 있을 때, 성공한 측정만 기록한다.
+// 실패한 측정은 조명·A4 문제라 범위 재설정 데이터에 쓸 수 없다.
+export function shouldLog(out, modes) {
+  return modes?.dataCollection === true && out.ok === true;
 }
 
 // 탭을 닫을 때까지만 보관 (sessionStorage). 숫자만 있고 사진은 없다. 새로고침으로 기록이 사라지는 것을 막는다.

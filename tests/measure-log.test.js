@@ -49,11 +49,18 @@ test('formatLog: 참가자별로 묶고 회차 번호를 붙인다 (양식: 성�
   assert.equal(formatLog([]), '기록 없음');
 });
 
-test('shouldLog: 성공한 측정만 기록한다 (조명·A4 등으로 실패한 것은 제외)', () => {
-  assert.equal(shouldLog(okOut), true);
+test('shouldLog: 데이터 수집 모드가 켜져 있고 성공한 측정만 기록한다', () => {
+  const on = { dataCollection: true, chinLift: false };
+  assert.equal(shouldLog(okOut, on), true);
   for (const error of ['card_saturated', 'card_occluded', 'card_missing', 'too_dark', 'no_skin', 'not_enough_frames']) {
-    assert.equal(shouldLog({ ok: false, error }), false, error);
+    assert.equal(shouldLog({ ok: false, error }, on), false, error);
   }
+});
+
+test('shouldLog: 데이터 수집 모드가 꺼져 있거나 모드를 모르면 기록하지 않는다 (방문객 개인정보)', () => {
+  assert.equal(shouldLog(okOut, { dataCollection: false, chinLift: true }), false);
+  assert.equal(shouldLog(okOut, undefined), false);
+  assert.equal(shouldLog(okOut), false);
 });
 
 test('makeLogEntry: 어떤 기준 카드로 쟀는지 남긴다 (A4 → 회색 카드 환산용)', () => {
