@@ -18,6 +18,7 @@ export function setupOperator({ overlay, getSettings, setSettings, onCameraChang
   // 운영자 모드: 메모리에만. 새로고침 때 Chrome이 체크 상태를 되살리지 않게 시작할 때 끈다
   const modes = { ...DEFAULT_MODES };
   $('op-mode-data').checked = false;
+  $('op-mode-chin').checked = false;
 
   function renderModes() {
     const text = modeBadgeText(modes, $('op-participant').value);
@@ -28,6 +29,7 @@ export function setupOperator({ overlay, getSettings, setSettings, onCameraChang
     $('op-log-left').hidden = left === '';
   }
   $('op-mode-data').addEventListener('change', (e) => { modes.dataCollection = e.target.checked; renderModes(); });
+  $('op-mode-chin').addEventListener('change', (e) => { modes.chinLift = e.target.checked; renderModes(); });
   $('op-participant').addEventListener('input', renderModes);
 
   function renderLogCount() {

@@ -39,8 +39,12 @@ test('촬영 실패·로딩 실패 안내 문구가 있다', () => {
   assert.ok(MESSAGES.load_failed);
 });
 
-test('needsNeckCapture: 베이스 화장을 체크한 사람만 목을 따로 찍는다', () => {
-  assert.equal(needsNeckCapture({ baseMakeup: true }), true);
-  assert.equal(needsNeckCapture({ baseMakeup: false }), false);
-  assert.equal(needsNeckCapture({}), false);
+test('needsNeckCapture: 턱 들기 모드가 켜져 있고 베이스 화장을 체크한 사람만 목을 따로 찍는다', () => {
+  const on = { dataCollection: false, chinLift: true };
+  const off = { dataCollection: true, chinLift: false };
+  assert.equal(needsNeckCapture({ baseMakeup: true }, on), true);
+  assert.equal(needsNeckCapture({ baseMakeup: false }, on), false);
+  assert.equal(needsNeckCapture({}, on), false);
+  assert.equal(needsNeckCapture({ baseMakeup: true }, off), false);
+  assert.equal(needsNeckCapture({ baseMakeup: true }, undefined), false);
 });

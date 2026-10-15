@@ -210,7 +210,7 @@ async function captureAndAnalyze() {
 
     // 베이스 화장한 사람만: 턱을 든 목 사진을 한 번 더 (턱 그림자를 피해 목에 빛이 닿게)
     let neckSkipped = false;
-    if (needsNeckCapture(flags) && frames.length * 2 >= t.framesPerCapture) {
+    if (needsNeckCapture(flags, operator.modes()) && frames.length * 2 >= t.framesPerCapture) {
       const lifted = await waitForChinLift(t, median(frames.map((f) => headPitchDeg(f.landmarks, video.videoWidth / video.videoHeight))));
       if (lifted) neckFrames = await captureFrames(t);
       else neckSkipped = true;

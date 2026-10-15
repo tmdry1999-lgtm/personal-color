@@ -23,7 +23,8 @@ export async function guardCapture(state, work, onError) {
   }
 }
 
-// 베이스 화장을 한 사람만 턱을 든 목 사진을 한 번 더 찍는다 (얼굴 피부는 화장 색이라 웜/쿨을 못 가림)
-export function needsNeckCapture(flags) {
-  return flags?.baseMakeup === true;
+// 운영자가 턱 들기 모드를 켰을 때, 베이스 화장을 한 사람만 턱을 든 목 사진을 한 번 더 찍는다
+// (얼굴 피부는 화장 색이라 웜/쿨을 못 가림). 기본은 꺼짐: 판정에 아직 안 쓰는 값이라 방문객 대기만 늘어난다.
+export function needsNeckCapture(flags, modes) {
+  return modes?.chinLift === true && flags?.baseMakeup === true;
 }
