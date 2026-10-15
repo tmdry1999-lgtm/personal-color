@@ -36,3 +36,4 @@
 | 2026-10-13 | raw/measurements/2026-10-13-reflector-session.md | 반사판 실험: 목 그림자 크게 줄지만 얼굴도 밝혀 A4 가정이 깨짐(1회 여름 라이트), 07:31 이후 머리·눈동자 밝아짐 |
 | 2026-10-13 | raw/measurements/2026-10-13-reflector-session-correction.md | 남성 측정은 모두 P1, 기록상 P2 여성은 P7 |
 | 2026-10-13 | decisions/status-2026-10-13.md | 오늘 마감: 상태, 결정, 다음 할 일 8단계, 고쳐야 할 문제 16개 |
+| 2026-10-15 | measurement/regions.md, measurement/webcam-limits.md, decisions/* | 운영자 모드(데이터 수집·턱 들기, 기본 꺼짐), 웹캠별 설정, 리뷰에서 미룬 항목 |
