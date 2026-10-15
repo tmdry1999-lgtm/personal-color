@@ -1,6 +1,6 @@
 // 부스 화면 흐름: 대기 → 시작 → 촬영 → 분석 중 → 결과 (스펙 7.1)
 import qrcode from 'https://cdn.jsdelivr.net/npm/qrcode-generator@2.0.4/dist/qrcode.mjs';
-import { openCamera, stopCamera, applyCameraSettings, grabFrame } from './camera.js';
+import { openCamera, stopCamera, applyCameraSettings, grabFrame, streamDeviceId } from './camera.js';
 import { makeLogEntry, shouldLog } from './measure-log.js';
 import { createDetectors } from './face.js';
 import { faceCheck, headPitchDeg, chinLifted } from './face-check.js';
@@ -9,7 +9,7 @@ import { analyze } from './pipeline.js';
 import { encodeResult } from './result-code.js';
 import { messageFor } from './messages.js';
 import { renderResultHtml } from './result-view.js';
-import { browserStorage, loadSettings, saveSettings, displayRectToRaw } from './settings.js';
+import { browserStorage, loadSettings, saveSettings, displayRectToRaw, cameraValuesFor, withCameraValues } from './settings.js';
 import { setupOperator } from './operator.js';
 import { IDLE_RESET_SCREENS, canStart, guardCapture, needsNeckCapture } from './flow.js';
 
@@ -22,7 +22,7 @@ const overlay = $('overlay');
 const state = {
   screen: 'idle', gender: null, settings: loadSettings(storage),
   config: null, palettes: null, detectors: null, stream: null,
-  holdStart: null, lastFaceAt: Date.now(), busy: false, idleTimer: null,
+  holdStart: null, lastFaceAt: Date.now(), busy: false, idleTimer: null, cameraId: null,
 };
 
 function updateSettings(s) {
@@ -35,6 +35,11 @@ const operator = setupOperator({
   getSettings: () => state.settings,
   setSettings: updateSettings,
   onCameraChange: (id) => startCamera(id),
+  // [웹캠 설정 초기화]: 지금 웹캠의 값만 지우고, 새로고침 후 그 웹캠 기본값으로 다시 고정한다
+  onCameraReset: () => {
+    if (state.cameraId) updateSettings(withCameraValues(state.settings, state.cameraId, null));
+    location.reload();
+  },
 });
 
 function show(screen) {
@@ -80,15 +85,21 @@ async function startCamera(deviceId) {
     showError('camera_denied', true);
     return;
   }
-  // 화면 밝기가 자리잡은 뒤(2초) 저장된 웹캠 설정을 적용한다. 처음이면 지금 값으로 고정하고 그 값을 저장한다.
+  // 화면 밝기가 자리잡은 뒤(2초) 이 웹캠의 저장값을 적용한다. 처음 쓰는 웹캠이면 지금 값(웹캠 기본값)으로 고정하고 저장한다.
+  // 2초 안에 웹캠을 또 바꾸면 이전 웹캠의 타이머는 아무것도 하지 않는다.
   const stream = state.stream;
+  const id = streamDeviceId(stream);
+  state.cameraId = id;
   setTimeout(async () => {
-    const report = await applyCameraSettings(stream, state.settings.camera);
-    if (!state.settings.camera) updateSettings({ ...state.settings, camera: report.values });
+    if (state.stream !== stream) return;
+    const saved = cameraValuesFor(state.settings, id);
+    const report = await applyCameraSettings(stream, saved);
+    if (state.stream !== stream) return;
+    updateSettings(withCameraValues(state.settings, id, saved ?? report.values));
     operator.setCaps(report);
     operator.setControls(report.controls, async (key, value) => {
-      updateSettings({ ...state.settings, camera: { ...state.settings.camera, [key]: value } });
-      operator.setCaps(await applyCameraSettings(stream, state.settings.camera));
+      updateSettings(withCameraValues(state.settings, id, { ...cameraValuesFor(state.settings, id), [key]: value }));
+      operator.setCaps(await applyCameraSettings(stream, cameraValuesFor(state.settings, id)));
     });
   }, 2000);
 }
@@ -231,7 +242,7 @@ async function captureAndAnalyze() {
       : out);
     if (shouldLog(out, operator.modes())) {
       operator.addLog(makeLogEntry({
-        participant: operator.participant(), gender: state.gender, flags, camera: state.settings.camera, cardType: state.settings.cardType, envNote: state.settings.envNote, out, now: new Date(),
+        participant: operator.participant(), gender: state.gender, flags, camera: cameraValuesFor(state.settings, state.cameraId), cardType: state.settings.cardType, envNote: state.settings.envNote, out, now: new Date(),
       }));
     }
     if (!out.ok) {

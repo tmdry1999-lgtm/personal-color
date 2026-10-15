@@ -23,6 +23,12 @@ export function stopCamera(stream) {
   stream?.getTracks().forEach((t) => t.stop());
 }
 
+// 실제로 열린 웹캠의 id (저장해 둔 웹캠이 빠져 기본 웹캠으로 열렸을 수도 있으므로 요청한 id가 아니라 이것을 쓴다)
+export function streamDeviceId(stream) {
+  const s = stream.getVideoTracks()[0]?.getSettings?.() ?? {};
+  return s.deviceId || 'unknown';
+}
+
 export async function listCameras() {
   const devices = await navigator.mediaDevices.enumerateDevices();
   return devices.filter((d) => d.kind === 'videoinput');

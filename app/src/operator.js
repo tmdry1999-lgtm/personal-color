@@ -8,7 +8,7 @@ import { DEFAULT_MODES, modeBadgeText, leftoverLogNotice } from './modes.js';
 const $ = (id) => document.getElementById(id);
 const CONTROL_NAMES = { saturation: '채도', colorTemperature: '색온도 (K)', exposureTime: '노출 시간' };
 
-export function setupOperator({ overlay, getSettings, setSettings, onCameraChange }) {
+export function setupOperator({ overlay, getSettings, setSettings, onCameraChange, onCameraReset }) {
   const dialog = $('operator');
   let drag = null;
   // 측정 기록: 숫자만. 탭을 닫을 때까지 sessionStorage에 보관해 새로고침해도 남는다
@@ -50,11 +50,8 @@ export function setupOperator({ overlay, getSettings, setSettings, onCameraChang
       $('op-log-status').textContent = 'Ctrl+C로 복사해 주세요';
     }
   });
-  // 잘못 저장된 웹캠 설정을 지우고, 새로고침 후 그 순간 값으로 다시 고정한다
-  $('op-camera-reset').addEventListener('click', () => {
-    setSettings({ ...getSettings(), camera: null });
-    location.reload();
-  });
+  // 지금 웹캠의 설정값만 지우고, 새로고침 후 그 웹캠 기본값으로 다시 고정한다
+  $('op-camera-reset').addEventListener('click', onCameraReset);
   $('op-log-clear').addEventListener('click', () => {
     log.length = 0;
     saveLog(logStore, log);
