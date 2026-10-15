@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { measureRegion, median, combineFrames, hasGlare } from '../app/src/measure.js';
+import { measureRegion, measureLitRegion, median, combineFrames, hasGlare } from '../app/src/measure.js';
 import { rgbToLch, linearToSrgb, srgbToLinear, linearToLab, withLch } from '../app/src/color.js';
 
 const fill = (n, rgb) => Array.from({ length: n }, () => rgb);
@@ -54,4 +54,14 @@ test('hasGlare: 밝은 반사 픽셀 비율', () => {
 
 test('srgbToLinear는 measure가 쓰는 것과 같은 모듈', () => {
   assert.equal(typeof srgbToLinear, 'function');
+});
+
+test('measureLitRegion: 그림자 진 어두운 절반을 버리고 밝은 쪽만 (반사광 상위 10%는 제외)', () => {
+  const lit = [200, 160, 120];
+  const shadow = [90, 60, 40];
+  const pixels = [...fill(50, shadow), ...fill(40, lit), ...fill(10, [255, 255, 255])];
+  const m = measureLitRegion(pixels, ONE, 20);
+  const e = rgbToLch(lit);
+  for (const k of ['L', 'a', 'b']) assert.ok(Math.abs(m[k] - e[k]) < 1e-9, k);
+  assert.equal(measureLitRegion(fill(19, lit), ONE, 20), null);
 });

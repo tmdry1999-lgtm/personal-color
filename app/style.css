@@ -16,3 +16,5 @@ label { display: block; font-size: 1.3rem; margin: 0.5em 0; }
 .swatch { width: 32px; height: 32px; border: 1px solid #ccc; display: inline-block; }
 #qr svg { width: 200px; height: 200px; }
 dialog pre { max-height: 240px; overflow: auto; background: #f0f0f0; padding: 8px; font-size: 12px; }
+#operator { position: fixed; top: 16px; right: 16px; left: auto; margin: 0; width: 380px; max-height: calc(100vh - 32px); overflow: auto; z-index: 10; }
+.mode-badge { position: fixed; right: 12px; bottom: 12px; padding: 4px 10px; border-radius: 12px; background: rgba(0,0,0,0.55); color: #fff; font-size: 0.85rem; z-index: 5; }

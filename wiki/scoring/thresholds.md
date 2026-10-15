@@ -1,6 +1,7 @@
 ---
 status: 가설
 sources:
+  - raw/measurements/2026-10-13-p1-p3-session.md
   - raw/web/github-seasonal-color-analysis.md
   - raw/web/cielab-chroma-ranges.md
 ---
@@ -28,6 +29,9 @@ sources:
 | eyeOpenMinRatio | 0.12 | 비율 | 6.3 눈동자 제외 | 눈 높이/눈 폭이 이보다 작으면 감은 눈 |
 | glareMinL | 85 | L* | 6.3 눈동자 제외 | 눈동자 영역에서 이보다 밝은 픽셀은 반사광 |
 | glareMaxRatio | 0.2 | 비율 | 6.3 눈동자 제외 | 반사광 픽셀이 20%를 넘으면 안경 반사로 보고 눈동자 제외 |
+| neckLiftMinDeg | 12 | 도 | 목 촬영 | 얼굴 촬영 때보다 턱을 이만큼 들어야 목 촬영 시작. 이마 위·턱 끝 깊이(z) 차이로 각도 추정 (가설, 실측으로 조정) |
+| neckTimeoutSeconds | 10 | 초 | 목 촬영 | 이 시간 안에 턱을 못 들면 목 촬영을 건너뛰고 경고 `neck_not_lifted` |
+| irisMaxHueDeg | 90 | 도 | 6.3 눈동자 제외 | 갈색 눈동자는 40~60°. 90°를 넘으면(초록·파란빛) 안경 렌즈 반사로 보고 제외. 근거: P3 안경 착용 시 111~118° (`raw/measurements/2026-10-13-p1-p3-session.md`) |
 
 모든 값은 가설이다. 3단계에서 실측으로 조정한다.
 

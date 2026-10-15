@@ -18,3 +18,22 @@
 | 2026-10-13 | raw/measurements/2026-10-13-repeat-runs.md, decisions/phase3-backlog.md | 반복 측정 2·3회차 기록, 3단계 할 일 목록 작성 |
 | 2026-10-13 | decisions/phase3-backlog.md | MVP 수동 점검 결과와 남은 점검 항목 추가, 반복성 2/3 기준 미달 기록 |
 | 2026-10-13 | decisions/phase3-backlog.md | 2단계 최종 리뷰에서 미룬 코드 정리 6건 추가 |
+| 2026-10-13 | measurement/webcam-limits.md | 3단계-A: 웹캠 설정값 저장·재적용, 측정 기록 모드 추가 |
+| 2026-10-13 | raw/measurements/2026-10-13-p1-locked-settings.md | 웹캠 설정 고정 후 P1 2회: 겨울 딥 2/2, 경계형 아님 |
+| 2026-10-13 | raw/measurements/2026-10-13-participants.md | 참가자 목록: 지금까지 측정 1~5회 모두 P1 |
+| 2026-10-13 | measurement/lighting.md, raw/web/diagnosis-environment.md | 전문 진단 환경 조사 반영: CRI 95·R9, 정면 확산광, 다른 빛 차단, A4 위치, 클리핑 원리 |
+| 2026-10-13 | decisions/phase3-backlog.md | 데이터 수집 메모: 현 환경 유지, 회색 카드 도착 후 A4 환산 세션 |
+| 2026-10-13 | raw/measurements/2026-10-13-p1-p3-session.md, measurement/participants.md | P1~P3 세션 8회 기록, 참가자 목록 위키 페이지 |
+| 2026-10-13 | measurement/participants.md, raw/measurements/2026-10-13-participant-notes.md | P2 전문가 진단 가을 웜(앱 겨울, 불일치), P2 화장·P3 안경 기록 |
+| 2026-10-13 | decisions/phase3-backlog.md | 화장·안경 대응 4항목 기록 (데이터 먼저 모은 뒤 구현) |
+| 2026-10-13 | raw/measurements/2026-10-13-p4-p6-session.md, measurement/participants.md | P4~P6 기록, 전문가 진단 대비 웜/쿨 0/3 |
+| 2026-10-13 | measurement/regions.md, scoring/thresholds.md, decisions/ | 목 피부 측정(기록만), 베이스 화장 체크, 안경 안내·눈동자 이상색 제외, 측정 기록 sessionStorage 보관 |
+| 2026-10-13 | measurement/regions.md | 베이스 화장 시 턱 든 목 사진 단계 추가 (그림자 회피, 기록만) |
+| 2026-10-13 | scoring/thresholds.md | 턱 들기 인식 임계값 2개 (neckLiftMinDeg 12°, neckTimeoutSeconds 10) |
+| 2026-10-13 | raw/measurements/2026-10-13-neck-session.md, measurement/participants.md | 목 측정 세션: P1 5회, P7(여름/가을 뮤트) 2회, 미확인 남성 2회. 목 색상각이 얼굴보다 5~8° 높음, 그림자가 색상각을 낮춤 |
+| 2026-10-13 | raw/measurements/2026-10-13-neck-session-correction.md | 미확인 남성 2회 = P1, 턱 각도 부호 정상(최대 약 55°), 턱 들어도 목 그림자 남음 |
+| 2026-10-13 | measurement/regions.md, measurement/lighting.md | 목 빛 받은 부분만 측정(추가 기록), 반사판·환경 메모. 복구 지점: git tag before-neck-lit |
+| 2026-10-13 | raw/measurements/2026-10-13-reflector-session.md | 반사판 실험: 목 그림자 크게 줄지만 얼굴도 밝혀 A4 가정이 깨짐(1회 여름 라이트), 07:31 이후 머리·눈동자 밝아짐 |
+| 2026-10-13 | raw/measurements/2026-10-13-reflector-session-correction.md | 남성 측정은 모두 P1, 기록상 P2 여성은 P7 |
+| 2026-10-13 | decisions/status-2026-10-13.md | 오늘 마감: 상태, 결정, 다음 할 일 8단계, 고쳐야 할 문제 16개 |
+| 2026-10-15 | measurement/regions.md, measurement/webcam-limits.md, decisions/* | 운영자 모드(데이터 수집·턱 들기, 기본 꺼짐), 웹캠별 설정, 리뷰에서 미룬 항목 |

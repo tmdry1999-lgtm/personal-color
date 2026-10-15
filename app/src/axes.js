@@ -18,7 +18,13 @@ export function buildFeatures(m, flags, t) {
   if (lip && flags.lipProduct) { excluded.push('lip:self_report'); lip = null; }
   else if (lip && lip.C > t.lipProductMinChroma) { excluded.push('lip:auto'); lip = null; }
   const s = m.skin;
-  const iris = m.iris ?? null;
+  let iris = m.iris ?? null;
+  // 안경 렌즈 반사 등으로 눈동자가 초록·파란빛으로 찍히면 쓰지 않는다
+  if (iris && !Number.isNaN(iris.h) && iris.h > t.irisMaxHueDeg) { excluded.push('iris:auto'); iris = null; }
+  const neck = m.neck ?? null;
+  const liftedNeck = m.liftedNeck ?? null;
+  const neckLit = m.neckLit ?? null;
+  const liftedNeckLit = m.liftedNeckLit ?? null;
   const brow = m.brow ?? null;
   return {
     excluded,
@@ -33,6 +39,21 @@ export function buildFeatures(m, flags, t) {
       deltaLHair: hair ? s.L - hair.L : null,
       deltaLIris: iris ? s.L - iris.L : null,
       deltaLBrow: brow ? s.L - brow.L : null,
+      // 목 피부: 기록만 하고 아직 판정 가중치에는 넣지 않는다
+      neckHueDeg: usable(neck),
+      neckB: neck ? neck.b : null,
+      neckC: neck ? neck.C : null,
+      // 턱을 든 목 사진 (베이스 화장한 사람만)
+      liftedNeckHueDeg: usable(liftedNeck),
+      liftedNeckB: liftedNeck ? liftedNeck.b : null,
+      liftedNeckC: liftedNeck ? liftedNeck.C : null,
+      // 목의 빛 받은 부분만 (그림자 제외) — 위 값과 비교용
+      neckLitHueDeg: usable(neckLit),
+      neckLitB: neckLit ? neckLit.b : null,
+      neckLitC: neckLit ? neckLit.C : null,
+      liftedNeckLitHueDeg: usable(liftedNeckLit),
+      liftedNeckLitB: liftedNeckLit ? liftedNeckLit.b : null,
+      liftedNeckLitC: liftedNeckLit ? liftedNeckLit.C : null,
     },
   };
 }

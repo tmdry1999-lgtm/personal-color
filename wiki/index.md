@@ -3,6 +3,7 @@
 모든 문서는 front matter의 `status`(가설/확정/참고)와 `sources`를 가진다.
 
 ## 결정
+- **[현재 상태와 다음 할 일 (2026-10-13)](decisions/status-2026-10-13.md) — 여기서 시작**
 - [결정 기록](decisions/decisions.md) — 확정 사항 17개, 쓰지 않는 자원, 열린 항목
 - [3단계 할 일 목록](decisions/phase3-backlog.md) — MVP 실측에서 나온 문제 7개와 해결 후보
 
@@ -17,6 +18,7 @@
 - [측정 부위](measurement/regions.md) — 5개 부위, 제외 조건, 촬영 조건
 - [색 변환](measurement/color-conversion.md) — sRGB→Lab 공식과 검증값
 - [웹캠 한계](measurement/webcam-limits.md) — 자동 보정 문제와 대응
+- [참가자와 측정 기록](measurement/participants.md) — P1~P3, 측정 파일 목록
 
 ## 판정
 - [축 계산식](scoring/axis-formulas.md) — 특징값 → 0~100 점수, 범위와 가중치 근거

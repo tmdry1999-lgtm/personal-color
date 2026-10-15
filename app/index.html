@@ -27,13 +27,20 @@
     </div>
     <label><input type="checkbox" id="flag-dyed"> 염색했어요</label>
     <label><input type="checkbox" id="flag-lip"> 립 제품을 발랐어요</label>
+    <label><input type="checkbox" id="flag-base"> 베이스 화장(파운데이션·쿠션)을 했어요</label>
+    <p class="notice">안경은 잠시 벗어 주세요</p>
     <p class="notice">사진은 저장되지 않으며, 진단 후 즉시 삭제됩니다</p>
     <button id="btn-begin" class="big" disabled>진단 시작</button>
   </section>
 
   <section id="screen-capture" hidden>
-    <p id="capture-msg" class="msg">얼굴을 화면 가운데에 맞춰 주세요</p>
+    <p id="capture-msg" class="msg">안경은 벗고, 얼굴을 화면 가운데에 맞춰 주세요</p>
     <p id="countdown" class="countdown"></p>
+  </section>
+
+  <section id="screen-neck" hidden>
+    <p id="neck-msg" class="msg">턱을 살짝 들어 주세요 (목 피부를 측정해요)</p>
+    <p id="neck-angle" class="notice"></p>
   </section>
 
   <section id="screen-analyzing" hidden>
@@ -49,6 +56,7 @@
   </section>
 
   <p id="error" class="error" hidden></p>
+  <div id="mode-badge" class="mode-badge" hidden></div>
 </main>
 
 <dialog id="operator">
@@ -61,8 +69,22 @@
     </select>
   </label>
   <button id="op-card-rect">A4 영역 지정 (화면에서 드래그)</button>
-  <h3>카메라 제어 지원 (화이트밸런스·노출 고정)</h3>
+  <h3>웹캠 설정 (웹캠마다 따로 저장되고, 켤 때마다 다시 적용)</h3>
+  <div id="op-controls">확인 중…</div>
+  <button id="op-camera-reset">이 웹캠 설정 초기화 (웹캠 기본값으로 다시 고정)</button>
+  <p class="notice">채도는 미리보기를 보며 기본값의 70~80% 정도로 낮추길 권장해요. 측정을 시작한 뒤에는 바꾸지 마세요.</p>
+  <h3>카메라 제어 상태</h3>
   <pre id="op-caps">확인 중…</pre>
+  <h3>측정 기록 (숫자만, 이 탭을 닫으면 사라져요)</h3>
+  <label><input type="checkbox" id="op-mode-data" autocomplete="off"> 데이터 수집 모드 (켜야 기록돼요, 새로고침하면 꺼짐)</label>
+  <label><input type="checkbox" id="op-mode-chin" autocomplete="off"> 턱 들기 모드 (베이스 화장한 사람만 목 사진 추가, 새로고침하면 꺼짐)</label>
+  <label>참가자 번호 <input id="op-participant" value="P1" size="6"></label>
+  <label>환경 메모 (예: 반사판) <input id="op-env" size="16"></label>
+  <p><span id="op-log-count">0건</span> <span id="op-log-status"></span></p>
+  <p id="op-log-left" class="notice" hidden></p>
+  <button id="op-log-copy">모두 복사</button>
+  <button id="op-log-clear">비우기</button>
+  <textarea id="op-log-text" rows="6" hidden></textarea>
   <h3>마지막 측정값 (숫자만, 저장 안 됨)</h3>
   <pre id="op-last">없음</pre>
   <button id="op-close">닫기</button>

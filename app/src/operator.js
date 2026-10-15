@@ -1,12 +1,64 @@
 // 운영자 대화상자 (Ctrl+Shift+S): 웹캠 선택, 카드 종류, A4 영역 드래그, 진단 정보
 import { listCameras } from './camera.js';
-import { rectFromDrag, displayRectToRaw } from './settings.js';
+import { rectFromDrag, displayRectToRaw, browserStorage } from './settings.js';
+import { formatLog, loadLog, saveLog } from './measure-log.js';
+import { parseTypedValue } from './camera-settings.js';
+import { DEFAULT_MODES, modeBadgeText, leftoverLogNotice } from './modes.js';
 
 const $ = (id) => document.getElementById(id);
+const CONTROL_NAMES = { saturation: '채도', colorTemperature: '색온도 (K)', exposureTime: '노출 시간' };
 
-export function setupOperator({ overlay, getSettings, setSettings, onCameraChange }) {
+export function setupOperator({ overlay, getSettings, setSettings, onCameraChange, onCameraReset }) {
   const dialog = $('operator');
   let drag = null;
+  // 측정 기록: 숫자만. 탭을 닫을 때까지 sessionStorage에 보관해 새로고침해도 남는다
+  const logStore = browserStorage('sessionStorage');
+  const log = loadLog(logStore);
+
+  // 운영자 모드: 메모리에만. 새로고침 때 Chrome이 체크 상태를 되살리지 않게 시작할 때 끈다
+  const modes = { ...DEFAULT_MODES };
+  $('op-mode-data').checked = false;
+  $('op-mode-chin').checked = false;
+
+  function renderModes() {
+    const text = modeBadgeText(modes, $('op-participant').value);
+    $('mode-badge').textContent = text ?? '';
+    $('mode-badge').hidden = text === null;
+    const left = leftoverLogNotice(modes, log.length);
+    $('op-log-left').textContent = left;
+    $('op-log-left').hidden = left === '';
+  }
+  $('op-mode-data').addEventListener('change', (e) => { modes.dataCollection = e.target.checked; renderModes(); });
+  $('op-mode-chin').addEventListener('change', (e) => { modes.chinLift = e.target.checked; renderModes(); });
+  $('op-participant').addEventListener('input', renderModes);
+
+  function renderLogCount() {
+    $('op-log-count').textContent = `${log.length}건`;
+    renderModes();
+  }
+  renderLogCount();
+  $('op-log-copy').addEventListener('click', async () => {
+    const text = formatLog(log);
+    try {
+      await navigator.clipboard.writeText(text);
+      $('op-log-status').textContent = '복사됨';
+    } catch {
+      // 클립보드가 막히면 텍스트 상자에 띄워 직접 복사하게 한다
+      $('op-log-text').hidden = false;
+      $('op-log-text').value = text;
+      $('op-log-text').select();
+      $('op-log-status').textContent = 'Ctrl+C로 복사해 주세요';
+    }
+  });
+  // 지금 웹캠의 설정값만 지우고, 새로고침 후 그 웹캠 기본값으로 다시 고정한다
+  $('op-camera-reset').addEventListener('click', onCameraReset);
+  $('op-log-clear').addEventListener('click', () => {
+    log.length = 0;
+    saveLog(logStore, log);
+    $('op-log-text').hidden = true;
+    $('op-log-status').textContent = '';
+    renderLogCount();
+  });
 
   document.addEventListener('keydown', (e) => {
     if (e.ctrlKey && e.shiftKey && e.code === 'KeyS') {
@@ -23,7 +75,7 @@ export function setupOperator({ overlay, getSettings, setSettings, onCameraChang
       .join('');
     $('op-camera').value = getSettings().deviceId ?? cams[0]?.deviceId ?? '';
     $('op-card').value = getSettings().cardType;
-    dialog.showModal();
+    dialog.show(); // 모달이 아니게: 미리보기를 보면서 조정
   }
 
   $('op-camera').addEventListener('change', (e) => {
@@ -31,6 +83,9 @@ export function setupOperator({ overlay, getSettings, setSettings, onCameraChang
     onCameraChange(e.target.value);
   });
   $('op-card').addEventListener('change', (e) => setSettings({ ...getSettings(), cardType: e.target.value }));
+  // 환경 메모: 반사판 등 측정 환경을 기록에 남긴다 (되돌릴 때는 지우면 됨)
+  $('op-env').value = getSettings().envNote ?? '';
+  $('op-env').addEventListener('change', (e) => setSettings({ ...getSettings(), envNote: e.target.value.trim() }));
 
   // 화면 좌표(0~1, 거울 모드) → 원본 프레임 좌표로 저장
   const pos = (e) => {
@@ -55,8 +110,51 @@ export function setupOperator({ overlay, getSettings, setSettings, onCameraChang
     open();
   });
 
+  // 슬라이더는 웹캠이 알려준 지원 범위로 만든다. 놓는 순간(change) 저장·적용한다.
+  function setControls(controls, onChange) {
+    const box = $('op-controls');
+    box.replaceChildren();
+    for (const [key, c] of Object.entries(controls)) {
+      const row = document.createElement('label');
+      row.append(`${CONTROL_NAMES[key]} `);
+      if (!c) {
+        row.append('지원 안 함');
+      } else {
+        // 슬라이더(대략 조정)와 숫자 칸(정밀 입력)이 서로 따라간다. 숫자 칸은 Enter나 칸을 벗어날 때 적용
+        const start = c.value ?? (c.min + c.max) / 2;
+        const slider = Object.assign(document.createElement('input'), { type: 'range', min: c.min, max: c.max, step: c.step, value: start });
+        const number = Object.assign(document.createElement('input'), {
+          type: 'number', min: c.min, max: c.max, step: c.step, value: c.value ?? '', placeholder: '모름', style: 'width: 6em',
+        });
+        const note = Object.assign(document.createElement('span'), { textContent: c.value === null ? ' 현재 값 모름 — 바꾸면 저장' : '' });
+        const apply = (v) => {
+          slider.value = v;
+          number.value = v;
+          note.textContent = '';
+          onChange(key, v);
+        };
+        slider.addEventListener('input', () => { number.value = slider.value; });
+        slider.addEventListener('change', () => apply(Number(slider.value)));
+        number.addEventListener('change', () => {
+          const v = parseTypedValue(number.value, c);
+          if (v === null) { number.value = slider.value; return; }
+          apply(v);
+        });
+        row.append(slider, ' ', number, note);
+      }
+      box.append(row);
+    }
+  }
+
   return {
-    setCaps: (report) => { $('op-caps').textContent = JSON.stringify(report, null, 2); },
+    setControls,
+    participant: () => $('op-participant').value,
+    modes: () => ({ ...modes }),
+    addLog: (entry) => { log.push(entry); saveLog(logStore, log); renderLogCount(); },
+    setCaps: (report) => {
+      const { controls, ...rest } = report;
+      $('op-caps').textContent = JSON.stringify(rest, null, 2);
+    },
     setLast: (info) => { $('op-last').textContent = JSON.stringify(info, null, 2); },
     dragRect: () => (drag ? rectFromDrag(drag.a, drag.b) : null),
   };

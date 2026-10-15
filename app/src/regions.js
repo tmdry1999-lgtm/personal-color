@@ -5,6 +5,8 @@ export const LM = {
   cheeks: [205, 425],
   forehead: 9,
   chin: 199,
+  chinBottom: 152,
+  foreheadTop: 10,
   eyes: [
     { iris: 468, irisEdge: 469, corners: [33, 133], lids: [159, 145] },
     { iris: 473, irisEdge: 474, corners: [362, 263], lids: [386, 374] },
@@ -17,6 +19,7 @@ export const LM = {
   ],
 };
 const HAIR_CATEGORY = 1; // MediaPipe 멀티클래스 분리: 1 = 머리카락
+const BODY_SKIN_CATEGORY = 2; // 2 = 몸 피부 (목)
 
 const pixelAt = (img, x, y) => {
   const i = (y * img.width + x) * 4;
@@ -90,6 +93,24 @@ export function sampleMask(img, mask, category, step = 4) {
   return out;
 }
 
+// 마스크에서 category인 픽셀 중 사각형(픽셀 좌표) 안에 있는 것만
+export function sampleMaskInRect(img, mask, category, rect, step = 2) {
+  if (!mask) return [];
+  const out = [];
+  const x0 = Math.max(0, Math.floor(rect.x0));
+  const x1 = Math.min(img.width, Math.ceil(rect.x1));
+  const y0 = Math.max(0, Math.floor(rect.y0));
+  const y1 = Math.min(img.height, Math.ceil(rect.y1));
+  for (let y = y0; y < y1; y += step) {
+    const my = Math.floor((y * mask.height) / img.height);
+    for (let x = x0; x < x1; x += step) {
+      const mx = Math.floor((x * mask.width) / img.width);
+      if (mask.data[my * mask.width + mx] === category) out.push(pixelAt(img, x, y));
+    }
+  }
+  return out;
+}
+
 export function eyeOpenRatio(img, lm, eye) {
   const P = (i) => toPx(img, lm[i]);
   return dist(P(eye.lids[0]), P(eye.lids[1])) / dist(P(eye.corners[0]), P(eye.corners[1]));
@@ -119,8 +140,16 @@ export function extractRegions(img, lm, hairMask, t) {
     }
   }
 
+  // 목: 턱 끝 아래, 얼굴 폭 안의 몸 피부. 파운데이션이 덜 닿는 곳 (wiki/decisions/phase3-backlog.md)
+  const [edgeA, edgeB] = LM.faceEdges.map(P);
+  const chinY = P(LM.chinBottom).y;
+  const neck = sampleMaskInRect(img, hairMask, BODY_SKIN_CATEGORY, {
+    x0: Math.min(edgeA.x, edgeB.x), x1: Math.max(edgeA.x, edgeB.x), y0: chinY, y1: chinY + 0.4 * faceW,
+  });
+
   const poly = (ids) => ids.map(P);
   return {
+    neck,
     skin,
     iris,
     sclera,
