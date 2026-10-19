@@ -35,10 +35,11 @@ const operator = setupOperator({
   getSettings: () => state.settings,
   setSettings: updateSettings,
   onCameraChange: (id) => startCamera(id),
-  // [웹캠 설정 초기화]: 지금 웹캠의 값만 지우고, 새로고침 후 그 웹캠 기본값으로 다시 고정한다
+  // [웹캠 설정 초기화]: 지금 웹캠의 값만 지우고 웹캠을 다시 켜서 그 웹캠 기본값으로 다시 고정한다.
+  // 새로고침하지 않으므로 화면·운영자 모드·측정 기록은 그대로다
   onCameraReset: () => {
     if (state.cameraId) updateSettings(withCameraValues(state.settings, state.cameraId, null));
-    location.reload();
+    startCamera(state.settings.deviceId);
   },
 });
 
