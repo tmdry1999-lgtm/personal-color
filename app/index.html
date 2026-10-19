@@ -6,49 +6,48 @@
 <title>AI 퍼스널컬러 진단</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hahmlet:wght@300;400;600&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+KR:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hahmlet:wght@300;400;600&family=IBM+Plex+Sans+KR:wght@400;500;600&display=swap">
 <link rel="stylesheet" href="style.css">
 <script type="importmap">{ "imports": { "culori": "https://cdn.jsdelivr.net/npm/culori@4.0.2/bundled/culori.min.mjs" } }</script>
 </head>
 <body data-screen="idle">
-<svg class="scene" viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
+<svg class="scene" viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
   <defs>
-    <pattern id="hatch" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(-28)">
-      <line x1="0" y1="0" x2="0" y2="9" stroke="#F0EEE9" stroke-width="1" />
-    </pattern>
-    <pattern id="seigaiha" width="96" height="48" patternUnits="userSpaceOnUse">
-      <g fill="none" stroke="#F0EEE9" stroke-width="1.4">
-        <path d="M0 48 a48 48 0 0 1 96 0 M12 48 a36 36 0 0 1 72 0 M24 48 a24 24 0 0 1 48 0 M36 48 a12 12 0 0 1 24 0" />
-        <path d="M-48 24 a48 48 0 0 1 96 0 M-36 24 a36 36 0 0 1 72 0 M-24 24 a24 24 0 0 1 48 0 M48 24 a48 48 0 0 1 96 0 M60 24 a36 36 0 0 1 72 0 M72 24 a24 24 0 0 1 48 0" />
-      </g>
-    </pattern>
+    <linearGradient id="folds" x1="0" x2="1" y1="0" y2="0">
+      <stop offset="0" stop-color="#000" stop-opacity="0.22" /><stop offset="0.14" stop-color="#fff" stop-opacity="0.10" />
+      <stop offset="0.28" stop-color="#000" stop-opacity="0.18" /><stop offset="0.44" stop-color="#fff" stop-opacity="0.12" />
+      <stop offset="0.6" stop-color="#000" stop-opacity="0.2" /><stop offset="0.76" stop-color="#fff" stop-opacity="0.08" />
+      <stop offset="0.9" stop-color="#000" stop-opacity="0.16" /><stop offset="1" stop-color="#000" stop-opacity="0.26" />
+    </linearGradient>
   </defs>
-  <circle class="scene-moon" cx="1390" cy="430" r="330" />
-  <circle class="scene-ring" cx="1390" cy="430" r="400" />
-  <g transform="translate(0 110) scale(1 0.9)">
-  <g class="scene-fold">
-    <path class="fold-winter" d="M0 700 C 220 600 420 690 650 610 S 1080 470 1330 560 S 1760 690 1920 600 V1080 H0Z" />
-    <path class="fold-hatch" d="M0 700 C 220 600 420 690 650 610 S 1080 470 1330 560 S 1760 690 1920 600 V1080 H0Z" />
+  <rect class="scene-floor" x="0" y="962" width="1920" height="118" />
+  <line class="scene-floorline" x1="0" y1="962" x2="1920" y2="962" />
+  <line class="scene-rail" x1="960" y1="104" x2="1920" y2="104" />
+  <g class="drape drape-winter">
+    <path class="drape-cloth" d="M990 104 L1190 104 L1202 870 C1182 886 1166 886 1146 870 C1126 860 1110 860 1090 870 C1070 886 1054 886 1034 870 C1014 860 998 860 978 870 Z" />
+    <path class="drape-folds" d="M990 104 L1190 104 L1202 870 C1182 886 1166 886 1146 870 C1126 860 1110 860 1090 870 C1070 886 1054 886 1034 870 C1014 860 998 860 978 870 Z" />
+    <rect class="drape-clip" x="999" y="96" width="10" height="16" rx="2" /><rect class="drape-clip" x="1085" y="96" width="10" height="16" rx="2" /><rect class="drape-clip" x="1171" y="96" width="10" height="16" rx="2" />
   </g>
-  <g class="scene-fold">
-    <path class="fold-summer" d="M0 800 C 300 720 520 800 820 740 S 1300 660 1580 750 S 1840 790 1920 760 V1080 H0Z" />
-    <path class="fold-hatch" d="M0 800 C 300 720 520 800 820 740 S 1300 660 1580 750 S 1840 790 1920 760 V1080 H0Z" />
+  <g class="drape drape-spring">
+    <path class="drape-cloth" d="M1110 104 L1300 104 L1312 650 C1293 666 1277 666 1258 650 C1240 640 1224 640 1205 650 C1186 666 1170 666 1152 650 C1133 640 1117 640 1098 650 Z" />
+    <path class="drape-folds" d="M1110 104 L1300 104 L1312 650 C1293 666 1277 666 1258 650 C1240 640 1224 640 1205 650 C1186 666 1170 666 1152 650 C1133 640 1117 640 1098 650 Z" />
+    <rect class="drape-clip" x="1119" y="96" width="10" height="16" rx="2" /><rect class="drape-clip" x="1200" y="96" width="10" height="16" rx="2" /><rect class="drape-clip" x="1281" y="96" width="10" height="16" rx="2" />
   </g>
-  <g class="scene-fold">
-    <path class="fold-autumn" d="M0 900 C 260 850 500 890 780 845 S 1260 800 1520 860 S 1800 890 1920 865 V1080 H0Z" />
-    <path class="fold-hatch" d="M0 900 C 260 850 500 890 780 845 S 1260 800 1520 860 S 1800 890 1920 865 V1080 H0Z" />
+  <g class="drape drape-summer">
+    <path class="drape-cloth" d="M1545 104 L1735 104 L1747 740 C1728 756 1712 756 1694 740 C1675 730 1659 730 1640 740 C1621 756 1605 756 1586 740 C1568 730 1552 730 1533 740 Z" />
+    <path class="drape-folds" d="M1545 104 L1735 104 L1747 740 C1728 756 1712 756 1694 740 C1675 730 1659 730 1640 740 C1621 756 1605 756 1586 740 C1568 730 1552 730 1533 740 Z" />
+    <rect class="drape-clip" x="1554" y="96" width="10" height="16" rx="2" /><rect class="drape-clip" x="1635" y="96" width="10" height="16" rx="2" /><rect class="drape-clip" x="1716" y="96" width="10" height="16" rx="2" />
   </g>
-  <g class="scene-fold">
-    <path class="fold-spring" d="M0 985 C 320 945 620 980 940 955 S 1520 925 1920 965 V1080 H0Z" />
-    <path class="fold-wave" d="M0 985 C 320 945 620 980 940 955 S 1520 925 1920 965 V1080 H0Z" />
-  </g>
+  <g class="drape drape-autumn">
+    <path class="drape-cloth" d="M1690 104 L1905 104 L1917 905 C1896 921 1878 921 1857 905 C1836 895 1818 895 1798 905 C1777 921 1759 921 1738 905 C1717 895 1699 895 1678 905 Z" />
+    <path class="drape-folds" d="M1690 104 L1905 104 L1917 905 C1896 921 1878 921 1857 905 C1836 895 1818 895 1798 905 C1777 921 1759 921 1738 905 C1717 895 1699 895 1678 905 Z" />
+    <rect class="drape-clip" x="1699" y="96" width="10" height="16" rx="2" /><rect class="drape-clip" x="1792" y="96" width="10" height="16" rx="2" /><rect class="drape-clip" x="1886" y="96" width="10" height="16" rx="2" />
   </g>
 </svg>
 
 <header class="topbar">
   <p class="brand">AI 활용 간이 퍼스널컬러 진단</p>
-  <p class="topbar-mid">Four seasons, one face</p>
-  <p class="topbar-end">봄 · 여름 · 가을 · 겨울</p>
+  <p class="topbar-end">퍼스널컬러 팝업</p>
 </header>
 
 <main>
@@ -59,16 +58,16 @@
   </div>
 
   <section id="screen-idle" class="screen">
-    <p class="hero-kicker">A personal color pop-up</p>
     <h1 class="hero-title">당신의<br>퍼스널 컬러</h1>
     <p class="hero-text">당신의 계절과 색을 알려드립니다.</p>
     <button id="btn-start" class="btn btn-primary" disabled>진단 시작하기</button>
     <p class="hero-note">사진은 저장되지 않아요 <button id="btn-privacy" class="link-btn" type="button">개인정보 처리방침</button></p>
-    <ol class="journey">
-      <li><span>01</span>거울 앞에 서기</li>
-      <li><span>02</span>피부·눈동자·머리카락 색 재기</li>
-      <li><span>03</span>나의 계절 찾기</li>
-    </ol>
+    <ul class="season-cards" aria-label="네 계절">
+      <li style="--c:var(--spring)"><span class="season-card-color"></span><span class="season-card-name">봄 웜</span></li>
+      <li style="--c:var(--summer)"><span class="season-card-color"></span><span class="season-card-name">여름 쿨</span></li>
+      <li style="--c:var(--autumn)"><span class="season-card-color"></span><span class="season-card-name">가을 웜</span></li>
+      <li style="--c:var(--winter)"><span class="season-card-color"></span><span class="season-card-name">겨울 쿨</span></li>
+    </ul>
   </section>
 
   <section id="screen-start" class="screen panel" hidden>
