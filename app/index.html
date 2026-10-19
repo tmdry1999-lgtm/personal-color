@@ -6,13 +6,52 @@
 <title>AI 퍼스널컬러 진단</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=IBM+Plex+Sans+KR:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hahmlet:wght@300;400;600&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+KR:wght@400;500;600&display=swap">
 <link rel="stylesheet" href="style.css">
 <script type="importmap">{ "imports": { "culori": "https://cdn.jsdelivr.net/npm/culori@4.0.2/bundled/culori.min.mjs" } }</script>
 </head>
 <body data-screen="idle">
+<svg class="scene" viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
+  <defs>
+    <pattern id="hatch" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(-28)">
+      <line x1="0" y1="0" x2="0" y2="9" stroke="#F0EEE9" stroke-width="1" />
+    </pattern>
+    <pattern id="seigaiha" width="96" height="48" patternUnits="userSpaceOnUse">
+      <g fill="none" stroke="#F0EEE9" stroke-width="1.4">
+        <path d="M0 48 a48 48 0 0 1 96 0 M12 48 a36 36 0 0 1 72 0 M24 48 a24 24 0 0 1 48 0 M36 48 a12 12 0 0 1 24 0" />
+        <path d="M-48 24 a48 48 0 0 1 96 0 M-36 24 a36 36 0 0 1 72 0 M-24 24 a24 24 0 0 1 48 0 M48 24 a48 48 0 0 1 96 0 M60 24 a36 36 0 0 1 72 0 M72 24 a24 24 0 0 1 48 0" />
+      </g>
+    </pattern>
+  </defs>
+  <circle class="scene-moon" cx="1390" cy="430" r="330" />
+  <circle class="scene-ring" cx="1390" cy="430" r="400" />
+  <g transform="translate(0 110) scale(1 0.9)">
+  <g class="scene-fold">
+    <path class="fold-winter" d="M0 700 C 220 600 420 690 650 610 S 1080 470 1330 560 S 1760 690 1920 600 V1080 H0Z" />
+    <path class="fold-hatch" d="M0 700 C 220 600 420 690 650 610 S 1080 470 1330 560 S 1760 690 1920 600 V1080 H0Z" />
+  </g>
+  <g class="scene-fold">
+    <path class="fold-summer" d="M0 800 C 300 720 520 800 820 740 S 1300 660 1580 750 S 1840 790 1920 760 V1080 H0Z" />
+    <path class="fold-hatch" d="M0 800 C 300 720 520 800 820 740 S 1300 660 1580 750 S 1840 790 1920 760 V1080 H0Z" />
+  </g>
+  <g class="scene-fold">
+    <path class="fold-autumn" d="M0 900 C 260 850 500 890 780 845 S 1260 800 1520 860 S 1800 890 1920 865 V1080 H0Z" />
+    <path class="fold-hatch" d="M0 900 C 260 850 500 890 780 845 S 1260 800 1520 860 S 1800 890 1920 865 V1080 H0Z" />
+  </g>
+  <g class="scene-fold">
+    <path class="fold-spring" d="M0 985 C 320 945 620 980 940 955 S 1520 925 1920 965 V1080 H0Z" />
+    <path class="fold-wave" d="M0 985 C 320 945 620 980 940 955 S 1520 925 1920 965 V1080 H0Z" />
+  </g>
+  </g>
+</svg>
+
+<header class="topbar">
+  <p class="brand">AI 활용 간이 퍼스널컬러 진단</p>
+  <p class="topbar-mid">Four seasons, one face</p>
+  <p class="topbar-end">봄 · 여름 · 가을 · 겨울</p>
+</header>
+
 <main>
-  <p class="wordmark">AI 활용 간이 퍼스널컬러 진단</p>
 
   <div id="stage" class="stage">
     <video id="video" playsinline muted></video>
@@ -20,10 +59,16 @@
   </div>
 
   <section id="screen-idle" class="screen">
+    <p class="hero-kicker">A personal color pop-up</p>
     <h1 class="hero-title">당신의<br>퍼스널 컬러</h1>
     <p class="hero-text">당신의 계절과 색을 알려드립니다.</p>
     <button id="btn-start" class="btn btn-primary" disabled>진단 시작하기</button>
     <p class="hero-note">사진은 저장되지 않아요 <button id="btn-privacy" class="link-btn" type="button">개인정보 처리방침</button></p>
+    <ol class="journey">
+      <li><span>01</span>거울 앞에 서기</li>
+      <li><span>02</span>피부·눈동자·머리카락 색 재기</li>
+      <li><span>03</span>나의 계절 찾기</li>
+    </ol>
   </section>
 
   <section id="screen-start" class="screen panel" hidden>
