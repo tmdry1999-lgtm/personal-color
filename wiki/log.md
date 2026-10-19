@@ -38,3 +38,4 @@
 | 2026-10-13 | decisions/status-2026-10-13.md | 오늘 마감: 상태, 결정, 다음 할 일 8단계, 고쳐야 할 문제 16개 |
 | 2026-10-15 | measurement/regions.md, measurement/webcam-limits.md, decisions/* | 운영자 모드(데이터 수집·턱 들기, 기본 꺼짐), 웹캠별 설정, 리뷰에서 미룬 항목 |
 | 2026-10-15 | (배포) | phase3a-camera master 병합(0c89398), Pages 배포. 수동 점검 8항목은 배포 후 사용자 확인 필요 |
+| 2026-10-19 | (배포) | 발표용 디자인(드레이프 룸, Cloud Dancer + 딥퍼플, 결과 그래프, 개인정보 처리방침 팝업) master 병합·배포 |
