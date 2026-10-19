@@ -374,3 +374,30 @@ body.page-result .notes { margin-top: 48px; }
 #operator .notice { color: var(--muted); }
 #operator pre { max-height: 240px; overflow: auto; background: var(--mist); padding: 8px; font-size: 12px; }
 .page-error { padding: 16px 0; font-size: 1.1rem; }
+
+/* ── 개인정보 처리방침 팝업 ───────────────────────────────────────── */
+.link-btn { margin-left: 10px; padding: 0; border: 0; background: none; color: var(--plum); font-size: inherit; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; }
+.link-btn:hover { color: var(--ink); }
+.privacy {
+  width: min(760px, calc(100% - 32px));
+  max-height: min(86vh, 900px);
+  padding: 0;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: var(--paper);
+  color: var(--ink);
+}
+.privacy::backdrop { background: rgba(42, 27, 61, 0.45); }
+.privacy[open] { display: flex; flex-direction: column; }
+.privacy-head { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 20px 28px; border-bottom: 1px solid var(--line); }
+.privacy-head h2 { margin: 0; font-family: var(--serif); font-size: 1.6rem; }
+.privacy-close { min-height: 44px; padding: 0 20px; font-size: 1rem; }
+.privacy-body { overflow-y: auto; padding: 8px 28px 28px; font-size: 1rem; line-height: 1.7; word-break: keep-all; }
+.privacy-body h3 { margin: 28px 0 8px; font-size: 1.05rem; }
+.privacy-body p, .privacy-body ul { margin: 0 0 8px; }
+.privacy-body ul { padding-left: 1.2em; }
+.privacy-date { color: var(--muted); font-size: 0.92rem; }
+.privacy-body table { width: 100%; border-collapse: collapse; font-size: 0.95rem; }
+.privacy-body th, .privacy-body td { padding: 10px 8px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
+.privacy-body th { color: var(--muted); font-weight: 500; }
+.privacy-body td:first-child { width: 24%; font-weight: 500; }

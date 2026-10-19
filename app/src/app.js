@@ -283,6 +283,10 @@ $('btn-begin').addEventListener('click', () => {
   show('capture');
 });
 $('btn-home').addEventListener('click', goHome);
+// 개인정보 처리방침 팝업 (대기 화면). 바깥 어두운 곳을 눌러도 닫힌다
+$('btn-privacy').addEventListener('click', () => $('privacy').showModal());
+$('privacy-close').addEventListener('click', () => $('privacy').close());
+$('privacy').addEventListener('click', (e) => { if (e.target === $('privacy')) $('privacy').close(); });
 for (const ev of ['pointermove', 'pointerdown', 'keydown']) {
   document.addEventListener(ev, () => { if (IDLE_RESET_SCREENS.includes(state.screen)) armIdleReset(); });
 }
