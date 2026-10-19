@@ -18,6 +18,12 @@ export function createStaticServer(root) {
     let file;
     try {
       const path = decodeURIComponent(new URL(req.url, 'http://localhost').pathname);
+      // 주소 끝에 / 를 빼먹어도 부스 앱이 열리게
+      if (path === '/' || path === '/app') {
+        res.writeHead(302, { location: '/app/' });
+        res.end();
+        return;
+      }
       file = resolve(join(base, path));
       if (file !== base && !file.startsWith(base + sep)) throw new Error('outside root');
       if (path.endsWith('/')) file = join(file, 'index.html');
