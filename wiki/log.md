@@ -39,3 +39,4 @@
 | 2026-10-15 | measurement/regions.md, measurement/webcam-limits.md, decisions/* | 운영자 모드(데이터 수집·턱 들기, 기본 꺼짐), 웹캠별 설정, 리뷰에서 미룬 항목 |
 | 2026-10-15 | (배포) | phase3a-camera master 병합(0c89398), Pages 배포. 수동 점검 8항목은 배포 후 사용자 확인 필요 |
 | 2026-10-19 | (배포) | 발표용 디자인(드레이프 룸, Cloud Dancer + 딥퍼플, 결과 그래프, 개인정보 처리방침 팝업) master 병합·배포 |
+| 2026-10-19 | decisions/phase3-backlog.md | [이 웹캠 설정 초기화]가 새로고침 대신 웹캠만 다시 켬 → 화면·모드·기록 유지 (backlog 항목 해결) |

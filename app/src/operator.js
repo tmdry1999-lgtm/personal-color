@@ -50,8 +50,11 @@ export function setupOperator({ overlay, getSettings, setSettings, onCameraChang
       $('op-log-status').textContent = 'Ctrl+C로 복사해 주세요';
     }
   });
-  // 지금 웹캠의 설정값만 지우고, 새로고침 후 그 웹캠 기본값으로 다시 고정한다
-  $('op-camera-reset').addEventListener('click', onCameraReset);
+  // 지금 웹캠의 설정값만 지우고, 웹캠을 다시 켜서 그 웹캠 기본값으로 다시 고정한다 (새로고침 없음)
+  $('op-camera-reset').addEventListener('click', () => {
+    $('op-controls').textContent = '다시 고정하는 중…';
+    onCameraReset();
+  });
   $('op-log-clear').addEventListener('click', () => {
     log.length = 0;
     saveLog(logStore, log);
