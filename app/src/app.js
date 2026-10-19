@@ -45,6 +45,7 @@ const operator = setupOperator({
 function show(screen) {
   state.screen = screen;
   for (const s of SCREENS) $(`screen-${s}`).hidden = s !== screen;
+  document.body.dataset.screen = screen; // 화면별 배치는 CSS가 정한다
   $('stage').hidden = !['idle', 'capture', 'neck'].includes(screen);
   clearTimeout(state.idleTimer);
   if (IDLE_RESET_SCREENS.includes(screen)) armIdleReset();
@@ -282,6 +283,10 @@ $('btn-begin').addEventListener('click', () => {
   show('capture');
 });
 $('btn-home').addEventListener('click', goHome);
+// 개인정보 처리방침 팝업 (대기 화면). 바깥 어두운 곳을 눌러도 닫힌다
+$('btn-privacy').addEventListener('click', () => $('privacy').showModal());
+$('privacy-close').addEventListener('click', () => $('privacy').close());
+$('privacy').addEventListener('click', (e) => { if (e.target === $('privacy')) $('privacy').close(); });
 for (const ev of ['pointermove', 'pointerdown', 'keydown']) {
   document.addEventListener(ev, () => { if (IDLE_RESET_SCREENS.includes(state.screen)) armIdleReset(); });
 }

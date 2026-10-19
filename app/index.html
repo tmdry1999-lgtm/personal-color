@@ -4,60 +4,183 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>AI 퍼스널컬러 진단</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hahmlet:wght@300;400;600&family=IBM+Plex+Sans+KR:wght@400;500;600&display=swap">
 <link rel="stylesheet" href="style.css">
 <script type="importmap">{ "imports": { "culori": "https://cdn.jsdelivr.net/npm/culori@4.0.2/bundled/culori.min.mjs" } }</script>
 </head>
-<body>
+<body data-screen="idle">
+<svg class="scene" viewBox="0 0 1920 1080" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+  <defs>
+    <linearGradient id="folds" x1="0" x2="1" y1="0" y2="0">
+      <stop offset="0" stop-color="#000" stop-opacity="0.22" /><stop offset="0.14" stop-color="#fff" stop-opacity="0.10" />
+      <stop offset="0.28" stop-color="#000" stop-opacity="0.18" /><stop offset="0.44" stop-color="#fff" stop-opacity="0.12" />
+      <stop offset="0.6" stop-color="#000" stop-opacity="0.2" /><stop offset="0.76" stop-color="#fff" stop-opacity="0.08" />
+      <stop offset="0.9" stop-color="#000" stop-opacity="0.16" /><stop offset="1" stop-color="#000" stop-opacity="0.26" />
+    </linearGradient>
+  </defs>
+  <rect class="scene-floor" x="0" y="962" width="1920" height="118" />
+  <line class="scene-floorline" x1="0" y1="962" x2="1920" y2="962" />
+  <line class="scene-rail" x1="960" y1="104" x2="1920" y2="104" />
+  <g class="drape drape-winter">
+    <path class="drape-cloth" d="M990 104 L1190 104 L1202 870 C1182 886 1166 886 1146 870 C1126 860 1110 860 1090 870 C1070 886 1054 886 1034 870 C1014 860 998 860 978 870 Z" />
+    <path class="drape-folds" d="M990 104 L1190 104 L1202 870 C1182 886 1166 886 1146 870 C1126 860 1110 860 1090 870 C1070 886 1054 886 1034 870 C1014 860 998 860 978 870 Z" />
+    <rect class="drape-clip" x="999" y="96" width="10" height="16" rx="2" /><rect class="drape-clip" x="1085" y="96" width="10" height="16" rx="2" /><rect class="drape-clip" x="1171" y="96" width="10" height="16" rx="2" />
+  </g>
+  <g class="drape drape-spring">
+    <path class="drape-cloth" d="M1110 104 L1300 104 L1312 650 C1293 666 1277 666 1258 650 C1240 640 1224 640 1205 650 C1186 666 1170 666 1152 650 C1133 640 1117 640 1098 650 Z" />
+    <path class="drape-folds" d="M1110 104 L1300 104 L1312 650 C1293 666 1277 666 1258 650 C1240 640 1224 640 1205 650 C1186 666 1170 666 1152 650 C1133 640 1117 640 1098 650 Z" />
+    <rect class="drape-clip" x="1119" y="96" width="10" height="16" rx="2" /><rect class="drape-clip" x="1200" y="96" width="10" height="16" rx="2" /><rect class="drape-clip" x="1281" y="96" width="10" height="16" rx="2" />
+  </g>
+  <g class="drape drape-summer">
+    <path class="drape-cloth" d="M1545 104 L1735 104 L1747 740 C1728 756 1712 756 1694 740 C1675 730 1659 730 1640 740 C1621 756 1605 756 1586 740 C1568 730 1552 730 1533 740 Z" />
+    <path class="drape-folds" d="M1545 104 L1735 104 L1747 740 C1728 756 1712 756 1694 740 C1675 730 1659 730 1640 740 C1621 756 1605 756 1586 740 C1568 730 1552 730 1533 740 Z" />
+    <rect class="drape-clip" x="1554" y="96" width="10" height="16" rx="2" /><rect class="drape-clip" x="1635" y="96" width="10" height="16" rx="2" /><rect class="drape-clip" x="1716" y="96" width="10" height="16" rx="2" />
+  </g>
+  <g class="drape drape-autumn">
+    <path class="drape-cloth" d="M1690 104 L1905 104 L1917 905 C1896 921 1878 921 1857 905 C1836 895 1818 895 1798 905 C1777 921 1759 921 1738 905 C1717 895 1699 895 1678 905 Z" />
+    <path class="drape-folds" d="M1690 104 L1905 104 L1917 905 C1896 921 1878 921 1857 905 C1836 895 1818 895 1798 905 C1777 921 1759 921 1738 905 C1717 895 1699 895 1678 905 Z" />
+    <rect class="drape-clip" x="1699" y="96" width="10" height="16" rx="2" /><rect class="drape-clip" x="1792" y="96" width="10" height="16" rx="2" /><rect class="drape-clip" x="1886" y="96" width="10" height="16" rx="2" />
+  </g>
+</svg>
+
+<header class="topbar">
+  <p class="brand">AI 활용 간이 퍼스널컬러 진단</p>
+  <p class="topbar-end">퍼스널컬러 팝업</p>
+</header>
+
 <main>
+
   <div id="stage" class="stage">
     <video id="video" playsinline muted></video>
     <canvas id="overlay"></canvas>
   </div>
 
-  <section id="screen-idle">
-    <h1>AI 퍼스널컬러 진단</h1>
-    <button id="btn-start" class="big" disabled>시작</button>
+  <section id="screen-idle" class="screen">
+    <h1 class="hero-title">당신의<br>퍼스널 컬러</h1>
+    <p class="hero-text">당신의 계절과 색을 알려드립니다.</p>
+    <button id="btn-start" class="btn btn-primary" disabled>진단 시작하기</button>
+    <p class="hero-note">사진은 저장되지 않아요 <button id="btn-privacy" class="link-btn" type="button">개인정보 처리방침</button></p>
+    <ul class="season-cards" aria-label="네 계절">
+      <li style="--c:var(--spring)"><span class="season-card-color"></span><span class="season-card-name">봄 웜</span></li>
+      <li style="--c:var(--summer)"><span class="season-card-color"></span><span class="season-card-name">여름 쿨</span></li>
+      <li style="--c:var(--autumn)"><span class="season-card-color"></span><span class="season-card-name">가을 웜</span></li>
+      <li style="--c:var(--winter)"><span class="season-card-color"></span><span class="season-card-name">겨울 쿨</span></li>
+    </ul>
   </section>
 
-  <section id="screen-start" hidden>
-    <h2>시작하기 전에</h2>
-    <div class="row">
-      <button class="big gender" data-gender="f">여성</button>
-      <button class="big gender" data-gender="m">남성</button>
-    </div>
-    <label><input type="checkbox" id="flag-dyed"> 염색했어요</label>
-    <label><input type="checkbox" id="flag-lip"> 립 제품을 발랐어요</label>
-    <label><input type="checkbox" id="flag-base"> 베이스 화장(파운데이션·쿠션)을 했어요</label>
-    <p class="notice">안경은 잠시 벗어 주세요</p>
-    <p class="notice">사진은 저장되지 않으며, 진단 후 즉시 삭제됩니다</p>
-    <button id="btn-begin" class="big" disabled>진단 시작</button>
+  <section id="screen-start" class="screen panel" hidden>
+    <h2 class="screen-title">시작하기 전에 알려 주세요</h2>
+    <fieldset class="field">
+      <legend>성별 <span class="field-hint">추천 색을 고를 때만 써요</span></legend>
+      <div class="choice">
+        <button class="choice-btn gender" data-gender="f" aria-pressed="false">여성</button>
+        <button class="choice-btn gender" data-gender="m" aria-pressed="false">남성</button>
+      </div>
+    </fieldset>
+    <fieldset class="field">
+      <legend>해당하는 것을 골라 주세요 <span class="field-hint">고른 부위는 빼고 진단해요</span></legend>
+      <label class="check"><input type="checkbox" id="flag-dyed"> 염색했어요</label>
+      <label class="check"><input type="checkbox" id="flag-lip"> 립 제품을 발랐어요</label>
+      <label class="check"><input type="checkbox" id="flag-base"> 베이스 화장(파운데이션·쿠션)을 했어요</label>
+    </fieldset>
+    <ul class="notes">
+      <li>안경은 잠시 벗어 주세요</li>
+      <li>사진은 저장되지 않으며, 진단 후 즉시 삭제됩니다</li>
+    </ul>
+    <button id="btn-begin" class="btn btn-primary btn-wide" disabled>진단 시작</button>
   </section>
 
-  <section id="screen-capture" hidden>
-    <p id="capture-msg" class="msg">안경은 벗고, 얼굴을 화면 가운데에 맞춰 주세요</p>
+  <section id="screen-capture" class="screen guide" hidden>
+    <p id="capture-msg" class="guide-msg">안경은 벗고, 얼굴을 화면 가운데에 맞춰 주세요</p>
     <p id="countdown" class="countdown"></p>
   </section>
 
-  <section id="screen-neck" hidden>
-    <p id="neck-msg" class="msg">턱을 살짝 들어 주세요 (목 피부를 측정해요)</p>
-    <p id="neck-angle" class="notice"></p>
+  <section id="screen-neck" class="screen guide" hidden>
+    <p id="neck-msg" class="guide-msg">턱을 살짝 들어 주세요 (목 피부를 측정해요)</p>
+    <p id="neck-angle" class="guide-sub"></p>
   </section>
 
-  <section id="screen-analyzing" hidden>
-    <p class="msg">피부 · 눈동자 · 머리카락 분석 중…</p>
+  <section id="screen-analyzing" class="screen analyzing" hidden>
+    <div class="drapes" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
+    <p class="guide-msg">피부 · 눈동자 · 머리카락 분석 중…</p>
+    <p class="guide-sub">어울리는 계절을 찾고 있어요</p>
   </section>
 
-  <section id="screen-result" hidden>
-    <div id="result-body"></div>
-    <div id="qr"></div>
-    <p class="notice">사진 등의 개인정보는 저장되지 않습니다</p>
-    <p class="notice">참고용 결과예요</p>
-    <button id="btn-home" class="big">처음으로</button>
+  <section id="screen-result" class="screen result" hidden>
+    <div id="result-body" class="result-body"></div>
+    <aside class="result-side">
+      <div id="qr" class="qr"></div>
+      <p class="side-title">폰으로 결과 가져가기</p>
+      <p class="side-text">휴대폰 카메라로 QR을 찍으면 이 결과를 그대로 볼 수 있어요.</p>
+      <ul class="notes">
+        <li>사진 등의 개인정보는 저장되지 않습니다</li>
+        <li>참고용 결과예요</li>
+      </ul>
+      <button id="btn-home" class="btn btn-secondary btn-wide">처음으로</button>
+    </aside>
   </section>
 
   <p id="error" class="error" hidden></p>
   <div id="mode-badge" class="mode-badge" hidden></div>
 </main>
+
+<dialog id="privacy" class="privacy" aria-labelledby="privacy-title">
+  <div class="privacy-head">
+    <h2 id="privacy-title">개인정보 처리방침</h2>
+    <button id="privacy-close" class="btn btn-secondary privacy-close" type="button">닫기</button>
+  </div>
+  <div class="privacy-body">
+    <p class="privacy-date">시행일 2026년 10월 19일</p>
+    <p>이 체험은 웹캠 영상으로 피부·눈동자·머리카락 색을 재서 어울리는 계절과 색을 알려 주는 간이 진단입니다. 이 과정에서 어떤 정보를 어떻게 다루는지 알려 드립니다.</p>
+
+    <h3>1. 다루는 정보</h3>
+    <table>
+      <thead><tr><th>정보</th><th>쓰는 곳</th><th>보관</th></tr></thead>
+      <tbody>
+        <tr><td>웹캠 영상(얼굴)</td><td>피부·눈동자·머리카락·입술·눈썹·목의 색 측정</td><td>부스 PC 브라우저 메모리에서만 분석하고, 분석이 끝나면 바로 버립니다. 저장하거나 전송하지 않습니다.</td></tr>
+        <tr><td>성별, 체크 항목(염색·립 제품·베이스 화장)</td><td>측정에서 뺄 부위를 정하고, 추천 색을 고를 때</td><td>처음 화면으로 돌아가면 지웁니다.</td></tr>
+        <tr><td>진단 결과(계절, 12톤, 비율, 4가지 점수, 성별)</td><td>결과 화면과 QR 결과 페이지</td><td>QR 주소 안에만 담깁니다. 서버에 저장하지 않습니다.</td></tr>
+      </tbody>
+    </table>
+
+    <h3>2. 처리 방법</h3>
+    <ul>
+      <li>모든 분석은 부스 PC의 웹 브라우저 안에서 이루어집니다. 사진 파일을 만들지 않고, 영상을 서버로 보내지 않으며, 기록(로그)에 남기지 않습니다.</li>
+      <li>얼굴로 누구인지 알아보는 기능(신원 확인)은 없습니다. 색을 재는 위치를 찾는 데에만 얼굴 위치를 씁니다.</li>
+      <li>결과 화면에서 [처음으로]를 누르거나 60초 동안 조작이 없으면 처음 화면으로 돌아가고, 결과도 화면에서 지워집니다.</li>
+    </ul>
+
+    <h3>3. 보관 기간</h3>
+    <ul>
+      <li>사진과 영상은 보관하지 않습니다. 분석이 끝나면 즉시 삭제됩니다.</li>
+      <li>진단 결과는 부스 PC에 남지 않습니다. QR로 연 결과 페이지는 휴대폰 브라우저의 방문 기록에 주소가 남을 수 있습니다. 지우려면 휴대폰 브라우저의 방문 기록을 삭제해 주세요.</li>
+    </ul>
+
+    <h3>4. 외부 서비스</h3>
+    <p>얼굴 영상과 측정값은 외부로 보내지 않습니다. 다만 화면과 분석 프로그램을 불러오기 위해 아래 서비스에 접속하며, 이 서비스들은 접속한 기기의 IP 주소와 브라우저 정보를 받을 수 있습니다.</p>
+    <ul>
+      <li>GitHub Pages: 체험 화면과 QR 결과 페이지 제공. QR 결과 페이지 주소에는 진단 결과와 성별이 들어 있습니다.</li>
+      <li>jsDelivr: 프로그램 라이브러리 제공</li>
+      <li>Google: 글꼴, 얼굴 인식 모델 파일 제공</li>
+    </ul>
+
+    <h3>5. 정확도 개선을 위한 측정 기록</h3>
+    <p>운영자가 측정 기록 기능을 켠 경우에만, 참여에 동의한 참가자의 색 측정 숫자(사진 아님)와 성별·체크 항목을 부스 브라우저에 임시로 보관합니다. 브라우저 탭을 닫으면 사라집니다. 기록은 이름 없이 참가자 번호로만 정리해 진단 기준을 고치는 데 씁니다. 일반 체험에서는 이 기능이 꺼져 있습니다.</p>
+
+    <h3>6. 관련 법률과 이용자의 권리</h3>
+    <ul>
+      <li>이 체험은 「개인정보 보호법」을 따릅니다. 얼굴 영상은 개인정보가 될 수 있으므로, 체험에 필요한 만큼만 쓰고 저장하지 않습니다. 얼굴을 신원 확인용 정보(생체인식정보)로 만들지 않습니다.</li>
+      <li>카메라 분석은 이용자가 [진단 시작]을 누른 뒤에만 이루어집니다. 원하지 않으면 시작하지 않으셔도 됩니다.</li>
+      <li>만 14세 미만은 보호자와 함께 이용해 주세요. 법에 따라 만 14세 미만 아동의 개인정보를 처리할 때는 보호자의 동의가 필요합니다.</li>
+      <li>이용자는 자신의 개인정보에 대해 열람·정정·삭제·처리정지를 요구할 수 있습니다. 이 체험은 개인정보를 저장하지 않으므로 대부분 해당하는 정보가 없지만, 5번 측정 기록에 참여했다면 운영자에게 삭제를 요청할 수 있습니다.</li>
+    </ul>
+
+    <h3>7. 문의</h3>
+    <p>개인정보와 관련한 문의나 요청은 현장의 부스 운영자에게 말씀해 주세요.</p>
+  </div>
+</dialog>
 
 <dialog id="operator">
   <h2>운영자 설정</h2>
