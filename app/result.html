@@ -4,15 +4,20 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>나의 퍼스널컬러 결과</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Gowun+Batang:wght@400;700&family=IBM+Plex+Sans+KR:wght@400;500;600&display=swap">
 <link rel="stylesheet" href="style.css">
 <script type="importmap">{ "imports": { "culori": "https://cdn.jsdelivr.net/npm/culori@4.0.2/bundled/culori.min.mjs" } }</script>
 </head>
-<body>
+<body class="page-result">
 <main>
-  <h1>나의 퍼스널컬러 결과</h1>
-  <div id="result-body"></div>
-  <p class="notice">사진 등의 개인정보는 저장되지 않습니다</p>
-  <p class="notice">참고용 결과예요</p>
+  <p class="wordmark">퍼스널컬러 진단</p>
+  <div id="result-body" class="result-body"></div>
+  <ul class="notes">
+    <li>사진 등의 개인정보는 저장되지 않습니다</li>
+    <li>참고용 결과예요</li>
+  </ul>
 </main>
 <script type="module" src="src/result-page.js"></script>
 </body>

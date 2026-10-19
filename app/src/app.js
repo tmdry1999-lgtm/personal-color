@@ -45,6 +45,7 @@ const operator = setupOperator({
 function show(screen) {
   state.screen = screen;
   for (const s of SCREENS) $(`screen-${s}`).hidden = s !== screen;
+  document.body.dataset.screen = screen; // 화면별 배치는 CSS가 정한다
   $('stage').hidden = !['idle', 'capture', 'neck'].includes(screen);
   clearTimeout(state.idleTimer);
   if (IDLE_RESET_SCREENS.includes(screen)) armIdleReset();
